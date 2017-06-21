@@ -69,7 +69,7 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " 括弧保管
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<ESC><S-o>
-inoremap ( ()<ESC>
+inoremap ( ()<left>
 inoremap (<CR> ()<Left><CR><ESC><S-o>
 inoremap [ []<LEFT>
 inoremap " ""<LEFT>
