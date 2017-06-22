@@ -24,8 +24,7 @@ precmd () {
    LANG=en_US.UTF-8 vcs_info
    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 
-   if [[ -n `ls -a | grep .git ` ]]; then #.gitがあるかを判断した
-    if [ "$PWD" != "$HOME" ]; then #なぜかは不明だけど、HOMEの時のみ[]が表示されたので、弾いた
+   if [[ -n `ls -a | grep "^.git$" ` ]]; then #.gitがあるかを判断した
       st=`git status 2> /dev/null`
         if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
           RPROMPT="[%1(v|%F{green}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
@@ -34,9 +33,6 @@ precmd () {
         else [[ -n `echo "$st" | grep "^# Untracked"` ]];
           RPROMPT="[%1(v|%F{red}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
         fi 
-    else    
-      RPS1="[%{${fg[green]}%}%~%{${fg[default]}%}]"
-    fi 
    else
     RPS1="[%{${fg[green]}%}%~%{${fg[default]}%}]"
    fi
