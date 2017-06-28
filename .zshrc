@@ -2,6 +2,7 @@
 export LANG=ja_JP.UTF-8
 export EDITOR=emacs
 export PAGER=less
+export GREP_OPTIONS='--color=auto'
 
 #プロンプトの設定
 # VCSの情報を取得するzshの便利関数 vcs_infoを使う
