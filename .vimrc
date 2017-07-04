@@ -1,5 +1,3 @@
-" コードに色をつける
-syntax on
 " setting
 "文字コードをUFT-8に設定
 set fenc=utf-8
@@ -13,9 +11,13 @@ set autoread
 set hidden
 " 入力中のコマンドをステータスに表示する
 set showcmd
+" 全ての数値を十進数として扱う
+set nrformats=
 
 
 " 見た目系
+" コードに色をつける
+syntax on
 " 行番号を表示
 set number
 highlight LineNr ctermfg=255
@@ -65,6 +67,7 @@ set hlsearch
 " ESC連打でハイライト解除
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
+
 " コード系
 " 括弧保管
 inoremap { {}<Left>
@@ -76,6 +79,3 @@ inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
 " コメントアウト
 noremap cm I// <Esc>
-
-"main関数
-cnoremap m r!~/.vim/main.sh
