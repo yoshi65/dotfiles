@@ -15,5 +15,8 @@ map R :source ~/git/yoshi65/dotfiles/.vimperatorrc<CR>
 map h <C-PageUp>
 map l <C-PageDown>
 
+" color scheme
+colorscheme dark
+
 " 読み込み完了メッセージ
 echo "Loaded from .vimperatorrc"
