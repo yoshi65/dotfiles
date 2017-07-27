@@ -68,6 +68,14 @@ set hlsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
 
+" キーマッピング系
+" カーソルキー使用不可
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+
 " コード系
 " 括弧保管
 inoremap { {}<Left>
