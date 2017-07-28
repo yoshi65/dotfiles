@@ -13,6 +13,9 @@ set hidden
 set showcmd
 " 全ての数値を十進数として扱う
 set nrformats=
+" ビープ音を鳴らさない
+set visualbell t_vb=
+set noerrorbells 
 
 
 " 見た目系
@@ -20,7 +23,7 @@ set nrformats=
 syntax on
 " 行番号を表示
 set number
-highlight LineNr ctermfg=255
+highlight LineNr ctermfg=255 ctermbg=235
 " 現在の行を強調表示
 set cursorline
 " 現在の行を強調表示（縦）
@@ -54,8 +57,6 @@ set shiftwidth=2
 
 
 " 検索系
-" 検索文字列が小文字の場合は大文字小文字を区別なく検索する
-set ignorecase
 " 検索文字列に大文字が含まれている場合は区別して検索する
 set smartcase
 " 検索文字列入力時に順次対象文字列にヒットさせる
