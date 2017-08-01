@@ -1,3 +1,11 @@
 # dotfiles
-* 設定ファイル置き場
-* git使用法の学習用
+
+## involved
+
+* zsh
+* vim
+* vimperator
+
+## about `sync.sh`
+
+There is the difference between this `dotfiles` and `~/dotfiles`.
