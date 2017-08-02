@@ -15,9 +15,15 @@ let g:lightline = {
 # 括弧補完
   [[plugins]] 
   repo  = 'cohama/lexima.vim'
-    on_ft = 'haml'
 
 # Lang
+
+  [[plugins]] # C,C++
+	repo = 'arakashic/chromatica.nvim'
+		hook_add = '''
+			let g:chromatica#libclang_path='/opt/local/libexec/llvm-5.0/lib'
+			let g:chromatica#enable_at_startup=1
+		'''
 
   [[plugins]] # Haml
   repo  = 'tpope/vim-haml'
