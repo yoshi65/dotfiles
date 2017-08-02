@@ -9,7 +9,7 @@ else
   echo "diff"
   patch -u ./.vimrc < diff_vimrc
 fi
-echo "completed!"
+echo "completed!\n"
 
 
 echo "checking .config"
