@@ -21,11 +21,11 @@ repo = 'mattn/emmet-vim'
 repo = 'rhysd/vim-clang-format'
 	hook_add = '''
 		let g:clang_format#style_options = {
-            \ "AccessModifierOffset" : "-3",
-            \ "AllowShortIfStatementsOnASingleLine" : "true",
-            \ "AlwaysBreakTemplateDeclarations" : "true",
-            \ "Standard" : "C++11",
-            \ "IndentWidth": "4"}
+      \ "AccessModifierOffset" : "-3",
+      \ "AllowShortIfStatementsOnASingleLine" : "true",
+      \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "Standard" : "C++11",
+      \ "IndentWidth": "4"}
 		autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 		autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 		autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
