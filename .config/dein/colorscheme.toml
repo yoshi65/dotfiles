@@ -1,0 +1,21 @@
+# Colors
+
+[[plugins]] # hybrid
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]] # solarized
+repo = 'altercation/vim-colors-solarized'
+
+[[plugins]] # badwolf
+repo = 'sjl/badwolf'
+
+[[plugins]] # cobalt
+repo = 'gkjgh/cobalt'
+
+# colorscheme指定
+hook_add = '''
+	set background=dark
+	" colorscheme 設定は source 後に行う必要があるので確実に読まれている VimEnter のタイミングで行う。
+	" 但し Colorscheme イベントの発生が抑制されないよう nested を付ける。
+   au MyAutoCmd VimEnter * nested colorscheme badwolf
+'''

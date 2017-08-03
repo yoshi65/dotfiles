@@ -26,7 +26,7 @@ set noerrorbells
 set number
 " highlight LineNr ctermfg=255 ctermbg=235
 " 現在の行を強調表示
- set cursorline
+set cursorline
 " 現在の行を強調表示（縦）
 "set cursorcolumn
 " 行末の1文字先までカーソルを移動できるように
@@ -99,15 +99,15 @@ noremap cm I// <Esc>
   augroup END
 
   if &runtimepath !~# '/dein.vim'
-  let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
+  	let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
 
   " Auto Download
-if !isdirectory(s:dein_repo_dir)
-  call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
-  endif
+		if !isdirectory(s:dein_repo_dir)
+  		call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+  	endif
 
   " dein.vim をプラグインとして読み込む
-  execute 'set runtimepath^=' . s:dein_repo_dir
+  	execute 'set runtimepath^=' . s:dein_repo_dir
   endif
 
   " dein.vim settings
@@ -117,21 +117,19 @@ if !isdirectory(s:dein_repo_dir)
   let g:dein#enable_notification = 1
 
   if dein#load_state(s:dein_cache_dir)
-call dein#begin(s:dein_cache_dir)
+		call dein#begin(s:dein_cache_dir)
 
-  let s:toml_dir = g:config_home . '/dein'
+  	let s:toml_dir = g:config_home . '/dein'
 
-  call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
-  call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
-  if has('nvim')
-  call dein#load_toml(s:toml_dir . '/neovim.toml', {'lazy': 1})
-  endif
+  	call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
+  	call dein#load_toml(s:toml_dir . '/clang.toml', {'lazy': 0})
+  	call dein#load_toml(s:toml_dir . '/colorscheme.toml', {'lazy': 0})
 
-  call dein#end()
-call dein#save_state()
+  	call dein#end()
+		call dein#save_state()
   endif
 
   if has('vim_starting') && dein#check_install()
-call dein#install()
+		call dein#install()
   endif
   " }}}
