@@ -123,7 +123,7 @@ noremap cm I// <Esc>
 
   	call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
   	call dein#load_toml(s:toml_dir . '/clang.toml', {'lazy': 0})
-  	call dein#load_toml(s:toml_dir . '/colorscheme.toml', {'lazy': 0})
+  	call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
 
   	call dein#end()
 		call dein#save_state()

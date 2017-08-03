@@ -66,62 +66,25 @@ let g:lightline = {
 	repo = 'zchee/deoplete-jedi'
 	depends = 'Shougo/deoplete.nvim'
 
-# lazy
-[[plugins]] # Codic
-repo = 'koron/codic-vim'
-on_cmd = 'Codic'
 
-[[plugins]] # Emmet
-repo = 'mattn/emmet-vim'
-on_i = 1
-hook_source = '''
-	let g:user_emmet_mode = 'i'
-	let g:user_emmet_leader_key='<C-E>'
-	let g:use_emmet_complete_tag = 1
-	let g:user_emmet_settings = {
-  	\   'variables': {
-    \       'lang': "ja"
-    \   },
-  	\   'indentation': '    '
-    \}
+# Colors
+
+[[plugins]] # hybrid
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]] # solarized
+repo = 'altercation/vim-colors-solarized'
+
+[[plugins]] # badwolf
+repo = 'sjl/badwolf'
+
+[[plugins]] # cobalt
+repo = 'gkjgh/cobalt'
+
+# colorscheme指定
+hook_add = '''
+	set background=dark
+	" colorscheme 設定は source 後に行う必要があるので確実に読まれている VimEnter のタイミングで行う。
+	" 但し Colorscheme イベントの発生が抑制されないよう nested を付ける。
+   au MyAutoCmd VimEnter * nested colorscheme badwolf
 '''
-
-[[plugins]] #括弧補完
-repo  = 'cohama/lexima.vim'
-
-
-[[plugins]] # EditorConfig
-repo = 'editorconfig/editorconfig-vim'
-on_path = '.*'
-
-
-[[plugins]] # unite.vim 後継
-repo = 'Shougo/denite.nvim'
-if = 'has("python3")'
-on_cmd = 'Denite'
-hook_post_source = '''
-	" file_rec
-	if executable('pt')
-		call denite#custom#var('file_rec', 'command', ['pt', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', ''])
-	endif
-
-	" grep
-	if executable('pt')
-		call denite#custom#var('grep', 'command', ['pt', '--nogroup', '--nocolor', '--smart-case', '--hidden'])
-		call denite#custom#var('grep', 'default_opts', [])
-		call denite#custom#var('grep', 'recursive_opts', [])
-	endif
-
-	call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'matcher_project_files'])
-	call denite#custom#source('file_mru', 'converters', ['converter_relative_word'])
-'''
-
-[[plugins]]
-repo = 'Shougo/neomru.vim'
-depends = 'denite.nvim'
-on_path = '.*'
-
-[[plugins]]
-repo = 'Shougo/neoyank.vim'
-depends = 'denite.nvim'
-on_event = 'TextYankPost'

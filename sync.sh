@@ -32,6 +32,15 @@ else
   patch -u ./.config/dein/dein.toml < diff_dein
 fi
 
+echo "dein_lazy.toml"
+diff -u ./.config/dein/dein_lazy.toml ~/.config/dein/dein_lazy.toml > diff_dein_lazy
+if [ ! -s ./diff_dein_lazy ]; then
+  echo "no diff"
+else
+  echo "diff"
+  patch -u ./.config/dein/dein_lazy.toml < diff_dein_lazy
+fi
+
 echo "clang.toml"
 diff -u ./.config/dein/clang.toml ~/.config/dein/clang.toml > diff_clang
 if [ ! -s ./diff_clang ]; then
@@ -39,15 +48,6 @@ if [ ! -s ./diff_clang ]; then
 else
   echo "diff"
   patch -u ./.config/dein/clang.toml < diff_clang
-fi
-
-echo "colorscheme.toml"
-diff -u ./.config/dein/colorscheme.toml ~/.config/dein/colorscheme.toml > diff_colorscheme
-if [ ! -s ./diff_colorscheme ]; then
-  echo "no diff"
-else
-  echo "diff"
-  patch -u ./.config/dein/colorscheme.toml < diff_colorscheme
 fi
 
 echo "completed!"
