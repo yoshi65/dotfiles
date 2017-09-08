@@ -67,6 +67,13 @@ let g:lightline = {
 	depends = 'Shougo/deoplete.nvim'
 
 
+[[plugins]] # python indent
+repo = 'tell-k/vim-autopep8'
+hook_add = '''
+let g:autopep8_disable_show_diff = 1
+'''
+
+
 # Colors
 
 [[plugins]] # hybrid

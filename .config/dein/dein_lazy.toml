@@ -17,10 +17,6 @@ hook_source = '''
     \}
 '''
 
-[[plugins]] #括弧補完
-repo  = 'cohama/lexima.vim'
-
-
 [[plugins]] # EditorConfig
 repo = 'editorconfig/editorconfig-vim'
 on_path = '.*'
@@ -46,6 +42,12 @@ hook_post_source = '''
 	call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'matcher_project_files'])
 	call denite#custom#source('file_mru', 'converters', ['converter_relative_word'])
 '''
+
+
+[[plugins]] #括弧補
+repo  = 'cohama/lexima.vim'
+on_i = 1
+
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'

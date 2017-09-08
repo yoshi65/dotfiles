@@ -46,17 +46,6 @@ nnoremap j gj
 nnoremap k gk
 
 
-" Tab系
-" 不可視文字を可視化(タブが「▸-」と表示される)
-" set list listchars=tab:\▸\-
-" Tab文字を半角スペースにする
-" set expandtab
-" 行頭以外のTab文字の表示幅（スペースいくつ分）
-set tabstop=2
-" 行頭でのTab文字の表示幅
-set shiftwidth=2
-
-
 " 検索系
 " 検索文字列に大文字が含まれている場合は区別して検索する
 set smartcase
@@ -133,3 +122,5 @@ noremap cm I// <Esc>
 		call dein#install()
   endif
   " }}}
+
+autocmd FileType python setlocal equalprg=autopep8\ -
