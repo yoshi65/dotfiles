@@ -74,6 +74,15 @@ let g:autopep8_disable_show_diff = 1
 '''
 
 
+# template
+[[plugins]]
+repo = 'thinca/vim-template'
+hook_add = '''
+let g:template_basedir = '~/.config'
+let g:template_free_pattern = 'template'
+'''
+
+
 # Colors
 
 [[plugins]] # hybrid
