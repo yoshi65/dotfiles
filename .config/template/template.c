@@ -1,6 +1,6 @@
 // 
 // FileName:       <+FILENAME+>
-// Last modified:  <+DATE+>
+// CreatedDate:    <+DATE+>
 // 
 
 #include <stdio.h>
