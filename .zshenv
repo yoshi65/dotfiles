@@ -7,4 +7,4 @@ export PAGER=less
 export GREP_OPTIONS='--color=auto'
 export DISPLAY=:0.0
 export DYLD_LIBRARY_PATH="/opt/local/lib/ImageMagick-6.9.8/"
-export PYTHONPATH="$PYTHONPATH:/opt/local/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages"
+export PYTHONPATH="/opt/local/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages:$PYTHONPATH"

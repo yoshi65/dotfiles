@@ -55,7 +55,8 @@ alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
 alias memo="nvim ~/Geektool/geektool_memo"
-alias bgrep="python ~/git/memogrep/memogrep.py"
+alias lmemo="nvim ~/Geektool/geektool_lab_memo"
+alias bgrep="python3 ~/git/memogrep/memogrep.py"
 
 #setopt
 setopt IGNORE_EOF #ログアウト防止
@@ -115,4 +116,3 @@ ffmp4-speedup () {
 		echo "${red}Failed${reset}"
 	fi
 }
-
