@@ -42,60 +42,39 @@ let g:lightline = {
   '''
 
 
-# 補完
-
-	[[plugins]] 
-	repo = 'Shougo/deoplete.nvim'
-	if = 'has("python3")'
-	depends = 'context_filetype.vim'
-	on_event = 'IntertCharPre'
-	hook_add = '''
-		let g:deoplete#enable_at_startup = 1
-  	let g:deoplete#auto_complete_delay = 0
-  	let g:deoplete#auto_complete_start_length = 1
-  	let g:deoplete#enable_camel_case = 0
-  	let g:deoplete#enable_ignore_case = 0
-  	let g:deoplete#enable_refresh_always = 0
-  	let g:deoplete#enable_smart_case = 1
-  	let g:deoplete#file#enable_buffer_path = 1
-  	let g:deoplete#max_list = 10000
-	'''
-	on_i = 1
-
-	[[plugins]] #python
-	repo = 'zchee/deoplete-jedi'
-	depends = 'Shougo/deoplete.nvim'
-
-
-[[plugins]] # python indent
-repo = 'tell-k/vim-autopep8'
-hook_add = '''
-let g:autopep8_disable_show_diff = 1
-'''
-
-
 # template
 [[plugins]]
 repo = 'thinca/vim-template'
 hook_add = '''
 let g:template_basedir = '~/.config'
 let g:template_free_pattern = 'template'
+" テンプレート中に含まれる文字を置き換える
+au MyAutoCmd User plugin-template-loaded call s:template_keywords()
+function! s:template_keywords()
+    silent! %s/<+DATE+>/\=strftime('%Y-%m-%d %T')/g
+    silent! %s/<+FILENAME+>/\=expand('%:r')/g
+endfunction
+" テンプレート中に含まれる'<+CURSOR+>'にカーソルを移動
+au MyAutoCmd User plugin-template-loaded
+    \   if search('<+CURSOR+>')
+    \ |   silent! execute 'normal! "_da>'
+    \ | endif
 '''
 
 
 # Colors
 
-[[plugins]] # hybrid
-repo = 'w0ng/vim-hybrid'
+# [[plugins]] # hybrid
+# repo = 'w0ng/vim-hybrid'
 
-[[plugins]] # solarized
-repo = 'altercation/vim-colors-solarized'
+# [[plugins]] # solarized
+# repo = 'altercation/vim-colors-solarized'
 
 [[plugins]] # badwolf
 repo = 'sjl/badwolf'
 
-[[plugins]] # cobalt
-repo = 'gkjgh/cobalt'
+# [[plugins]] # cobalt
+# repo = 'gkjgh/cobalt'
 
 # colorscheme指定
 hook_add = '''

@@ -20,30 +20,16 @@ set noerrorbells
 
 
 " 見た目系
-" コードに色をつける
-" syntax on
 " 行番号を表示
 set number
-" highlight LineNr ctermfg=255 ctermbg=235
 " 現在の行を強調表示
 set cursorline
-" 現在の行を強調表示（縦）
-"set cursorcolumn
 " 行末の1文字先までカーソルを移動できるように
 set virtualedit=onemore
-" インデントはスマートインデント
-" set smartindent
-" ビープ音を可視化
-"set visualbell
-" 括弧入力時の対応する括弧を表示
-" set showmatch
 " ステータスラインを常に表示
 set laststatus=2
 " コマンドラインの補完
 set wildmode=list:longest
-" 折り返し時に表示行単位での移動できるようにする
-nnoremap j gj
-nnoremap k gk
 
 
 " 検索系
@@ -55,8 +41,6 @@ set incsearch
 set wrapscan
 " 検索語をハイライト表示
 set hlsearch
-" ESC連打でハイライト解除
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
 
 " キーマッピング系
@@ -65,16 +49,20 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-
-
-" コード系
-" コメントアウト
-noremap cm I// <Esc>
+ " jjで<ESC>
+inoremap <silent> jj <ESC>
+" ESC連打でハイライト解除
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
+" 折り返し時に表示行単位での移動できるようにする
+nnoremap j gj
+nnoremap k gk
 
 
 " .vimrcと異なる部分"
   let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
   let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
+  let g:python_host_prog = '/opt/local/bin/python2.7'
+  let g:python3_host_prog = '/opt/local/bin/python3.6'
 
 	" macのclipboardとyankを統一
 	set clipboard=unnamed
@@ -125,16 +113,3 @@ noremap cm I// <Esc>
 
 " gg=Gで`autopep8`でindent整理
 autocmd FileType python setlocal equalprg=autopep8\ -
-" deopleteで開くtabを補完が終われば、閉じる
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-" テンプレート中に含まれる文字を置き換える
-autocmd MyAutoCmd User plugin-template-loaded call s:template_keywords()
-function! s:template_keywords()
-    silent! %s/<+DATE+>/\=strftime('%Y-%m-%d %T')/g
-    silent! %s/<+FILENAME+>/\=expand('%:r')/g
-endfunction
-" テンプレート中に含まれる'<+CURSOR+>'にカーソルを移動
-autocmd MyAutoCmd User plugin-template-loaded
-    \   if search('<+CURSOR+>')
-    \ |   silent! execute 'normal! "_da>'
-    \ | endif

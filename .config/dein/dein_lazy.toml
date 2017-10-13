@@ -22,6 +22,33 @@ repo = 'editorconfig/editorconfig-vim'
 on_path = '.*'
 
 
+# 補完
+
+	[[plugins]] 
+	repo = 'Shougo/deoplete.nvim'
+	if = 'has("python3")'
+	depends = 'context_filetype.vim'
+	on_event = 'IntertCharPre'
+	hook_add = '''
+		let g:deoplete#enable_at_startup = 1
+  		let g:deoplete#auto_complete_delay = 0
+  		let g:deoplete#auto_complete_start_length = 1
+  		let g:deoplete#enable_camel_case = 0
+  		let g:deoplete#enable_ignore_case = 0
+  		let g:deoplete#enable_refresh_always = 0
+  		let g:deoplete#enable_smart_case = 1
+  		let g:deoplete#file#enable_buffer_path = 1
+  		let g:deoplete#max_list = 10000
+		" deopleteで開くtabを補完が終われば、閉じる
+		au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+	'''
+	on_i = 1
+
+	[[plugins]] #python
+	repo = 'zchee/deoplete-jedi'
+	depends = 'Shougo/deoplete.nvim'
+
+
 [[plugins]] # unite.vim 後継
 repo = 'Shougo/denite.nvim'
 if = 'has("python3")'
