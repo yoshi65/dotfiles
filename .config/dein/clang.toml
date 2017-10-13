@@ -2,6 +2,7 @@
 
 [[plugins]] # syntax
 repo = 'arakashic/chromatica.nvim'
+on_ft = ['c', 'cpp', 'cmake']
 hook_add = '''
 	let g:chromatica#libclang_path='/opt/local/libexec/llvm-5.0/lib'
 	let g:chromatica#enable_at_startup=1
@@ -10,22 +11,24 @@ hook_add = '''
 [[plugins]] # 補完
 repo = 'zchee/deoplete-clang'
 depends = 'Shougo/deoplete.nvim'
+on_ft = ['c', 'cpp', 'cmake']
 hook_add = '''
-  let g:deoplete#sources#clang#libclang_path = '/opt/local/libexec/llvm-5.0/lib/libclang.dylib'
+  	let g:deoplete#sources#clang#libclang_path = '/opt/local/libexec/llvm-5.0/lib/libclang.dylib'
 	let g:deoplete#sources#clang#clang_header = '/opt/local/libexec/llvm-5.0/lib/clang/5.0.0/include'
 '''
 
-[[plugins]] #C 整形
-repo = 'rhysd/vim-clang-format'
-hook_add = '''
-	let g:clang_format#style_options = {
-    \ "AccessModifierOffset" : "-3",
-    \ "AllowShortIfStatementsOnASingleLine" : "true",
-    \ "AlwaysBreakTemplateDeclarations" : "true",
-    \ "Standard" : "C++11",
-    \ "IndentWidth": "4"}
-	autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-	autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-	autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-	nmap <Leader>C :ClangFormatAutoToggle<CR>
-'''
+# [[plugins]] #C 整形
+# repo = 'rhysd/vim-clang-format'
+# on_ft = ['c', 'cpp', 'cmake']
+# hook_add = '''
+# 	let g:clang_format#style_options = {
+#     \ "AccessModifierOffset" : "-3",
+#     \ "AllowShortIfStatementsOnASingleLine" : "true",
+#     \ "AlwaysBreakTemplateDeclarations" : "true",
+#     \ "Standard" : "C++11",
+#     \ "IndentWidth": "4"}
+# 	au MyAutoCmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+# 	au MyAutoCmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+# 	au MyAutoCmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+# 	nmap <Leader>C :ClangFormatAutoToggle<CR>
+# '''

@@ -30,6 +30,8 @@ set virtualedit=onemore
 set laststatus=2
 " コマンドラインの補完
 set wildmode=list:longest
+" guifont
+set guifont=Ricty-Regular-Powerline:h16
 
 
 " 検索系

@@ -8,7 +8,9 @@ repo = 'Shougo/context_filetype.vim'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
 let g:lightline = { 
-  \   'colorscheme': 'wombat'
+  \   'colorscheme': 'wombat',
+  \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
+  \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
   \}
 '''
 
