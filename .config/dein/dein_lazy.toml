@@ -2,6 +2,7 @@
 repo = 'koron/codic-vim'
 on_cmd = 'Codic'
 
+
 [[plugins]] # Emmet
 repo = 'mattn/emmet-vim'
 on_i = 1
@@ -17,37 +18,50 @@ hook_source = '''
     \}
 '''
 
+
 [[plugins]] # EditorConfig
 repo = 'editorconfig/editorconfig-vim'
 on_path = '.*'
 
 
+[[plugins]] # git
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+	let g:updatetime = 250
+'''
+
+
 # 補完
+[[plugins]] 
+repo = 'Shougo/deoplete.nvim'
+if = 'has("python3")'
+depends = 'context_filetype.vim'
+on_event = 'IntertCharPre'
+hook_add = '''
+	let g:deoplete#enable_at_startup = 1
+	let g:deoplete#auto_complete_delay = 0
+	let g:deoplete#auto_complete_start_length = 1
+	let g:deoplete#enable_camel_case = 0
+	let g:deoplete#enable_ignore_case = 0
+	let g:deoplete#enable_refresh_always = 0
+	let g:deoplete#enable_smart_case = 1
+	let g:deoplete#file#enable_buffer_path = 1
+	let g:deoplete#max_list = 10000
+	" deopleteで開くtabを補完が終われば、閉じる
+	au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+'''
+on_i = 1
 
-	[[plugins]] 
-	repo = 'Shougo/deoplete.nvim'
-	if = 'has("python3")'
-	depends = 'context_filetype.vim'
-	on_event = 'IntertCharPre'
-	hook_add = '''
-		let g:deoplete#enable_at_startup = 1
-  		let g:deoplete#auto_complete_delay = 0
-  		let g:deoplete#auto_complete_start_length = 1
-  		let g:deoplete#enable_camel_case = 0
-  		let g:deoplete#enable_ignore_case = 0
-  		let g:deoplete#enable_refresh_always = 0
-  		let g:deoplete#enable_smart_case = 1
-  		let g:deoplete#file#enable_buffer_path = 1
-  		let g:deoplete#max_list = 10000
-		" deopleteで開くtabを補完が終われば、閉じる
-		au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-	'''
-	on_i = 1
 
-	[[plugins]] #python
-	repo = 'zchee/deoplete-jedi'
-	on_ft = 'python'
-	on_event = 'IntertCharPre'
+[[plugins]] #括弧補完
+repo  = 'cohama/lexima.vim'
+on_i = 1
+
+
+[[plugins]] #python
+repo = 'zchee/deoplete-jedi'
+on_ft = 'python'
+on_event = 'IntertCharPre'
 
 
 [[plugins]] # unite.vim 後継
@@ -55,6 +69,8 @@ repo = 'Shougo/denite.nvim'
 if = 'has("python3")'
 on_cmd = 'Denite'
 hook_post_source = '''
+	" prompt # -> >
+	call denite#custom#option('default', 'prompt', '>')
 	" file_rec
 	if executable('pt')
 		call denite#custom#var('file_rec', 'command', ['pt', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', ''])
@@ -72,15 +88,11 @@ hook_post_source = '''
 '''
 
 
-[[plugins]] #括弧補
-repo  = 'cohama/lexima.vim'
-on_i = 1
-
-
 [[plugins]]
 repo = 'Shougo/neomru.vim'
 depends = 'denite.nvim'
 on_path = '.*'
+
 
 [[plugins]]
 repo = 'Shougo/neoyank.vim'
