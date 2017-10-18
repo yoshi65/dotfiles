@@ -1,70 +1,78 @@
+# status
+
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]] # ステータスライン
+[[plugins]] # status line
 repo = 'itchyny/lightline.vim'
 hook_add = '''
-let g:lightline = { 
-  \   'colorscheme': 'wombat',
-  \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
-  \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
-  \}
+        let g:lightline = { 
+        \ 'active': {
+        \  'right': [ [ 'lineinfo' ] ,
+        \             [ 'percent' ],
+        \             [ 'fileformat', 'filetype' ] ]
+        \ },
+        \ 'colorscheme': 'wombat',
+        \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
+        \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
+        \}
 '''
+
 
 # Lang
 
-  [[plugins]] # Haml
-  repo  = 'tpope/vim-haml'
-  on_ft = 'haml'
+[[plugins]] # Haml
+repo  = 'tpope/vim-haml'
+on_ft = 'haml'
 
-  [[plugins]] # Html5
-  repo  = 'othree/html5.vim'
-  on_ft = 'html'
+[[plugins]] # Html5
+repo  = 'othree/html5.vim'
+on_ft = 'html'
 
-  [[plugins]] # Toml
-  repo  = 'cespare/vim-toml'
-  on_ft = 'toml'
+[[plugins]] # Toml
+repo  = 'cespare/vim-toml'
+on_ft = 'toml'
 
-  [[plugins]] # Markdown
-  repo = 'rcmdnk/vim-markdown'
-  on_ft = ['markdown','mkd']
-  hook_add = '''
-    let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_math = 1
-  '''
+[[plugins]] # Markdown
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown','mkd']
+hook_add = '''
+        let g:vim_markdown_frontmatter = 1
+        let g:vim_markdown_math = 1
+'''
 
-  [[plugins]] # Japanese doc
-  repo = 'vim-jp/vimdoc-ja'
-  on_ft = 'help'
-  hook_add = '''
-    set helplang=ja,en
-  '''
+[[plugins]] # Japanese doc
+repo = 'vim-jp/vimdoc-ja'
+on_ft = 'help'
+hook_add = '''
+        set helplang=ja,en
+'''
 
 
 # template
 [[plugins]]
 repo = 'thinca/vim-template'
 hook_add = '''
-let g:template_basedir = '~/.config'
-let g:template_free_pattern = 'template'
-" テンプレート中に含まれる文字を置き換える
-au MyAutoCmd User plugin-template-loaded call s:template_keywords()
-function! s:template_keywords()
-    silent! %s/<+DATE+>/\=strftime('%Y-%m-%d %T')/g
-    silent! %s/<+FILENAME+>/\=expand('%:r')/g
-endfunction
-" テンプレート中に含まれる'<+CURSOR+>'にカーソルを移動
-au MyAutoCmd User plugin-template-loaded
-    \   if search('<+CURSOR+>')
-    \ |   silent! execute 'normal! "_da>'
-    \ | endif
+        let g:template_basedir = '~/.config'
+        let g:template_free_pattern = 'template'
+        " テンプレート中に含まれる文字を置き換える
+        au MyAutoCmd User plugin-template-loaded call s:template_keywords()
+        function! s:template_keywords()
+            silent! %s/<+DATE+>/\=strftime('%Y-%m-%d %T')/g
+            silent! %s/<+FILENAME+>/\=expand('%:r')/g
+        endfunction
+        " テンプレート中に含まれる'<+CURSOR+>'にカーソルを移動
+        au MyAutoCmd User plugin-template-loaded
+            \   if search('<+CURSOR+>')
+            \ |   silent! execute 'normal! "_da>'
+            \ | endif
 '''
 
 
-# Colors
+# colorscheme
 
 # [[plugins]] # hybrid
 # repo = 'w0ng/vim-hybrid'
@@ -83,5 +91,5 @@ hook_add = '''
 	set background=dark
 	" colorscheme 設定は source 後に行う必要があるので確実に読まれている VimEnter のタイミングで行う。
 	" 但し Colorscheme イベントの発生が抑制されないよう nested を付ける。
-   au MyAutoCmd VimEnter * nested colorscheme badwolf
+        au MyAutoCmd VimEnter * nested colorscheme badwolf
 '''

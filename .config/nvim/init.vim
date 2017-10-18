@@ -45,6 +45,14 @@ set wrapscan
 set hlsearch
 
 
+" tab系
+set tabstop=8
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+
+
 " キーマッピング系
 " カーソルキー使用不可
 noremap <Up> <Nop>
@@ -58,6 +66,24 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " 折り返し時に表示行単位での移動できるようにする
 nnoremap j gj
 nnoremap k gk
+" タブ系
+nnoremap t <Nop>
+nnoremap tj <C-w>j
+nnoremap tk <C-w>k
+nnoremap tl <C-w>l
+nnoremap th <C-w>h
+nnoremap tJ <C-w>J
+nnoremap tK <C-w>K
+nnoremap tL <C-w>L
+nnoremap tH <C-w>H
+nnoremap tn gt
+nnoremap tp gT
+nnoremap ts :<C-u>sp<CR>
+nnoremap tv :<C-u>vs<CR>
+nnoremap tt :<C-u>tabnew<CR>
+nnoremap tw <C-w>
+" ターミナルモード
+tnoremap <silent> <ESC> <C-\><C-n>
 
 
 " .vimrcと異なる部分"

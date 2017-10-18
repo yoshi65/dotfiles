@@ -1,4 +1,4 @@
-#c, c++, cmake
+# c, c++, cmake
 
 [[plugins]] # syntax
 repo = 'arakashic/chromatica.nvim'
