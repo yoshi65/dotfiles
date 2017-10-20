@@ -1,11 +1,7 @@
 #プロンプトの設定
-# VCSの情報を取得するzshの便利関数 vcs_infoを使う
 autoload -Uz vcs_info
 autoload -U colors
 colors
-#左プロンプトの設定
-PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}%% "
-# 右プロンプトの設定
 setopt prompt_subst
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr ":!"
@@ -13,11 +9,34 @@ zstyle ':vcs_info:git:*' unstagedstr ":?"
 zstyle ':vcs_info:git:*' formats "%b%c%u"
 zstyle ':vcs_info:git:*' actionformats '%b|%a'
 precmd () { 
+        # left
+        if [[ -n `jobs | grep "suspended"` ]]; then
+            PS1="%{${fg[blue]}%}%n%{${fg[default]}%}%% "
+        else
+            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}%% "
+        fi
+        
+        # right
 	psvar=()
 	LANG=en_US.UTF-8 vcs_info
 	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 
-	if [[ -n `ls -a | grep "^.git$" ` ]]; then #.gitがあるかを判断した
+        # git管理されているかを確認
+        current=$PWD
+        git_check=1
+        while [[ $PWD != '/' ]]
+        do
+            if [[ -n `ls -a | grep "^\.git$"` ]]; then
+                git_check=0
+                break
+            else
+                cd ../
+            fi
+        done
+        cd $current
+
+        # RPROMPTの場合分け
+	if [[ git_check -eq 0 ]]; then
 		st=`git status 2> /dev/null`
 		if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
 			RPROMPT="[%1(v|%F{green}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
@@ -48,7 +67,7 @@ HISTSIZE=100000
 HISTFILE=~/.zhistory
 
 #aliasd
-alias l="ls -FG"
+alias l="/bin/ls -FG"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 alias vi="nvim"
 alias -g G="|grep"
@@ -57,6 +76,7 @@ alias -g H="|head"
 alias memo="nvim ~/Geektool/geektool_memo"
 alias lmemo="nvim ~/Geektool/geektool_lab_memo"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
+alias dict="python3 ~/git/yoshi65/dict/dict.py"
 
 #setopt
 setopt IGNORE_EOF #ログアウト防止
