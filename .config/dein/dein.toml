@@ -11,14 +11,40 @@ repo = 'itchyny/lightline.vim'
 hook_add = '''
         let g:lightline = { 
         \ 'active': {
-        \  'right': [ [ 'lineinfo' ] ,
+        \  'left':  [ [ 'mode', 'paste'],
+        \             [ 'readonly', 'filename', 'modified', 'fugitive' ] ],
+        \  'right': [ [ 'lineinfo' ],
         \             [ 'percent' ],
         \             [ 'fileformat', 'filetype' ] ]
         \ },
+        \ 'component_expand': { 'fugitive': 'LightlineFugitive' },
         \ 'colorscheme': 'wombat',
         \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
         \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
         \}
+
+        function! LightlineFugitive()
+            if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+                return fugitive#head()
+            else
+                return ''
+            endif
+        endfunction
+        
+        " function! s:Gitdiff()
+        "     let dresult = system('git diff')
+        "     if dresult == ''
+        "     else
+        "         let g:lightline.component_type = { 'fugitive': 'error' }
+        "     endif
+        "     call lightline#update()
+        " endfunction
+
+        " augroup AutoGdiff
+        "     au!
+        "     au MyAutoCmd BufRead,BufWritePost * call s:Gitdiff()
+        " augroup END
+
 '''
 
 
@@ -50,6 +76,19 @@ on_ft = 'help'
 hook_add = '''
         set helplang=ja,en
 '''
+
+
+# git
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+	let updatetime = 250
+        nmap <C-g>g :GitGutterToggle<CR>
+        nmap <C-g>h :GitGutterLineHighlightsToggle<CR>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
 
 
 # template

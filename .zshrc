@@ -11,9 +11,9 @@ zstyle ':vcs_info:git:*' actionformats '%b|%a'
 precmd () { 
         # left
         if [[ -n `jobs | grep "suspended"` ]]; then
-            PS1="%{${fg[blue]}%}%n%{${fg[default]}%}%% "
+            PS1="%{${fg[blue]}%}%n%{${fg[default]}%}[%m]%% "
         else
-            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}%% "
+            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}[%m]%% "
         fi
         
         # right
