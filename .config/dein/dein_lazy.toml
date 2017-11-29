@@ -55,6 +55,13 @@ repo = 'zchee/deoplete-jedi'
 on_ft = 'python'
 on_event = 'IntertCharPre'
 
+[[plugins]] #tex
+repo = 'lervag/vimtex'
+on_ft = 'tex'
+hook_add = '''
+        let g:latex_latexmk_options = '-pdf'
+'''
+
 
 [[plugins]] # unite.vim 後継
 repo = 'Shougo/denite.nvim'
