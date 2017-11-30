@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+dot_path=`mdfind dotfiles | grep /dotfiles$`
+cd $dot_path
 
 echo "checking .zsh*"
 
