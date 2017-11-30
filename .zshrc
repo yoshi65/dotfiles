@@ -4,8 +4,8 @@ autoload -U colors
 colors
 setopt prompt_subst
 zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr ":!"
-zstyle ':vcs_info:git:*' unstagedstr ":?"
+zstyle ':vcs_info:git:*' stagedstr ": "
+zstyle ':vcs_info:git:*' unstagedstr ": "
 zstyle ':vcs_info:git:*' formats "%b%c%u"
 zstyle ':vcs_info:git:*' actionformats '%b|%a'
 precmd () { 
@@ -35,15 +35,22 @@ precmd () {
         done
         cd $current
 
+        # branch名による場合わけ
+        if [[ `echo $vcs_info_msg_0_ | grep "master"` ]]; then
+            branch=""
+        else
+            branch=" "
+        fi
+
         # RPROMPTの場合分け
 	if [[ git_check -eq 0 ]]; then
 		st=`git status 2> /dev/null`
 		if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
-			RPROMPT="[%1(v|%F{green}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			RPROMPT="[${branch}%1(v|%F{green}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
 		elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
-			RPROMPT="[%1(v|%F{yellow}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			RPROMPT="[${branch}%1(v|%F{yellow}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
 		else [[ -n `echo "$st" | grep "^# Untracked"` ]];
-			RPROMPT="[%1(v|%F{red}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			RPROMPT="[${branch}%1(v|%F{red}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
 		fi 
 	else
 		RPS1="[%{${fg[green]}%}%~%{${fg[default]}%}]"
@@ -51,6 +58,9 @@ precmd () {
 }
 
 #補完機能の拡大
+if [[ -d /opt/local/share/zsh/site-functions ]] then
+    fpath=(/opt/local/share/zsh/site-functions $fpath)
+fi
 autoload -U compinit
 compinit
 
@@ -68,6 +78,7 @@ HISTFILE=~/.zhistory
 
 #aliasd
 alias l="/bin/ls -FG"
+alias ll="/bin/ls -FGl"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 alias vi="nvim"
 alias -g G="|grep"
@@ -88,8 +99,15 @@ setopt HIST_IGNORE_SPACE #ヒストリに残さないでコマンドを実行す
 setopt AUTO_CD #cdコマンドを略す
 setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 
-fignore=(.o)
-fignore=(~)
+function getDefaultBrowser() {
+	preffile=$HOME/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure
+	if [ ! -f ${preffile}.plist ]; then
+		preffile=$HOME/Library/Preferences/com.apple.LaunchServices
+	fi
+# browser might be "com.apple.safari", "org.mozilla.firefox" or "com.google.chrome".
+	browser=$(defaults read ${preffile} | grep -B 1 "https" | awk '/LSHandlerRoleAll/{ print $NF }' | sed -e 's/"//g;s/;//')
+	echo ${browser}
+}
 
 google(){
 	local search_string

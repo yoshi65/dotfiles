@@ -3,6 +3,15 @@
 
 echo "checking .zsh*"
 
+echo ".zshrc"
+diff -u ./.zshrc ~/.zshrc > diff_zshrc
+if [ ! -s ./diff_zshrc ]; then
+  echo -e "\033[0;32mno diff\033[0;39m"
+else
+  echo -e "\033[0;31mdiff\033[0;39m"
+  patch -u ./.zshrc < diff_zshrc
+fi
+
 echo ".zshenv"
 diff -u ./.zshenv ~/.zshenv > diff_zshenv
 if [ ! -s ./diff_zshenv ]; then
