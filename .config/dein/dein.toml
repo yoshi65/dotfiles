@@ -15,7 +15,7 @@ hook_add = '''
         \             [ 'readonly', 'filename', 'modified', 'fugitive' ] ],
         \  'right': [ [ 'lineinfo' ],
         \             [ 'percent' ],
-        \             [ 'fileformat', 'filetype' ] ]
+        \             [ 'fileencoding', 'fileformat', 'filetype' ] ]
         \ },
         \ 'component_expand': { 'fugitive': 'LightlineFugitive' },
         \ 'colorscheme': 'wombat',

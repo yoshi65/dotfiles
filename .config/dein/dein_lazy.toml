@@ -59,7 +59,7 @@ on_event = 'IntertCharPre'
 repo = 'lervag/vimtex'
 on_ft = 'tex'
 hook_add = '''
-        let g:latex_latexmk_options = '-pdf'
+        let g:latex_latexmk_options = '-pvc'
 '''
 
 

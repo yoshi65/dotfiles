@@ -88,6 +88,7 @@ alias memo="nvim ~/Geektool/geektool_memo"
 alias lmemo="nvim ~/Geektool/geektool_lab_memo"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
 alias dict="python3 ~/git/yoshi65/dict/dict.py"
+alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
 
 #setopt
 setopt IGNORE_EOF #ログアウト防止
@@ -153,4 +154,13 @@ ffmp4-speedup () {
 	else
 		echo "${red}Failed${reset}"
 	fi
+}
+
+elatexmk() {
+  if [ $# -lt 1 ]; then
+    echo "Usage: $0 tex_file"
+    echo "Call latexmk with pdflatex. This function might be useful when you want to typeset TeX files in English."
+  else
+    latexmk -pvc -pdf -pdflatex="pdflatex -interaction=nonstopmode" $1
+  fi
 }
