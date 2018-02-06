@@ -37,7 +37,7 @@ precmd () {
 
         # branch名による場合わけ
         if [[ `echo $vcs_info_msg_0_ | grep "master"` ]]; then
-            branch=""
+            branch="  "
         else
             branch=" "
         fi
