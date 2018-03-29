@@ -98,6 +98,8 @@ setopt HIST_NO_STORE #ヒストリにhistoryコマンドを残さない
 setopt SHARE_HISTORY #複数のzshで利用したコマンドをすぐにヒストリとして利用する
 setopt HIST_IGNORE_SPACE #ヒストリに残さないでコマンドを実行する
 setopt AUTO_CD #cdコマンドを略す
+setopt AUTO_PUSHD #cdコマンドで自動的にpushdする
+setopt PUSHD_IGNORE_DUPS #同じディレクトリが重複してディレクトリスタックに積まれないようにする
 setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 
 function getDefaultBrowser() {
