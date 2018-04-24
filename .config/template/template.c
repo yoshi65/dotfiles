@@ -6,6 +6,6 @@
 #include <stdio.h>
 
 int main(void){
-	<+CURSOR+>
-	return 0;
+    <+CURSOR+>
+    return 0;
 }

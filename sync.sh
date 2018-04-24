@@ -1,78 +1,43 @@
 #!/bin/zsh
 
-dot_path=`mdfind dotfiles | grep /dotfiles$`
-cd $dot_path
+# variable
+name_list=(`ls -a`)
+name_list=(${name_list[3,-1]}) # ., .. remove
+dtxt="diff.txt"
 
-echo "checking .zsh*"
+# exec sync
+for name in ${name_list}
+do
+    #isFile
+    if [[ -f ${name} && `echo ${name} | grep -c "^\."` != 0 ]]; then
+        echo ${name}
+        current=`echo "./${name}"`
+        dot=`echo "${HOME}/${name}"`
+        diff -u ${current} ${dot} > ${dtxt}
+        if [ ! -s ./${dtxt} ]; then
+          echo -e "\033[0;32mno diff\033[0;39m"
+        else
+          echo -e "\033[0;31mdiff\033[0;39m"
+          patch -u ${current} < ${dtxt}
+        fi
+    # isDirectory
+    elif [[ -d ${name} && `echo ${name} | grep -c "^\.git$"` == 0 ]]; then
+        # file_list=(`ls -a ${name}`)
+        # file_list=(${file_list[3,-1]}) # ., .. remove
+        # echo ${file_list}
+        echo ${name}
+        current=`echo "./${name}"`
+        dot=`echo "${HOME}/${name}"`
+        diff -r -u ${current} ${dot} > ${dtxt}
+        if [ ! -s ./${dtxt} ]; then
+          echo -e "\033[0;32mno diff\033[0;39m"
+        else
+          echo -e "\033[0;31mdiff\033[0;39m"
+          patch -u -p 2 -d ${current} < ${dtxt}
+        fi
+    fi
+done
 
-echo ".zshrc"
-diff -u ./.zshrc ~/.zshrc > diff_zshrc
-if [ ! -s ./diff_zshrc ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.zshrc < diff_zshrc
-fi
+rm ${dtxt}
 
-echo ".zshenv"
-diff -u ./.zshenv ~/.zshenv > diff_zshenv
-if [ ! -s ./diff_zshenv ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.zshenv < diff_zshenv
-fi
-echo ""
-
-
-echo "checking .vimrc"
-diff -u ./.vimrc ~/.vimrc > diff_vimrc
-if [ ! -s ./diff_vimrc ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.vimrc < diff_vimrc
-fi
-echo ""
-
-
-echo "checking .config"
-
-echo "init.vim"
-diff -u ./.config/nvim/init.vim ~/.config/nvim/init.vim > diff_init
-if [ ! -s ./diff_init ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.config/nvim/init.vim < diff_init
-fi
-
-echo "dein.toml"
-diff -u ./.config/dein/dein.toml ~/.config/dein/dein.toml > diff_dein
-if [ ! -s ./diff_dein ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.config/dein/dein.toml < diff_dein
-fi
-
-echo "dein_lazy.toml"
-diff -u ./.config/dein/dein_lazy.toml ~/.config/dein/dein_lazy.toml > diff_dein_lazy
-if [ ! -s ./diff_dein_lazy ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.config/dein/dein_lazy.toml < diff_dein_lazy
-fi
-
-echo "clang.toml"
-diff -u ./.config/dein/clang.toml ~/.config/dein/clang.toml > diff_clang
-if [ ! -s ./diff_clang ]; then
-  echo -e "\033[0;32mno diff\033[0;39m"
-else
-  echo -e "\033[0;31mdiff\033[0;39m"
-  patch -u ./.config/dein/clang.toml < diff_clang
-fi
-
-
-rm -f diff_*
+return
