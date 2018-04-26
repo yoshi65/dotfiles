@@ -1,84 +1,65 @@
-" setting
-"文字コードをUFT-8に設定
+" Setting
+" Character code utf-8
 set fenc=utf-8
-" バックアップファイルを作らない
-set nobackup
-" スワップファイルを作らない
-set noswapfile
-" 編集中のファイルが変更されたら自動で読み直す
-set autoread
-" バッファが編集中でもその他のファイルを開けるように
-set hidden
-" 入力中のコマンドをステータスに表示する
-set showcmd
-" 全ての数値を十進数として扱う
-set nrformats=
-" ビープ音を鳴らさない
+set termencoding=utf-8
+set encoding=utf-8
+set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp
+
+" No bells
 set visualbell t_vb=
 set noerrorbells 
 
+" Others
+set nobackup
+set noswapfile
+set autoread
+set hidden
+set showcmd
+set nrformats=
 
-" 見た目系
-" コードに色をつける
+
+" visual
+" syntax
 syntax on
-" 行番号を表示
+
+" line
 set number
 highlight LineNr ctermfg=255 ctermbg=235
-" 現在の行を強調表示
 set cursorline
-" 現在の行を強調表示（縦）
-"set cursorcolumn
-" 行末の1文字先までカーソルを移動できるように
+" set cursorcolumn
+
+" Move cursor to the end of line at the end
 set virtualedit=onemore
-" インデントはスマートインデント
-set smartindent
-" ビープ音を可視化
-"set visualbell
-" 括弧入力時の対応する括弧を表示
-set showmatch
-" ステータスラインを常に表示
-set laststatus=2
-" コマンドラインの補完
+
+" Command lin completion
 set wildmode=list:longest
-" 折り返し時に表示行単位での移動できるようにする
-nnoremap j gj
-nnoremap k gk
+
+" Others
+set smartindent
+set showmatch
+set laststatus=2
 
 
-" Tab系
-" 不可視文字を可視化(タブが「▸-」と表示される)
-set list listchars=tab:\▸\-
-" Tab文字を半角スペースにする
+" Tab
+set tabstop=8
+set softtabstop=4
+set shiftwidth=4
 set expandtab
-" 行頭以外のTab文字の表示幅（スペースいくつ分）
-set tabstop=2
-" 行頭でのTab文字の表示幅
-set shiftwidth=2
+set smarttab
 
 
-" 検索系
-" 検索文字列に大文字が含まれている場合は区別して検索する
-set smartcase
-" 検索文字列入力時に順次対象文字列にヒットさせる
-set incsearch
-" 検索時に最後まで行ったら最初に戻る
+" Search
+" return top
 set wrapscan
-" 検索語をハイライト表示
+
+" Others
+" set smartcase
+set incsearch
 set hlsearch
-" ESC連打でハイライト解除
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
 
-" キーマッピング系
-" カーソルキー使用不可
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-
-
-" コード系
-" 括弧保管
+" key mapping
+" Bracket completion
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<ESC><S-o>
 inoremap ( ()<left>
@@ -86,5 +67,36 @@ inoremap (<CR> ()<Left><CR><ESC><S-o>
 inoremap [ []<LEFT>
 inoremap " ""<LEFT>
 inoremap ' ''<LEFT>
-" コメントアウト
-noremap cm I// <Esc>
+
+" Cursor key not available
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
+" Move by display line
+nnoremap j gj
+nnoremap k gk
+
+" jj = <ESC>
+inoremap <silent> jj <ESC>
+
+" <ESC><ESC> = Unhighlight
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
+" tab
+nnoremap t <Nop>
+nnoremap tj <C-w>j
+nnoremap tk <C-w>k
+nnoremap tl <C-w>l
+nnoremap th <C-w>h
+nnoremap tJ <C-w>J
+nnoremap tK <C-w>K
+nnoremap tL <C-w>L
+nnoremap tH <C-w>H
+nnoremap tn gt
+nnoremap tp gT
+nnoremap ts :<C-u>sp<CR>
+nnoremap tv :<C-u>vs<CR>
+nnoremap tt :<C-u>tabnew<CR>
+nnoremap tw <C-w>
