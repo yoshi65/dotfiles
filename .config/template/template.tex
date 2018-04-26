@@ -1,0 +1,38 @@
+%
+% FileName: 	<+FILENAME+>
+% CreatedDate:  <+DATE+>
+%
+
+\documentclass{jsarticle}
+\title{<+CURSOR+>}
+\author{}
+\date{\today}
+
+\usepackage[T1]{fontenc}
+\usepackage{newpxtext}  % use Palatino font in text
+\usepackage{newpxmath}  % use Palatino font in math
+\usepackage{ascmac}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{subfigure}
+\usepackage[left = 20 truemm , right = 20 truemm]{geometry}
+\makeatletter
+    \renewcommand{\thefigure}{% figure number
+    \thesubsection.\arabic{figure}}
+    \@addtoreset{figure}{subsection}
+
+    \renewcommand{\thetable}{% table number
+    \thesubsection.\arabic{table}}
+    \@addtoreset{table}{subsection}
+\makeatother 
+
+\begin{document}
+\maketitle
+
+\end{document}
