@@ -5,7 +5,6 @@
 * zsh
 * vim
 * neovim
-* vimperator
 
 ## about `sync.sh`
 
