@@ -1,4 +1,4 @@
-#プロンプトの設定
+# setting prompt
 autoload -Uz vcs_info
 autoload -U colors
 colors
@@ -16,12 +16,12 @@ precmd () {
             PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}[%m]%% "
         fi
         
-        # right
+        # vcs_info
 	psvar=()
 	LANG=en_US.UTF-8 vcs_info
 	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 
-        # git管理されているかを確認
+        # check if version control by git is done
         current=$PWD
         git_check=1
         while [[ $PWD != '/' ]]
@@ -35,14 +35,14 @@ precmd () {
         done
         cd $current
 
-        # branch名による場合わけ
+        # check if branch is master or not
         if [[ `echo $vcs_info_msg_0_ | grep "master"` ]]; then
             branch="  "
         else
             branch=" "
         fi
 
-        # RPROMPTの場合分け
+        # right
 	if [[ git_check -eq 0 ]]; then
 		st=`git status 2> /dev/null`
 		if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
@@ -57,26 +57,26 @@ precmd () {
 	fi
 }
 
-#補完機能の拡大
+# Expansion of completion
 if [[ -d /opt/local/share/zsh/site-functions ]] then
     fpath=(/opt/local/share/zsh/site-functions $fpath)
 fi
 autoload -U compinit
 compinit
 
-#補完候補の大文字、小文字を区別しない
+# Not case sensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-#補完候補に色をつける
+# color
 eval `dircolors`
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-#ヒストリの設定
+# history
 SAVEHIST=100000
 HISTSIZE=100000
 HISTFILE=~/.zhistory
 
-#aliasd
+# aliasd
 alias l="/bin/ls -FG"
 alias ll="/bin/ls -FGl"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
@@ -87,10 +87,9 @@ alias -g H="|head"
 alias memo="nvim ~/Geektool/geektool_memo"
 alias lmemo="nvim ~/Geektool/geektool_lab_memo"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
-alias dict="python3 ~/git/yoshi65/dict/dict.py"
 alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
 
-#setopt
+# setopt
 setopt IGNORE_EOF #ログアウト防止
 setopt HIST_IGNORE_ALL_DUPS #ヒストリ中に同じコマンドを含まないようにする
 setopt HIST_REDUCE_BLANKS #コマンド行の余分な空白を詰めてからヒストリに加える
