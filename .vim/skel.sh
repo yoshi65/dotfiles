@@ -5,6 +5,6 @@
 # LastModified: 
 #
 
-<+CURSOR+>
+
 
 return

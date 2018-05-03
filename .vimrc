@@ -100,3 +100,31 @@ nnoremap ts :<C-u>sp<CR>
 nnoremap tv :<C-u>vs<CR>
 nnoremap tt :<C-u>tabnew<CR>
 nnoremap tw <C-w>
+
+"" Created Date after 'CreatedDate: ' and File name after 'FileName: '
+function! InitialReplacement()
+  %s/<+FILE NAME+>/\=expand('%:t')/g
+  %s/<+DATE+>/\=strftime('%Y-%m-%d %H:%M:%S %z')/g
+endfun
+
+" Use Skeleton for new file.
+augroup SkeletonAu
+autocmd!
+autocmd BufNewFile *.c 0r $HOME/.vim/skel.c
+autocmd BufNewFile *.py 0r $HOME/.vim/skel.py
+autocmd BufNewFile *.tex 0r $HOME/.vim/skel.tex
+autocmd BufNewFile * call InitialReplacement()
+augroup END
+
+"" Insert timestamp after 'LastModified: '
+function! LastModified()
+if &modified
+  let save_cursor = getpos(".")
+  let n = min([40, line("$")])
+  keepjumps exe '1,' . n . 's#^\(.\{,10}LastModified: \).*#\1' .
+        \ strftime('%Y-%m-%d %H:%M:%S %z') . '#e'
+  call histdel('search', -1)
+  call setpos('.', save_cursor)
+endif
+endfun
+autocmd BufWritePre * call LastModified()
