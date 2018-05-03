@@ -99,7 +99,7 @@ if &modified
   call setpos('.', save_cursor)
 endif
 endfun
-"autocmd BufWritePre * call LastModified()
+autocmd BufWritePre * call LastModified()
 
 
 " .vimrcと異なる部分"
