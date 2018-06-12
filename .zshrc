@@ -87,6 +87,7 @@ alias -g H="|head"
 alias memo="nvim ~/Geektool/geektool_memo"
 alias lmemo="nvim ~/Geektool/geektool_lab_memo"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
+alias t="python3 ~/git/yoshi65/translate/trans.py"
 alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
 
 # setopt
@@ -100,6 +101,7 @@ setopt AUTO_CD #cdコマンドを略す
 setopt AUTO_PUSHD #cdコマンドで自動的にpushdする
 setopt PUSHD_IGNORE_DUPS #同じディレクトリが重複してディレクトリスタックに積まれないようにする
 setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
+setopt CLOBBER # リダイレクトによる上書きを可能にする
 
 function getDefaultBrowser() {
 	preffile=$HOME/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure
