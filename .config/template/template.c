@@ -1,5 +1,5 @@
 /*
- * FileName:     <+FILE NAME+>
+ * FileName:     <+FILENAME+>
  * CreatedDate:  <+DATE+>
  * LastModified:
  */
