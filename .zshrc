@@ -79,7 +79,8 @@ HISTFILE=~/.zhistory
 # aliasd
 alias l="/bin/ls -FG"
 alias ll="/bin/ls -FGl"
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+# alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+alias emacs="nvim"
 alias vi="nvim"
 alias -g G="|grep"
 alias -g L="|less"

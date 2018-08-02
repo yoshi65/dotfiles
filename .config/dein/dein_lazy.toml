@@ -83,6 +83,12 @@ hook_add = '''
         let g:ale_lint_on_save = 1
         " 編集中のlintはしない
         let g:ale_lint_on_text_changed = 'never'
+
+        let g:ale_fixers = {
+              \ 'python': ['autopep8', 'isort'],
+              \ }
+        " 保存のたびに自動整形
+        let g:ale_fix_on_save = 1
 '''
 
 [[plugins]] # unite.vim 後継
