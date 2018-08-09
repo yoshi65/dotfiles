@@ -71,6 +71,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 eval `dircolors`
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# pyenv
+eval "$(pyenv init -)"
+
 # history
 SAVEHIST=100000
 HISTSIZE=100000

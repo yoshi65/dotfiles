@@ -105,8 +105,8 @@ autocmd BufWritePre * call LastModified()
 " .vimrcと異なる部分"
   let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
   let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
-  let g:python_host_prog = '/opt/local/bin/python2.7'
-  let g:python3_host_prog = '/opt/local/bin/python3.6'
+  let g:python_host_prog = ''
+  let g:python3_host_prog = $PYENV_ROOT . '/shims/python3'
 
 	" macのclipboardとyankを統一
 	set clipboard=unnamed
