@@ -64,6 +64,7 @@ repo = 'lervag/vimtex'
 on_ft = 'tex'
 hook_add = '''
         let g:latex_latexmk_options = '-pvc'
+        let g:vimtex_compiler_progname = 'nvr'
 '''
 
 [[plugins]]
