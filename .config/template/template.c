@@ -1,7 +1,7 @@
 /*
  * FileName:     <+FILENAME+>
  * CreatedDate:  <+DATE+>
- * LastModified:
+ * LastModified: 
  */
 
 #include <stdio.h>
