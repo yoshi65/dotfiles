@@ -154,6 +154,3 @@ autocmd BufWritePre * call LastModified()
 		call dein#install()
   endif
   " }}}
-
-" gg=Gで`autopep8`でindent整理
-autocmd FileType python setlocal equalprg=autopep8\ -
