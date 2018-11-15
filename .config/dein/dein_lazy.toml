@@ -59,6 +59,11 @@ repo = 'zchee/deoplete-jedi'
 on_ft = 'python'
 on_event = 'IntertCharPre'
 
+[[plugins]] #ruby
+repo = 'Shougo/deoplete-rct'
+on_ft = 'ruby'
+on_event = 'IntertCharPre'
+
 [[plugins]] #tex
 repo = 'lervag/vimtex'
 on_ft = 'tex'

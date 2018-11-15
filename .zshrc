@@ -83,17 +83,21 @@ HISTFILE=~/.zhistory
 alias l="/bin/ls -FG"
 alias ll="/bin/ls -FGl"
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-alias emacs="nvim"
-alias vi="nvim"
+if [[ `type nvim | grep -c "not found"` > 0 ]]; then
+    alias emacs="nvim"
+    alias vi="nvim"
+    alias memo="nvim ~/Geektool/geektool_memo.md"
+    alias lmemo="nvim ~/Geektool/geektool_lab_memo.md"
+fi
 alias grep="grep --color=auto"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-alias memo="nvim ~/Geektool/geektool_memo.md"
-alias lmemo="nvim ~/Geektool/geektool_lab_memo.md"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
 alias t="python3 ~/git/yoshi65/translate/trans.py"
 alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
+alias portUpdate="sudo port selfupdate && sudo port upgrade outdated"
+alias pipUpdate="pip list --format freeze | sed \"s/==.*$//\" | xargs pip install -U pip"
 
 # setopt
 setopt IGNORE_EOF #ログアウト防止
