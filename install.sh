@@ -6,8 +6,7 @@ do
     [[ "$f" == ".DS_Store" ]] && continue
 
     echo "$f"
-    if [[ "$f" == ".text" ]]; then
-        s=${HOME}"/"${f}
-        ln -s $f $s
-    fi
+    s=${HOME}"/"${f}
+    f=`pwd`"/"${f}
+    ln -s $f $s
 done
