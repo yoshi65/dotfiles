@@ -83,7 +83,7 @@ HISTFILE=~/.zhistory
 alias l="/bin/ls -FG"
 alias ll="/bin/ls -FGl"
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-if [[ ! `type nvim | grep -c "not found"` ]]; then
+if [[ `type nvim | grep -c "not found"` ]]; then
     alias emacs="nvim"
     alias vi="nvim"
     alias memo="nvim ~/Geektool/geektool_memo.md"
