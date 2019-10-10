@@ -1,6 +1,7 @@
 # 環境変数の設定
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:/opt/local/bin:/opt/local/Library:/opt/local/libexec/gnubin:$HOME/homebrew/bin:/usr/local/bin:/opt/local/sbin:/usr/local/lib:/opt/X11/bin:$PATH"
+export RBENV_ROOT="$HOME/.rbenv"
+export PATH="$PYENV_ROOT/bin:$RBENV_ROOT/bin:/opt/local/bin:/opt/local/Library:/opt/local/libexec/gnubin:$HOME/homebrew/bin:/usr/local/bin:/opt/local/sbin:/usr/local/lib:/opt/X11/bin:$PATH"
 export XDG_CONFIG_HOME="~/.config"
 export LANG=ja_JP.UTF-8
 export EDITOR=nvim
