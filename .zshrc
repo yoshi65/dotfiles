@@ -41,7 +41,7 @@ precmd () {
         cd $current
 
         # check if branch is master or not
-        if [[ `echo $vcs_info_msg_0_ | grep "master"` ]]; then
+        if [[ `echo $vcs_info_msg_0_ | grep -c "master"` > 0 ]]; then
             branch="  "
         else
             branch=" "
@@ -92,7 +92,7 @@ HISTFILE=~/.zhistory
 alias l="/bin/ls -FG"
 alias ll="/bin/ls -FGl"
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-if [[ `type nvim | grep -c "not found"` ]]; then
+if [[ `type nvim | grep -c "not found"` == 0 ]]; then
     alias emacs="nvim"
     alias vi="nvim"
     alias memo="nvim ~/Geektool/geektool_memo.md"
