@@ -5,6 +5,7 @@
 * zsh
 * vim
 * neovim
+* tmux
 
 ## about `sync.sh`
 
