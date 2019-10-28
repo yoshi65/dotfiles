@@ -110,6 +110,9 @@ hook_add = '''
             \ | endif
 '''
 
+# fzf
+[[plugins]]
+repo = 'junegunn/fzf.vim'
 
 # colorscheme
 

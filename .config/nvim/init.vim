@@ -101,12 +101,22 @@ endif
 endfun
 autocmd BufWritePre * call LastModified()
 
+" fzf: a general-purpose command-line fuzzy finder.
+set rtp+=/opt/local/share/fzf/vim
+" ; を押して buffer の選択
+nmap ; :Buffers<CR>
+" <C-t> を押して file の選択
+nmap <C-t> :Files<CR>
+" <C-g><C-f> で git のファイル選択
+nmap <C-g><C-f> :GFiles?<CR>
+" <C-g><C-h> で git の commit hash 選択して diff を表示
+nmap <C-g><C-h> :Commits<CR>
 
 " .vimrcと異なる部分"
   let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
   let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
-  let g:python_host_prog = ''
-  let g:python3_host_prog = $PYENV_ROOT . '/shims/python3'
+  let g:python_host_prog = $PYENV_ROOT . '/versions/neovim2/bin/python'
+  let g:python3_host_prog = $PYENV_ROOT . '/versions/neovim3/bin/python'
 
 	" macのclipboardとyankを統一
 	set clipboard=unnamed
