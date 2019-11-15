@@ -13,14 +13,11 @@ zstyle ':vcs_info:git:*' stagedstr ": "
 zstyle ':vcs_info:git:*' unstagedstr ": "
 zstyle ':vcs_info:git:*' formats "%b%c%u"
 zstyle ':vcs_info:git:*' actionformats '%b|%a'
-precmd () { 
-        # left
-        if [[ -n `jobs | grep "suspended"` ]]; then
-            PS1="%{${fg[blue]}%}%n%{${fg[default]}%}[%m]%% "
-        else
-            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%}[%m]%% "
-        fi
-        
+
+precmd () {
+        # dir path
+        path_prompt="%{${fg[green]}%}%~%{${fg[default]}%}"
+
         # vcs_info
 	psvar=()
 	LANG=en_US.UTF-8 vcs_info
@@ -47,19 +44,72 @@ precmd () {
             branch=" "
         fi
 
-        # right
+        # make prompt each git status
 	if [[ git_check -eq 0 ]]; then
 		st=`git status 2> /dev/null`
 		if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
-			RPROMPT="[${branch}%1(v|%F{green}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			git_prompt=" [${branch}%1(v|%F{green}%1v%f|)]"
 		elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
-			RPROMPT="[${branch}%1(v|%F{yellow}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			git_prompt=" [${branch}%1(v|%F{yellow}%1v%f|)]"
 		else [[ -n `echo "$st" | grep "^# Untracked"` ]];
-			RPROMPT="[${branch}%1(v|%F{red}%1v%f|)][%{${fg[green]}%}%~%{${fg[default]}%}]"
+			git_prompt=" [${branch}%1(v|%F{red}%1v%f|)]"
 		fi 
 	else
-		RPS1="[%{${fg[green]}%}%~%{${fg[default]}%}]"
+		git_prompt=""
 	fi
+
+        # env version
+        if [[ `ls -1 | grep -c "\.py$"` > 0 ]]; then
+            PYTHON_VERSION_STRING=" py:"$(python --version | sed "s/Python //")
+            PYTHON_VIRTUAL_ENV_STRING=""
+            if [ -n "$VIRTUAL_ENV" ]; then
+                PYTHON_VIRTUAL_ENV_STRING=":$(pyenv version-name)"
+            fi
+        fi
+        # RUBY_VERSION_STRING=" rb:"$(ruby --version | sed "s/ruby \(.*\) (.*$/\1/")
+        if [[ `ls -1 | grep -c "\.tf$"` > 0 ]]; then
+            TERRAFORM_VERSION_STRING=" tf:"$(terraform --version | grep "Terraform" | sed "s/Terraform v//")
+        fi
+        
+        env_prompt="%{${fg[yellow]}%}${PYTHON_VERSION_STRING}${PYTHON_VIRTUAL_ENV_STRING}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
+
+        if [[ -n `jobs | grep "suspended"` ]]; then
+            PS1="%{${fg[blue]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
+%% "
+        else
+            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
+%% "
+        fi
+
+        PYTHON_VERSION_STRING=""
+        PYTHON_VIRTUAL_ENV_STRING=""
+        TERRAFORM_VERSION_STRING=""
+}
+
+if [ -d $ANYENV_ROOT ]; then
+  export PATH="$ANYENV_ROOT/bin:$PATH"
+  for D in `command ls $ANYENV_ROOT/envs`
+  do
+    export PATH="$ANYENV_ROOT/envs/$D/shims:$PATH"
+  done
+fi
+
+function anyenv_init() {
+  eval "$(anyenv init - --no-rehash)"
+}
+function anyenv_unset() {
+  unset -f pyenv
+  unset -f rbenv
+}
+function pyenv() {
+  anyenv_unset
+  anyenv_init
+  pyenv "$@"
+}
+function rbenv() {
+  anyenv_unset
+  anyenv_init
+  rbenv "$@"
 }
 
 # Expansion of completion
@@ -76,12 +126,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 eval `dircolors`
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# pyenv
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# rbenv
-eval "$(rbenv init -)"
+# anyenv
+# eval "$(anyenv init - --no-rehash)"
 
 # history
 SAVEHIST=100000
@@ -103,10 +149,8 @@ alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
 alias bgrep="python3 ~/git/memogrep/memogrep.py"
-alias t="python3 ~/git/yoshi65/translate/trans.py"
 alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
 alias portUpdate="sudo port selfupdate && sudo port upgrade outdated"
-alias pipUpdate="pip list --format freeze | sed \"s/==.*$//\" | xargs pip install -U pip"
 
 # setopt
 setopt IGNORE_EOF #ログアウト防止
@@ -288,4 +332,8 @@ elatexmk() {
 }
 if [ -d ${HOME}/node_modules/.bin ]; then
       export PATH=${PATH}:${HOME}/node_modules/.bin
+fi
+
+if (which zprof > /dev/null 2>&1) ;then
+    zprof | less
 fi
