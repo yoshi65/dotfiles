@@ -70,6 +70,13 @@ hook_add = '''
         let g:vim_markdown_math = 1
 '''
 
+[[plugins]] # Terraform
+repo = 'hashivim/vim-terraform'
+on_ft = ['terraform', 'tf']
+hook_add = '''
+        let g:terraform_fmt_on_save = 1
+'''
+
 [[plugins]] # Japanese doc
 repo = 'vim-jp/vimdoc-ja'
 on_ft = 'help'
