@@ -100,6 +100,7 @@ function anyenv_init() {
 function anyenv_unset() {
   unset -f pyenv
   unset -f rbenv
+  unset -f nodenv
 }
 function pyenv() {
   anyenv_unset
@@ -110,6 +111,11 @@ function rbenv() {
   anyenv_unset
   anyenv_init
   rbenv "$@"
+}
+function nodenv() {
+  anyenv_unset
+  anyenv_init
+  nodenv "$@"
 }
 
 # Expansion of completion
