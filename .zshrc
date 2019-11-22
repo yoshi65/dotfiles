@@ -67,23 +67,23 @@ precmd () {
             fi
         fi
         # RUBY_VERSION_STRING=" rb:"$(ruby --version | sed "s/ruby \(.*\) (.*$/\1/")
-        if [[ `ls -1 | grep -c "\.tf$"` > 0 ]]; then
-            TERRAFORM_VERSION_STRING=" tf:"$(terraform --version | grep "Terraform" | sed "s/Terraform v//")
-        fi
+        # if [[ `ls -1 | grep -c "\.tf$"` > 0 ]]; then
+        #     TERRAFORM_VERSION_STRING=" tf:"$(terraform --version | grep "Terraform" | sed "s/Terraform v//")
+        # fi
         
         env_prompt="%{${fg[yellow]}%}${PYTHON_VERSION_STRING}${PYTHON_VIRTUAL_ENV_STRING}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
 
         if [[ -n `jobs | grep "suspended"` ]]; then
-            PS1="%{${fg[blue]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
+            PS1="%D{%Y-%m-%d %H:%M:%S} %{${fg[blue]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
 %% "
         else
-            PS1="%{${fg[cyan]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
+            PS1="%D{%Y-%m-%d %H:%M:%S} %{${fg[cyan]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
 %% "
         fi
 
         PYTHON_VERSION_STRING=""
         PYTHON_VIRTUAL_ENV_STRING=""
-        TERRAFORM_VERSION_STRING=""
+        # TERRAFORM_VERSION_STRING=""
 }
 
 if [ -d $ANYENV_ROOT ]; then
