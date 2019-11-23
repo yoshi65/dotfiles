@@ -72,6 +72,10 @@ hook_add = '''
         let g:vimtex_compiler_progname = 'nvr'
 '''
 
+# fzf
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+
 [[plugins]]
 repo = 'w0rp/ale'
 on_i = 1
