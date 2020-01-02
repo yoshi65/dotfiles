@@ -155,7 +155,6 @@ nmap <C-g><C-h> :Commits<CR>
   	let s:toml_dir = g:config_home . '/dein'
 
   	call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
-  	call dein#load_toml(s:toml_dir . '/clang.toml', {'lazy': 0})
   	call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
 
   	call dein#end()

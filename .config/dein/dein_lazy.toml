@@ -27,50 +27,9 @@ on_path = '.*'
 repo = 'iamcco/markdown-preview.vim'
 on_ft = ['markdown', 'mkd']
 
-
-# 補完
-
-[[plugins]] 
-repo = 'Shougo/deoplete.nvim'
-if = 'has("python3")'
-depends = 'context_filetype.vim'
-on_event = 'IntertCharPre'
-hook_add = '''
-	let g:deoplete#enable_at_startup = 1
-	let g:deoplete#auto_complete_delay = 0
-	let g:deoplete#auto_complete_start_length = 1
-	let g:deoplete#enable_camel_case = 0
-	let g:deoplete#enable_ignore_case = 0
-	let g:deoplete#enable_refresh_always = 0
-	let g:deoplete#enable_smart_case = 1
-	let g:deoplete#file#enable_buffer_path = 1
-	let g:deoplete#max_list = 10000
-	" deopleteで開くtabを補完が終われば、閉じる
-	au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-'''
-on_i = 1
-
-[[plugins]] #括弧
+[[plugins]] # 括弧
 repo  = 'cohama/lexima.vim'
 on_i = 1
-
-[[plugins]] #python
-repo = 'zchee/deoplete-jedi'
-on_ft = 'python'
-on_event = 'IntertCharPre'
-
-[[plugins]] #ruby
-repo = 'Shougo/deoplete-rct'
-on_ft = 'ruby'
-on_event = 'IntertCharPre'
-
-[[plugins]] #tex
-repo = 'lervag/vimtex'
-on_ft = 'tex'
-hook_add = '''
-        let g:latex_latexmk_options = '-pvc'
-        let g:vimtex_compiler_progname = 'nvr'
-'''
 
 # fzf
 [[plugins]]
