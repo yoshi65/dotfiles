@@ -151,9 +151,8 @@ repo = 'prabirshrestha/asyncomplete-lsp.vim'
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 hook_source = '''
-        let g:lsp_diagnostics_enabled = 0
-        let g:lsp_text_edit_enabled = 0
-
+        let g:lsp_signs_error = '⨉'
+        let g:lsp_signs_warning = '⚠'
         if executable('pyls')
             au User lsp_setup call lsp#register_server({
                 \ 'name': 'pyls',
