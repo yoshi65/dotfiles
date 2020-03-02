@@ -2,7 +2,7 @@
 # 環境変数の設定
 export ANYENV_ROOT="$HOME/.anyenv"
 export TFENV_ROOT="$HOME/.tfenv"
-export PATH="$ANYENV_ROOT/bin:$TFENV_ROOT/bin:/opt/local/bin:/opt/local/Library:/opt/local/libexec/gnubin:$HOME/homebrew/bin:/usr/local/bin:/opt/local/sbin:/usr/local/lib:/opt/X11/bin:$PATH"
+export PATH="$ANYENV_ROOT/bin:$TFENV_ROOT/bin:/opt/local/bin:/opt/local/Library:/opt/local/libexec/gnubin:$HOME/homebrew/bin:$HOME/homebrew/opt/llvm/bin:/usr/local/bin:/opt/local/sbin:/usr/local/lib:/opt/X11/bin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config"
 export LANG=ja_JP.UTF-8
 export EDITOR=nvim
