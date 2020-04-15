@@ -172,13 +172,14 @@ setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 setopt CLOBBER # リダイレクトによる上書きを可能にする
 
 # fzf の キーバインド
-if [ -e /opt/local/share/fzf/shell/key-bindings.zsh ]; then
-  source /opt/local/share/fzf/shell/key-bindings.zsh
+fzf_shell_path="${HOME}/homebrew/Cellar/fzf/0.21.0-1/shell/"
+if [ -e ${fzf_shell_path}key-bindings.zsh ]; then
+  source ${fzf_shell_path}key-bindings.zsh
 fi
 
 # fzf の 補完設定
-if [ -e /opt/local/share/fzf/shell/completion.zsh ]; then
-  source /opt/local/share/fzf/shell/completion.zsh
+if [ -e ${fzf_shell_path}completion.zsh ]; then
+  source ${fzf_shell_path}completion.zsh
 fi
 
 # fzf から the_silver_searcher (ag) を呼び出すことで高速化
