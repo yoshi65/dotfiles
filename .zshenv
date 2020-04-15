@@ -13,4 +13,13 @@ export LESS='--RAW-CONTROL-CHARS'
 export LESSOPEN='|lessfilter.sh %s'
 export HOMEBREW_CACHE="$HOME/homebrew/cache"
 
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+  source "${VIRTUAL_ENV}/bin/activate"
+fi
+
+# if bat exist, GIT_PAGER is changed to bat
+if type "bat" > /dev/null 2>&1; then
+    export GIT_PAGER='bat --style=plain'
+fi
+
 setopt no_global_rcs
