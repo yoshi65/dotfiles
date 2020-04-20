@@ -129,8 +129,8 @@ compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # color
-eval `dircolors`
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# eval `dircolors`
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # anyenv
 # eval "$(anyenv init - --no-rehash)"
