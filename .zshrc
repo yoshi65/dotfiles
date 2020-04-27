@@ -172,7 +172,7 @@ setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 setopt CLOBBER # リダイレクトによる上書きを可能にする
 
 # fzf の キーバインド
-fzf_shell_path="${HOME}/homebrew/Cellar/fzf/0.21.0-1/shell/"
+fzf_shell_path=$(brew --prefix fzf)"/shell/"
 if [ -e ${fzf_shell_path}key-bindings.zsh ]; then
   source ${fzf_shell_path}key-bindings.zsh
 fi
