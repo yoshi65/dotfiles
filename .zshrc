@@ -119,8 +119,8 @@ function nodenv() {
 }
 
 # Expansion of completion
-if [[ -d /opt/local/share/zsh/site-functions ]] then
-    fpath=(/opt/local/share/zsh/site-functions $fpath)
+if [[ -d $(brew --prefix)/share/zsh/site-functions ]] then
+    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 fi
 autoload -U compinit
 compinit
