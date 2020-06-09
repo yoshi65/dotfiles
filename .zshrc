@@ -128,6 +128,7 @@ function tfenv() {
 if [[ -d $(brew --prefix)/share/zsh/site-functions ]] then
     fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 fi
+fpath=($fpath ~/.zsh/completion)
 autoload -U compinit
 compinit
 
