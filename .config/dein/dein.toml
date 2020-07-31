@@ -12,39 +12,18 @@ hook_add = '''
         let g:lightline = { 
         \ 'active': {
         \  'left':  [ [ 'mode', 'paste'],
-        \             [ 'readonly', 'filename', 'modified', 'fugitive' ] ],
-        \  'right': [ [ 'lineinfo' ],
-        \             [ 'percent' ],
+        \             [ 'readonly', 'filename', 'modified', 'gitbranch' ] ],
+        \  'right': [ [ 'percent' ],
+        \             [ 'lineinfo' ],
         \             [ 'fileencoding', 'fileformat', 'filetype' ] ]
         \ },
-        \ 'component_expand': { 'fugitive': 'LightlineFugitive' },
+        \ 'component_function': {
+        \   'gitbranch': 'FugitiveHead'
+        \ },
         \ 'colorscheme': 'wombat',
         \ 'separator': { 'left': "", 'right': "" },
         \ 'subseparator': { 'left': "", 'right': "" }
         \}
-
-        function! LightlineFugitive()
-            if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
-                return " " . fugitive#head()
-            else
-                return ''
-            endif
-        endfunction
-        
-        " function! s:Gitdiff()
-        "     let dresult = system('git diff')
-        "     if dresult == ''
-        "     else
-        "         let g:lightline.component_type = { 'fugitive': 'error' }
-        "     endif
-        "     call lightline#update()
-        " endfunction
-
-        " augroup AutoGdiff
-        "     au!
-        "     au MyAutoCmd BufRead,BufWritePost * call s:Gitdiff()
-        " augroup END
-
 '''
 
 
