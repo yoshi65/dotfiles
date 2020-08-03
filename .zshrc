@@ -74,12 +74,19 @@ precmd () {
         env_prompt="%{${fg[yellow]}%}${PYTHON_VERSION_STRING}${PYTHON_VIRTUAL_ENV_STRING}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
 
         if [[ -n `jobs | grep "suspended"` ]]; then
-            PS1="%D{%Y-%m-%d %H:%M:%S} %{${fg[blue]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
-%% "
+            name_color=${fg[blue]}
         else
-            PS1="%D{%Y-%m-%d %H:%M:%S} %{${fg[cyan]}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}
-%% "
+            name_color=${fg[cyan]}
         fi
+
+        if type "kube_ps1" > /dev/null 2>&1; then
+            kube=" $(kube_ps1)"
+        else
+            kube=""
+        fi
+
+        PS1="%D{%Y-%m-%d %H:%M:%S} %{${name_color}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}${kube}
+%% "
 
         PYTHON_VERSION_STRING=""
         PYTHON_VIRTUAL_ENV_STRING=""
@@ -294,6 +301,20 @@ function getDefaultBrowser() {
 
 if type "kubectl" > /dev/null 2>&1; then
   source <(kubectl completion zsh)
+
+  kube_ps1_path=$HOME/homebrew/opt/kube-ps1/share/kube-ps1.sh
+  if [ -e ${kube_ps1_path} ]; then
+    source ${kube_ps1_path}
+
+    function get_cluster_short() {
+      if echo "$1" | grep -q -P 'arn:aws:eks'; then
+        echo "$1" | cut -d / -f2
+      else
+        echo "$1"
+      fi
+    }
+    KUBE_PS1_CLUSTER_FUNCTION=get_cluster_short
+  fi
 fi
 
 google(){
