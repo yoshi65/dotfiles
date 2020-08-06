@@ -139,6 +139,29 @@ fpath=($fpath ~/.zsh/completion)
 autoload -U compinit
 compinit
 
+# For aws
+autoload bashcompinit && bashcompinit
+complete -C "$ANYENV_ROOT/envs/pyenv/shims/aws_completer" aws
+
+# For k8s
+if type "kubectl" > /dev/null 2>&1; then
+  source <(kubectl completion zsh)
+
+  kube_ps1_path=$HOME/homebrew/opt/kube-ps1/share/kube-ps1.sh
+  if [ -e ${kube_ps1_path} ]; then
+    source ${kube_ps1_path}
+
+    function get_cluster_short() {
+      if echo "$1" | grep -q -P 'arn:aws:eks'; then
+        echo "$1" | cut -d / -f2
+      else
+        echo "$1"
+      fi
+    }
+    KUBE_PS1_CLUSTER_FUNCTION=get_cluster_short
+  fi
+fi
+
 # Not case sensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
@@ -298,24 +321,6 @@ function getDefaultBrowser() {
 	browser=$(defaults read ${preffile} | grep -B 1 "https" | awk '/LSHandlerRoleAll/{ print $NF }' | sed -e 's/"//g;s/;//')
 	echo ${browser}
 }
-
-if type "kubectl" > /dev/null 2>&1; then
-  source <(kubectl completion zsh)
-
-  kube_ps1_path=$HOME/homebrew/opt/kube-ps1/share/kube-ps1.sh
-  if [ -e ${kube_ps1_path} ]; then
-    source ${kube_ps1_path}
-
-    function get_cluster_short() {
-      if echo "$1" | grep -q -P 'arn:aws:eks'; then
-        echo "$1" | cut -d / -f2
-      else
-        echo "$1"
-      fi
-    }
-    KUBE_PS1_CLUSTER_FUNCTION=get_cluster_short
-  fi
-fi
 
 google(){
 	local search_string
