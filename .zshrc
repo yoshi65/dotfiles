@@ -141,7 +141,7 @@ compinit
 
 # For aws
 autoload bashcompinit && bashcompinit
-complete -C "$ANYENV_ROOT/envs/pyenv/shims/aws_completer" aws
+# complete -C "$ANYENV_ROOT/envs/pyenv/shims/aws_completer" aws
 
 # For k8s
 if type "kubectl" > /dev/null 2>&1; then
