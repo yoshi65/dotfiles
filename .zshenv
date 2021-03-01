@@ -11,17 +11,16 @@ if type "nvim" > /dev/null 2>&1; then
 else
   export EDITOR=vim
 fi
-# if bat exist, PAGER and GIT_PAGER is changed to bat
+# if bat exist, GIT_PAGER is changed to bat
+export PAGER=less
 if type "bat" > /dev/null 2>&1; then
-  export PAGER=bat
-  export GIT_PAGER='bat --style=plain'
-else
-  export PAGER=less
+  export GIT_PAGER='bat --style=plain --pager="less -FRX"'
 fi
 export DISPLAY=:0.0
 export LESS='--RAW-CONTROL-CHARS'
 export LESSOPEN='|lessfilter.sh %s'
 export HOMEBREW_CACHE="$HOME/homebrew/cache"
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"

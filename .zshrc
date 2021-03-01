@@ -191,9 +191,7 @@ alias grep="grep --color=auto"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-alias bgrep="python3 ~/git/funalab/memogrep/memogrep.py"
-alias ldiff="latexdiff-vc -e utf8 -t CFONT --git --flatten --force -d diff -r"
-alias portUpdate="sudo port selfupdate && sudo port upgrade outdated"
+alias gbd="git branch | grep -v master | xargs git branch -D"
 
 # setopt
 setopt IGNORE_EOF #ログアウト防止
