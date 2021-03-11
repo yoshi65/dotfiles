@@ -38,7 +38,7 @@ precmd () {
         cd $current
 
         # check if branch is master or not
-        if [[ `echo $vcs_info_msg_0_ | grep -c "master"` > 0 ]]; then
+        if [[ `echo $vcs_info_msg_0_ | grep -c -e "master" -e "main"` > 0 ]]; then
             branch="  "
         else
             branch=" "
@@ -164,6 +164,7 @@ fi
 
 # Not case sensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:*files' ignored-patterns '*?.o'
 
 # color
 # eval `dircolors`
