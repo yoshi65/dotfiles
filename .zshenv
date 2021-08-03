@@ -27,3 +27,4 @@ if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
 fi
 
 setopt no_global_rcs
+export SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
