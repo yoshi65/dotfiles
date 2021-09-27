@@ -160,3 +160,25 @@ hook_source = '''
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
 mergeed = '0'
+
+# nvim-treesitter
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+mergeed = '0'
+hook_add = '''
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  },
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = nil,
+  }
+}
+EOF
+'''
