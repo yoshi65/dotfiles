@@ -5,3 +5,9 @@
 .config/htop/
 .config/iterm2/
 .config/karabiner/
+.config/gh/
+.config/helm/
+.config/k3d/
+.config/neofetch/
+.tmux/plugins/
+.tmux/resurrect/
