@@ -3,6 +3,10 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
@@ -51,7 +55,7 @@ hook_add = '''
 
 [[plugins]] # Terraform
 repo = 'hashivim/vim-terraform'
-on_ft = ['terraform', 'tf']
+on_ft = ['tf', 'terraform', 'hcl']
 hook_add = '''
         let g:terraform_fmt_on_save = 1
 '''
@@ -110,6 +114,9 @@ repo = 'sjl/badwolf'
 # [[plugins]] # cobalt
 # repo = 'gkjgh/cobalt'
 
+# [[plugins]] # monokai
+# repo = 'tanvirtin/monokai.nvim'
+
 # colorscheme指定
 hook_add = '''
 	set background=dark
@@ -121,8 +128,6 @@ hook_add = '''
 # 補完
 
 [[plugins]]
-repo = 'prabirshrestha/async.vim'
-[[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
@@ -132,7 +137,7 @@ repo = 'prabirshrestha/vim-lsp'
 hook_source = '''
         " debug
         let g:lsp_log_verbose = 1
-        let g:lsp_log_file = expand('~/vim-lsp.log')
+        let g:lsp_log_file = expand('~/.cache/dein/vim-lsp.log')
 
         let g:lsp_signs_error = '⨉'
         let g:lsp_signs_warning = '⚠'
@@ -159,12 +164,14 @@ hook_source = '''
 
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
-mergeed = '0'
+
+# [[plugins]]
+# repo = 'neovim/nvim-lspconfig'
 
 # nvim-treesitter
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
-mergeed = '0'
+merged = 0
 hook_add = '''
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -182,3 +189,6 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 '''
+
+[[plugins]]
+repo = 'romgrk/nvim-treesitter-context'

@@ -109,6 +109,7 @@ function anyenv_unset() {
   unset -f rbenv
   unset -f nodenv
   unset -f tfenv
+  unset -f goenv
 }
 function pyenv() {
   anyenv_unset
@@ -129,6 +130,11 @@ function tfenv() {
   anyenv_unset
   anyenv_init
   tfenv "$@"
+}
+function goenv() {
+  anyenv_unset
+  anyenv_init
+  goenv "$@"
 }
 
 # Expansion of completion
@@ -193,6 +199,15 @@ alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
 alias gbd="git branch | grep -v master | xargs git branch -D"
+
+function gcm() {
+  DEFAULT_BRANCH='master'
+  if git branch | grep -qP 'main'; then
+    DEFAULT_BRANCH='main'
+  fi
+  git checkout $DEFAULT_BRANCH
+  git pull origin $DEFAULT_BRANCH
+}
 
 # setopt
 setopt IGNORE_EOF #ログアウト防止

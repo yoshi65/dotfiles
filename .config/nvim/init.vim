@@ -112,6 +112,10 @@ nmap <C-g><C-f> :GFiles?<CR>
 " <C-g><C-h> で git の commit hash 選択して diff を表示
 nmap <C-g><C-h> :Commits<CR>
 
+" treesitter
+syntax on
+set termguicolors
+
 " .vimrcと異なる部分"
   let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
   let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
@@ -165,3 +169,5 @@ nmap <C-g><C-h> :Commits<CR>
 		call dein#install()
   endif
   " }}}
+
+filetype on
