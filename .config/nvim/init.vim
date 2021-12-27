@@ -55,6 +55,10 @@ set shiftwidth=4
 set expandtab
 set smarttab
 
+" 折りたたみ
+set foldmethod=marker
+set foldmarker=<details>,</details>
+
 
 " キーマッピング系
 " カーソルキー使用不可

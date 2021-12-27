@@ -31,6 +31,9 @@ on_ft = ['markdown', 'mkd']
 repo  = 'cohama/lexima.vim'
 on_i = 1
 
+[[plugins]]
+repo = 'mattn/vim-maketable'
+
 # fzf
 [[plugins]]
 repo = 'junegunn/fzf.vim'
@@ -103,3 +106,6 @@ on_path = '.*'
 repo = 'Shougo/neoyank.vim'
 depends = 'denite.nvim'
 on_event = 'TextYankPost'
+
+[[plugins]]
+repo = 'wsdjeg/dein-ui.vim'
