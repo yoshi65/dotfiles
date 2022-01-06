@@ -109,3 +109,9 @@ on_event = 'TextYankPost'
 
 [[plugins]]
 repo = 'wsdjeg/dein-ui.vim'
+
+[[plugins]]
+repo = 'lambdalisue/fern.vim'
+
+[[plugins]]
+repo = 'lambdalisue/fern-git-status.vim'

@@ -91,6 +91,8 @@ nnoremap tt :<C-u>tabnew<CR>
 nnoremap tw <C-w>
 " ターミナルモード
 tnoremap <silent> <ESC> <C-\><C-n>
+" Ctrl+nでファイルツリーを表示/非表示する
+nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 
 "" Insert timestamp after 'LastModified: '
 function! LastModified()
