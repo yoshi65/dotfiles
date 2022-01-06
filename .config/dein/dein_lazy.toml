@@ -112,6 +112,10 @@ repo = 'wsdjeg/dein-ui.vim'
 
 [[plugins]]
 repo = 'lambdalisue/fern.vim'
+hook_add = '''
+  " Show hidden files
+  let g:fern#default_hidden=1
+'''
 
 [[plugins]]
 repo = 'lambdalisue/fern-git-status.vim'
