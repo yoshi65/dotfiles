@@ -165,6 +165,73 @@ hook_source = '''
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
 
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+hook_source = '''
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  call ddc#custom#patch_global('sources', [
+        \ 'around',
+        \ 'vim-lsp',
+        \ 'nextword',
+        \ 'file'
+        \ ])
+  call ddc#custom#patch_global('sourceOptions', {
+        \ 'around': {'mark': 'A'},
+        \ 'vim-lsp': {
+        \   'mark': 'lsp', 
+        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*'
+        \ },
+        \ 'nextword': {'mark': 'nextword'},
+        \ '_': {
+        \   'matchers': ['matcher_head'],
+        \   'sorters': ['sorter_rank']
+        \ },
+        \ 'file': {
+        \   'mark': 'file',
+        \   'isVolatile': v:true, 
+        \   'forceCompletionPattern': '\S/\S*'
+        \ }})
+  call ddc#enable()
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-around.vim'
+
+# [[plugins]]
+# repo = 'Shougo/ddc-nvim-lsp.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nextword.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+
+[[plugins]]
+repo = 'Shougo/pum.vim'
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+hook_source = '''
+  call popup_preview#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help.vim'
+hook_source = '''
+  call signature_help#enable()
+  " if you use with vim-lsp, disable vim-lsp's signature help feature
+  let g:lsp_signature_help_enabled = 0
+'''
+
 # [[plugins]]
 # repo = 'neovim/nvim-lspconfig'
 
