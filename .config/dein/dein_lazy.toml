@@ -29,7 +29,6 @@ on_ft = ['markdown', 'mkd']
 
 [[plugins]] # 括弧
 repo  = 'cohama/lexima.vim'
-on_i = 1
 
 [[plugins]]
 repo = 'mattn/vim-maketable'
