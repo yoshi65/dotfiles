@@ -5,6 +5,7 @@
 .config/htop/
 .config/iterm2/
 .config/karabiner/
+.config/k9s/
 .config/gh/
 .config/helm/
 .config/k3d/
