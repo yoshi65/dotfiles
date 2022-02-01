@@ -199,6 +199,7 @@ alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
 alias gbd="git branch | grep -v master | xargs git branch -D"
+alias grd="cd $(git rev-parse --show-cdup)"
 
 function gcm() {
   DEFAULT_BRANCH='master'
