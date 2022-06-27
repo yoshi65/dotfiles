@@ -198,8 +198,9 @@ alias grep="grep --color=auto"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-alias gbd="git branch | grep -v master | xargs git branch -D"
+alias gbd="git branch | grep -v '(master|main)' | xargs git branch -D"
 alias grd="cd $(git rev-parse --show-cdup)"
+alias gcb="git checkout -b"
 
 function gcm() {
   DEFAULT_BRANCH='master'

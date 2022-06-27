@@ -26,3 +26,15 @@ hook_add = '''
 
 [[plugins]]
 repo = 'lambdalisue/fern-git-status.vim'
+depends = ['fern.vim']
+
+[[plugins]]
+repo = 'lambdalisue/nerdfont.vim'
+depends = ['fern.vim']
+hook_add = '''
+  let g:fern#renderer = 'nerdfont'
+'''
+
+[[plugins]]
+repo = 'lambdalisue/fern-renderer-nerdfont.vim'
+depends = ['nerdfont.vim', 'fern.vim']
