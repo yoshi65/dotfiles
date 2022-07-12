@@ -16,3 +16,6 @@ repo = 'junegunn/fzf.vim'
 
 [[plugins]]
 repo = 'wsdjeg/dein-ui.vim'
+
+[[plugins]]
+repo = 'skanehira/k8s.vim'

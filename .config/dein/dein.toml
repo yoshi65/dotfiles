@@ -248,5 +248,16 @@ hook_add = '''
 '''
 
 [[plugins]]
-depends =  ['fern.vim', 'nerdfont.vim']
 repo = 'lambdalisue/fern-renderer-nerdfont.vim'
+depends =  ['fern.vim', 'nerdfont.vim']
+
+[[plugins]]
+repo = 'lambdalisue/glyph-palette.vim'
+depends =  ['fern.vim', 'fern-renderer-nerdfont.vim']
+hook_add = '''
+  augroup my-glyph-palette
+    autocmd! *
+    autocmd FileType fern call glyph_palette#apply()
+    autocmd FileType nerdtree,startify call glyph_palette#apply()
+  augroup END
+'''
