@@ -10,6 +10,17 @@ repo  = 'cohama/lexima.vim'
 [[plugins]]
 repo = 'mattn/vim-maketable'
 
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+hook_source = '''
+lua <<EOF
+    local async = require "plenary.async"
+EOF
+'''
+
+[[plugins]]
+repo = 'nvim-lua/popup.nvim'
+
 # fzf
 [[plugins]]
 repo = 'junegunn/fzf.vim'
