@@ -10,17 +10,6 @@ repo  = 'cohama/lexima.vim'
 [[plugins]]
 repo = 'mattn/vim-maketable'
 
-[[plugins]]
-repo = 'nvim-lua/plenary.nvim'
-hook_source = '''
-lua <<EOF
-    local async = require "plenary.async"
-EOF
-'''
-
-[[plugins]]
-repo = 'nvim-lua/popup.nvim'
-
 # fzf
 [[plugins]]
 repo = 'junegunn/fzf.vim'
@@ -30,3 +19,57 @@ repo = 'wsdjeg/dein-ui.vim'
 
 [[plugins]]
 repo = 'skanehira/k8s.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+on_event = 'InsertEnter'
+depends = ['denops.vim']
+hook_source = '''
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  call ddc#custom#patch_global('sources', [
+        \ 'vim-lsp',
+        \ 'around',
+        \ 'file'
+        \ ])
+  call ddc#custom#patch_global('sourceOptions', {
+        \ '_': {
+        \   'matchers': ['matcher_head'],
+        \   'sorters': ['sorter_rank']
+        \ },
+        \ 'around': {
+        \   'mark': 'around'
+        \ },
+        \ 'vim-lsp': {
+        \   'matchers': ['matcher_head'],
+        \   'mark': 'lsp', 
+        \ },
+        \ 'file': {
+        \   'mark': 'file',
+        \   'isVolatile': v:true, 
+        \   'forceCompletionPattern': '\S/\S*'
+        \ }})
+  call ddc#enable()
+'''
+
+# [[plugins]]
+# repo = 'Shougo/ddc-nvim-lsp.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'shun/ddc-vim-lsp'
+on_source = 'ddc.vim'
