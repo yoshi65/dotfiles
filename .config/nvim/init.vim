@@ -94,6 +94,12 @@ tnoremap <silent> <ESC> <C-\><C-n>
 " Ctrl+nでファイルツリーを表示/非表示する
 nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 
+"" Command alias
+cnoreabbrev Gcb Git checkout -b
+cnoreabbrev Gs Git status
+cnoreabbrev Gp Git push origin
+cnoreabbrev Gc Git commit -m
+
 "" Insert timestamp after 'LastModified: '
 function! LastModified()
 if &modified
