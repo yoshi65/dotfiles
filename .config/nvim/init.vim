@@ -96,9 +96,12 @@ nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 
 "" Command alias
 cnoreabbrev Gcb Git checkout -b
-cnoreabbrev Gs Git status
 cnoreabbrev Gp Git push origin
 cnoreabbrev Gc Git commit -m
+nnoremap gp :Git push origin
+nnoremap gc :Git commit -m
+nnoremap gw :Gwrite<CR>
+nnoremap gs :Gstatus<CR>
 
 "" Insert timestamp after 'LastModified: '
 function! LastModified()
