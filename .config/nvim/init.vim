@@ -101,7 +101,7 @@ cnoreabbrev Gc Git commit -m
 nnoremap gp :Git push origin
 nnoremap gc :Git commit -m
 nnoremap gw :Gwrite<CR>
-nnoremap gs :Gstatus<CR>
+nnoremap gs :Git status<CR>
 
 "" Insert timestamp after 'LastModified: '
 function! LastModified()
