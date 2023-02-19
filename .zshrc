@@ -403,3 +403,5 @@ fi
 batdiff() {
     git diff --name-only --diff-filter=d 2>/dev/null | xargs bat --diff
 }
+
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
