@@ -28,3 +28,5 @@ fi
 
 setopt no_global_rcs
 export SDKROOT="$(xcrun --sdk macosx --show-sdk-path)"
+
+[ -f $HOME/.zshenv_local ] && . $HOME/.zshenv_local
