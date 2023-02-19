@@ -198,13 +198,16 @@ alias grep="grep --color=auto"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-alias gbd="git branch | grep -v '(master|main)' | xargs git branch -D"
+alias gbd="git branch | grep -v -e '^master$' -e '^main$' -e '*' | xargs git branch -D"
 alias grd="cd $(git rev-parse --show-cdup)"
 alias gcb="git checkout -b"
+alias gc="git commit -m"
+alias gp="git push origin"
+alias gs="git status"
 
 function gcm() {
   DEFAULT_BRANCH='master'
-  if git branch | grep -qP 'main'; then
+  if git branch | grep -qP '^main$'; then
     DEFAULT_BRANCH='main'
   fi
   git checkout $DEFAULT_BRANCH
@@ -405,3 +408,4 @@ batdiff() {
 }
 
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+[ -f $HOME/.zshrc_local ] && . $HOME/.zshrc_local
