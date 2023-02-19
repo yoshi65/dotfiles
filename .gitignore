@@ -10,5 +10,6 @@
 .config/helm/
 .config/k3d/
 .config/neofetch/
+.config/.mono/
 .tmux/plugins/
 .tmux/resurrect/
