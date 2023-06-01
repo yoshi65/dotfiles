@@ -203,11 +203,12 @@ alias grd="cd $(git rev-parse --show-cdup)"
 alias gcb="git checkout -b"
 alias gc="git commit -m"
 alias gp="git push origin"
+alias gpf="git push --force-with-lease --force-if-includes origin"
 alias gs="git status"
 
 function gcm() {
   DEFAULT_BRANCH='master'
-  if git branch | grep -qP '^main$'; then
+  if git branch | grep -qP '^[ *]*main$'; then
     DEFAULT_BRANCH='main'
   fi
   git checkout $DEFAULT_BRANCH
