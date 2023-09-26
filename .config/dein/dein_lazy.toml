@@ -25,7 +25,7 @@ repo = 'Shougo/ddc.vim'
 on_event = 'InsertEnter'
 depends = ['denops.vim']
 hook_source = '''
-  call ddc#custom#patch_global('ui', 'pum.vim')
+  call ddc#custom#patch_global('ui', 'pum')
   call ddc#custom#patch_global('sources', [
         \ 'vim-lsp',
         \ 'around',
@@ -55,7 +55,11 @@ hook_source = '''
 # repo = 'Shougo/ddc-nvim-lsp.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-around'
+repo = 'shougo/ddc-ui-pum'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'shougo/ddc-around'
 on_source = 'ddc.vim'
 
 [[plugins]]
