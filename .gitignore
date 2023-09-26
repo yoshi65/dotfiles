@@ -11,5 +11,7 @@
 .config/k3d/
 .config/neofetch/
 .config/.mono/
+.config/AWS VPN Client/
+.config/AWSVPNClient/
 .tmux/plugins/
 .tmux/resurrect/
