@@ -205,6 +205,7 @@ alias gc="git commit -m"
 alias gp="git push origin"
 alias gpf="git push --force-with-lease --force-if-includes origin"
 alias gs="git status"
+alias gf="git fetch origin"
 
 function gcm() {
   DEFAULT_BRANCH='master'
