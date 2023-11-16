@@ -1,10 +1,5 @@
-#!/bin/zsh
-#
-# FileName: 	<+FILENAME+>
-# CreatedDate:  <+DATE+>
-# LastModified: 
-#
+#!/bin/bash
+
+set -eu
 
 <+CURSOR+>
-
-return
