@@ -31,16 +31,18 @@ hook_source = '''
         \ 'around',
         \ 'file'
         \ ])
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
   call ddc#custom#patch_global('sourceOptions', {
         \ '_': {
-        \   'matchers': ['matcher_head'],
-        \   'sorters': ['sorter_rank']
+        \   'matchers': ['matcher_fuzzy'],
+        \   'sorters': ['sorter_fuzzy'],
+        \   'converters': ['converter_fuzzy']
         \ },
         \ 'around': {
         \   'mark': 'around'
         \ },
         \ 'vim-lsp': {
-        \   'matchers': ['matcher_head'],
+        \   'matchers': ['matcher_fuzzy'],
         \   'mark': 'lsp', 
         \ },
         \ 'file': {
@@ -63,17 +65,13 @@ repo = 'shougo/ddc-around'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-matcher_head'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-sorter_rank'
-on_source = 'ddc.vim'
-
-[[plugins]]
 repo = 'LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'shun/ddc-vim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'tani/ddc-fuzzy'
 on_source = 'ddc.vim'
