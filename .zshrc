@@ -206,6 +206,7 @@ alias gp="git push origin"
 alias gpf="git push --force-with-lease --force-if-includes origin"
 alias gs="git status"
 alias gf="git fetch origin"
+alias gr="git reset --hard"
 
 function gcm() {
   DEFAULT_BRANCH='master'
