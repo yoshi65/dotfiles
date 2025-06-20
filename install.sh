@@ -9,5 +9,5 @@ do
     echo "$f"
     s=${HOME}"/"${f}
     f=`pwd`"/"${f}
-    ln -s $f $s
+    ln -sf $f $s
 done

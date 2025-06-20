@@ -1,10 +1,28 @@
-# added commit id in main view
-set main-view = id date author:full commit-title:graph=yes,refs=yes
+# 基本設定
+set main-view = id date author:full commit-title:yes,graph,refs,overflow=no
+set blame-view = id:yes,color file-name:auto author:full date:default line-number:yes,interval=1 text
+set pager-view = line-number:yes,interval=1 text
+set stage-view = line-number:yes,interval=1 text
+set log-view = line-number:yes,interval=1 text
+set blob-view = line-number:yes,interval=1 text
+set diff-view = line-number:yes,interval=1 text:yes,commit-title-overflow=no
 
-# line number on and interval 1
-set blame-view  = date:default author:email-user id:yes,color line-number:yes,interval=1 text
-set pager-view  = line-number:yes,interval=1 text
-set stage-view  = line-number:yes,interval=1 text
-set log-view    = line-number:yes,interval=1 text
-set blob-view   = line-number:yes,interval=1 text
-set diff-view   = line-number:yes,interval=1 text:yes,commit-title-overflow=no
+# 表示設定
+set line-graphics = utf-8
+set tab-size = 4
+set diff-context = 3
+set ignore-space = some
+set commit-order = topo
+set reference-format = [branch] <tag> {remote} ~replace~
+
+# 色設定
+color cursor white blue bold
+color status yellow default
+color delimiter cyan default
+color date yellow default
+color author green default
+color main-head yellow default bold
+color main-tag yellow default bold
+color stat-staged green default
+color stat-unstaged red default
+color stat-untracked cyan default

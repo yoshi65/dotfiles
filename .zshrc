@@ -39,7 +39,7 @@ precmd () {
 
         # check if branch is master or not
         if [[ `echo $vcs_info_msg_0_ | grep -c -e "master" -e "main"` > 0 ]]; then
-            branch="  "
+            branch=" "
         else
             branch=" "
         fi
@@ -58,20 +58,7 @@ precmd () {
 		git_prompt=""
 	fi
 
-        # env version
-        if [[ `ls -1 | grep -c "\.py$"` > 0 ]]; then
-            PYTHON_VERSION_STRING=" py:"$(python --version | sed "s/Python //")
-            PYTHON_VIRTUAL_ENV_STRING=""
-            if [ -n "$VIRTUAL_ENV" ]; then
-                PYTHON_VIRTUAL_ENV_STRING=":$(pyenv version-name)"
-            fi
-        fi
-        # RUBY_VERSION_STRING=" rb:"$(ruby --version | sed "s/ruby \(.*\) (.*$/\1/")
-        # if [[ `ls -1 | grep -c "\.tf$"` > 0 ]]; then
-        #     TERRAFORM_VERSION_STRING=" tf:"$(terraform --version | grep "Terraform" | sed "s/Terraform v//")
-        # fi
-        
-        env_prompt="%{${fg[yellow]}%}${PYTHON_VERSION_STRING}${PYTHON_VIRTUAL_ENV_STRING}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
+        env_prompt="%{${fg[yellow]}%}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
 
         if [[ -n `jobs | grep "suspended"` ]]; then
             name_color=${fg[blue]}
@@ -88,53 +75,7 @@ precmd () {
         PS1="%D{%Y-%m-%d %H:%M:%S} %{${name_color}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}${kube}
 %% "
 
-        PYTHON_VERSION_STRING=""
-        PYTHON_VIRTUAL_ENV_STRING=""
         # TERRAFORM_VERSION_STRING=""
-}
-
-if [ -d $ANYENV_ROOT ]; then
-  export PATH="$ANYENV_ROOT/bin:$PATH"
-  for D in `command ls $ANYENV_ROOT/envs`
-  do
-    export PATH="$ANYENV_ROOT/envs/$D/shims:$PATH"
-  done
-fi
-
-function anyenv_init() {
-  eval "$(anyenv init - --no-rehash)"
-}
-function anyenv_unset() {
-  unset -f pyenv
-  unset -f rbenv
-  unset -f nodenv
-  unset -f tfenv
-  unset -f goenv
-}
-function pyenv() {
-  anyenv_unset
-  anyenv_init
-  pyenv "$@"
-}
-function rbenv() {
-  anyenv_unset
-  anyenv_init
-  rbenv "$@"
-}
-function nodenv() {
-  anyenv_unset
-  anyenv_init
-  nodenv "$@"
-}
-function tfenv() {
-  anyenv_unset
-  anyenv_init
-  tfenv "$@"
-}
-function goenv() {
-  anyenv_unset
-  anyenv_init
-  goenv "$@"
 }
 
 # Expansion of completion
@@ -147,7 +88,7 @@ compinit
 
 # For aws
 autoload bashcompinit && bashcompinit
-# complete -C "$ANYENV_ROOT/envs/pyenv/shims/aws_completer" aws
+# complete -C "$(which aws_completer)" aws
 
 # For k8s
 if type "kubectl" > /dev/null 2>&1; then
@@ -176,8 +117,10 @@ zstyle ':completion:*:*files' ignored-patterns '*?.o'
 # eval `dircolors`
 # zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# anyenv
-# eval "$(anyenv init - --no-rehash)"
+# uv completion
+if command -v uv > /dev/null 2>&1; then
+  eval "$(uv generate-shell-completion zsh)"
+fi
 
 # history
 SAVEHIST=100000
@@ -210,7 +153,7 @@ alias gr="git reset --hard"
 
 function gcm() {
   DEFAULT_BRANCH='master'
-  if git branch | grep -qP '^[ *]*main$'; then
+  if git branch | ggrep -qP '^[ *]*main$'; then
     DEFAULT_BRANCH='main'
   fi
   git checkout $DEFAULT_BRANCH
