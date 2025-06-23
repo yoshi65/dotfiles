@@ -90,13 +90,59 @@ return {
       -- Set up keymaps immediately when plugin loads
       vim.keymap.set('n', 'gs', ':Git status<CR>', { desc = 'Git status' })
       vim.keymap.set('n', 'gc', ':Git commit -m ', { desc = 'Git commit' }) -- Note: space after -m for input
-      vim.keymap.set('n', 'gw', ':Gwrite<CR>', { desc = 'Git write' })
+      vim.keymap.set('n', 'gw', function()
+        -- Safer git write with error handling and lock file resolution
+        local ok, result = pcall(vim.cmd, 'Gwrite')
+        if not ok and result:match('index%.lock') then
+          vim.notify('Git index lock detected. Attempting to resolve...', vim.log.levels.WARN)
+
+          -- Try to resolve lock file issue
+          local git_dir = vim.fn.system('git rev-parse --git-dir 2>/dev/null'):gsub('\n', '')
+          if git_dir ~= '' then
+            local lock_file = git_dir .. '/index.lock'
+            local lock_exists = vim.fn.filereadable(lock_file) == 1
+
+            if lock_exists then
+              vim.notify('Removing stale git lock file: ' .. lock_file, vim.log.levels.INFO)
+              vim.fn.delete(lock_file)
+
+              -- Retry the operation
+              local retry_ok, retry_result = pcall(vim.cmd, 'Gwrite')
+              if retry_ok then
+                vim.notify('Git write succeeded after lock file removal', vim.log.levels.INFO)
+              else
+                vim.notify('Git write still failed: ' .. retry_result, vim.log.levels.ERROR)
+              end
+            else
+              vim.notify('Lock file not found. Git process may still be running.', vim.log.levels.WARN)
+            end
+          end
+        elseif not ok then
+          vim.notify('Git write failed: ' .. result, vim.log.levels.ERROR)
+        end
+      end, { desc = 'Git write (with lock resolution)' })
       vim.keymap.set('n', 'gp', ':Git push origin ', { desc = 'Git push origin' }) -- Note: space for branch input
 
       -- Additional command aliases for compatibility
       vim.cmd("cnoreabbrev Gcb Git checkout -b")
       vim.cmd("cnoreabbrev Gp Git push origin")
       vim.cmd("cnoreabbrev Gc Git commit -m")
+
+      -- Command to manually resolve git lock issues
+      vim.api.nvim_create_user_command('GitUnlock', function()
+        local git_dir = vim.fn.system('git rev-parse --git-dir 2>/dev/null'):gsub('\n', '')
+        if git_dir ~= '' then
+          local lock_file = git_dir .. '/index.lock'
+          if vim.fn.filereadable(lock_file) == 1 then
+            vim.fn.delete(lock_file)
+            vim.notify('Removed git lock file: ' .. lock_file, vim.log.levels.INFO)
+          else
+            vim.notify('No git lock file found', vim.log.levels.INFO)
+          end
+        else
+          vim.notify('Not in a git repository', vim.log.levels.WARN)
+        end
+      end, { desc = 'Remove git index.lock file' })
     end,
   },
 }
