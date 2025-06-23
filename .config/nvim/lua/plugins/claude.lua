@@ -5,7 +5,26 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    opts = {}, -- Use opts instead of config to avoid duplicate setup
+    opts = {
+      -- Disable features we don't need to reduce warnings
+      bigfile = { enabled = false },
+      dashboard = { enabled = false },
+      explorer = { enabled = false },
+      image = { enabled = false },
+      input = { enabled = false },
+      notifier = { enabled = false },
+      picker = { enabled = false },
+      quickfile = { enabled = false },
+      scope = { enabled = false },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = false },
+      words = { enabled = false },
+      -- Keep only essential features
+      toggle = { enabled = true },
+      terminal = { enabled = true },
+      -- Disable luarocks integration
+      rocks = { enabled = false },
+    },
   },
 
   -- Claude Code integration (Official Coder plugin)
