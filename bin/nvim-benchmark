@@ -1,0 +1,35 @@
+#!/bin/bash
+# Neovim startup time benchmark script
+
+echo "📊 Neovim Startup Benchmark"
+echo "=========================="
+
+# Current timestamp
+echo "Date: $(date)"
+echo ""
+
+# Test current configuration
+echo "🚀 Current configuration:"
+time nvim --headless +quit
+echo ""
+
+# Detailed timing (requires hyperfine if available)
+if command -v hyperfine >/dev/null 2>&1; then
+    echo "📈 Detailed timing (10 runs):"
+    hyperfine --warmup 3 --runs 10 'nvim --headless +quit'
+    echo ""
+fi
+
+# Plugin load analysis
+echo "🔍 Plugin load analysis:"
+nvim --startuptime /tmp/nvim-startup.log +quit
+echo "Top 10 slowest plugins:"
+tail -n +2 /tmp/nvim-startup.log | sort -k2 -nr | head -10
+echo ""
+
+# Lua module analysis (if available)
+echo "🧩 Lua module timing:"
+nvim --headless -c 'lua vim.loader.enable(); print("Lua loader enabled")' +quit 2>/dev/null || echo "Lua loader not available"
+
+echo "📄 Full startup log saved to: /tmp/nvim-startup.log"
+echo "Run 'nvim /tmp/nvim-startup.log' to analyze in detail"

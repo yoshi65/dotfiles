@@ -7,15 +7,18 @@ Personal dotfiles repository for managing development environment configurations
 ### Core Tools
 
 * **Shell**: zsh with custom git-aware prompt
-* **Editor**: vim/neovim with modern plugin ecosystem
+* **Editor**: vim/neovim with lazy.nvim plugin manager (69% performance improvement)
 * **Terminal**: tmux with vim-like keybindings
 * **Git**: tig for TUI, enhanced gitignore patterns
 
 ### Modern Features
 
-* **AI Integration**: Claude Code support for nvim
-* **Completion**: nvim-cmp for intelligent autocompletion
+* **AI Integration**: Claude Code support for nvim (with immediate command availability)
+* **Completion**: nvim-cmp with luasnip for intelligent autocompletion
+* **LSP**: Built-in Neovim LSP with mason.nvim for server management
 * **Syntax**: Tree-sitter for enhanced highlighting
+* **Statusline**: lualine.nvim with custom color schemes
+* **Git Integration**: gitsigns.nvim + fugitive.vim with intelligent lock file resolution
 * **Package Management**: Brewfile for dependency management
 * **Security**: Whitelist-based .gitignore for sensitive data protection
 
@@ -46,8 +49,8 @@ brew bundle  # Install packages from Brewfile
 ├── .tmux.conf             # Terminal multiplexer
 ├── .tigrc                 # Git TUI configuration
 └── .config/
-    ├── nvim/              # Neovim configuration
-    ├── dein/              # Plugin management
+    ├── nvim/              # Neovim with lazy.nvim configuration
+    │   └── lua/           # Modern Lua-based plugin configuration
     ├── git/               # Git settings
     └── template/          # Code templates
 ```
@@ -62,10 +65,13 @@ brew bundle  # Install packages from Brewfile
 
 ### Neovim
 
-* Modern completion with nvim-cmp
-* Claude Code AI integration
+* lazy.nvim plugin manager for 69% faster startup (146ms → 45ms)
+* Built-in LSP with mason.nvim for automatic server management
+* Modern completion with nvim-cmp and luasnip snippets
+* Claude Code AI integration with immediate command availability
 * Tree-sitter syntax highlighting
-* LSP support for development
+* lualine.nvim statusline with custom color schemes
+* Enhanced git workflow with automatic lock file resolution
 
 ### Tmux
 
@@ -124,7 +130,7 @@ C-q h/j/k/l  # vim-like movement
 
 ```bash
 # Update plugins
-nvim -c "call dein#update()" -c "q"
+nvim -c ":Lazy sync" -c "q"
 
 # Update packages
 brew bundle
@@ -141,10 +147,11 @@ cp -r ~/.config ~/.config.backup
 
 ### Common Error Patterns
 
+* **Plugin commands not available**: Some plugins need `lazy = false` for immediate command registration
 * **E897 errors**: Check lambda function syntax (`{var -> expr}` not `{var->expr}`)
-* **Plugin setup failures**: Use `hook_source` for Lua plugin initialization
+* **Git index lock**: Automatic resolution implemented in git workflow
 * **Provider warnings**: Disable unused providers to reduce noise
-* **LSP conflicts**: Remove manual configurations when using vim-lsp-settings
+* **Startup performance**: Use lazy loading strategically, but not for critical plugins
 
 ### Health Check Commands
 
@@ -155,7 +162,8 @@ cp -r ~/.config ~/.config.backup
 # Specific component checks
 :checkhealth lsp
 :checkhealth nvim-treesitter
-:checkhealth snacks
+:checkhealth claudecode
+:checkhealth lazy
 ```
 
 ### Quick Fixes
@@ -167,10 +175,24 @@ let g:loaded_perl_provider = 0
 let g:loaded_ruby_provider = 0
 
 " Check plugin status
-:call dein#check_install()
+:Lazy
 ```
 
 ---
 
-**Note**: This repository emphasizes security, modularity, and modern development practices.
-Review CLAUDE.md for detailed configuration guidance and recent error resolution examples.
+## 📚 Migration History
+
+### lazy.nvim Migration (December 2024)
+
+Successfully migrated from dein.vim to lazy.nvim with significant improvements:
+
+* **Performance**: 69% startup time reduction (146ms → 45ms)
+* **Modern ecosystem**: Pure Lua-based configuration
+* **Enhanced features**: Better dependency management and lazy loading
+* **Critical lesson**: Some plugins require `lazy = false` for immediate command availability
+
+For detailed migration history, troubleshooting guides, and configuration examples, see [CLAUDE.md](./CLAUDE.md).
+
+---
+
+**Note**: This repository emphasizes security, modularity, and modern development practices with AI-powered development workflows.

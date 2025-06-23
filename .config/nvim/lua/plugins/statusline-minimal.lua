@@ -1,0 +1,66 @@
+-- Ultra-lightweight statusline alternatives
+-- Uncomment ONE of these options and comment out the main statusline.lua
+
+return {
+  -- Option 1: mini.statusline (ultra-fast, minimal dependencies)
+  -- {
+  --   'echasnovski/mini.statusline',
+  --   version = '*',
+  --   event = "UIEnter",
+  --   config = function()
+  --     require('mini.statusline').setup({
+  --       use_icons = true,
+  --       set_vim_settings = false, -- Don't override laststatus
+  --     })
+  --   end,
+  -- },
+
+  -- Option 2: heirline.nvim (highly customizable, fastest)
+  -- {
+  --   "rebelot/heirline.nvim",
+  --   event = "UIEnter",
+  --   config = function()
+  --     local conditions = require("heirline.conditions")
+  --     local utils = require("heirline.utils")
+  --
+  --     local ViMode = {
+  --       init = function(self)
+  --         self.mode = vim.fn.mode(1)
+  --       end,
+  --       static = {
+  --         mode_names = {
+  --           n = "N", no = "N?", nov = "N?", noV = "N?", ["no\22"] = "N?",
+  --           niI = "Ni", niR = "Nr", niV = "Nv", nt = "Nt",
+  --           v = "V", vs = "Vs", V = "V_", Vs = "Vs", ["\22"] = "^V",
+  --           s = "S", S = "S_", ["\19"] = "^S",
+  --           i = "I", ic = "Ic", ix = "Ix",
+  --           R = "R", Rc = "Rc", Rx = "Rx", Rv = "Rv", Rvc = "Rv", Rvx = "Rv",
+  --           c = "C", cv = "Ex", r = "...", rm = "M", ["r?"] = "?", ["!"] = "!",
+  --           t = "T",
+  --         },
+  --       },
+  --       provider = function(self)
+  --         return " %2(" .. self.mode_names[self.mode] .. "%) "
+  --       end,
+  --       hl = function(self)
+  --         local mode = self.mode:sub(1, 1)
+  --         return { fg = "black", bg = mode == "i" and "green" or mode == "v" and "cyan" or "blue", bold = true }
+  --       end,
+  --     }
+  --
+  --     local StatusLine = { ViMode }
+  --     require("heirline").setup({ statusline = StatusLine })
+  --   end,
+  -- },
+
+  -- Option 3: Built-in statusline enhancement (zero dependencies)
+  -- {
+  --   dir = vim.fn.stdpath("config"),
+  --   name = "custom-statusline",
+  --   event = "UIEnter",
+  --   config = function()
+  --     vim.opt.statusline = "%f %h%m%r%=%-14.(%l,%c%V%) %P"
+  --     vim.opt.laststatus = 2
+  --   end,
+  -- },
+}
