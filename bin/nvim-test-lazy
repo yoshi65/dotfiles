@@ -1,0 +1,22 @@
+#!/bin/bash
+# Test and benchmark Neovim configurations
+
+echo "🚀 Neovim Configuration Benchmark"
+echo "=================================="
+
+echo "📊 Current configuration (lazy.nvim):"
+time nvim --headless +quit
+
+echo ""
+echo "📊 Legacy configuration (dein.vim):"
+NVIM_USE_DEIN=1 time nvim --headless +quit
+
+echo ""
+echo "🧪 Launching Neovim with current config..."
+nvim "$@"
+
+echo ""
+echo "💡 Usage:"
+echo "  Normal nvim:     nvim (uses lazy.nvim)"
+echo "  Legacy dein:     NVIM_USE_DEIN=1 nvim"
+echo "  Benchmark:       ./bin/nvim-benchmark"

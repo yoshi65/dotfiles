@@ -190,3 +190,12 @@ filetype on
 " Load modern Lua configuration
 lua require('config.options')
 lua require('config.keymaps')
+
+" Migration: Use lazy.nvim as default (fallback to dein with NVIM_USE_DEIN=1)
+if $NVIM_USE_DEIN == '1'
+  " Fallback to dein.vim for emergency
+  echo "⚠️ Using legacy dein.vim configuration"
+else
+  " Use lazy.nvim (default)
+  lua require('config.lazy')
+endif
