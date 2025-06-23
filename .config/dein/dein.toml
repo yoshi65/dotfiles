@@ -10,21 +10,6 @@ repo = 'osyo-manga/vim-precious'
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]]  # Terraform
-hook_add = '''
-        let g:terraform_fmt_on_save = 1
-'''
-on_ft = ['tf', 'terraform', 'hcl']
-repo = 'hashivim/vim-terraform'
-
-[[plugins]]
-hook_add = '''
-	let updatetime = 250
-        nmap <C-g>g :GitGutterToggle<CR>
-        nmap <C-g>h :GitGutterLineHighlightsToggle<CR>
-'''
-repo = 'airblade/vim-gitgutter'
-
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 

@@ -4,9 +4,6 @@
 on_ft = ['markdown', 'mkd']
 repo = 'iamcco/markdown-preview.vim'
 
-[[plugins]]  # 括弧
-repo = 'cohama/lexima.vim'
-
 [[plugins]]
 repo = 'mattn/vim-maketable'
 
