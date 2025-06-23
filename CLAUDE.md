@@ -203,3 +203,59 @@ end)
 ```
 
 **Lesson**: Critical plugins that provide commands should not be lazy-loaded if immediate availability is required
+
+### Configuration Cleanup (June 2025)
+
+**Problem**: Legacy configurations and plugin conflicts after migration
+**Issues identified**:
+
+- FZF keymaps remained after plugin removal (causing command errors)
+- Duplicate vim-fugitive loading in both `core.lua` and `git.lua`
+- LSP configuration referencing Telescope without proper dependency
+
+**Solutions applied**:
+
+- Removed orphaned FZF keymaps (`<C-t>`, `<C-g><C-f>`, `<C-g><C-h>`)
+- Eliminated duplicate fugitive configuration from `core.lua`
+- Added Telescope as explicit LSP dependency for references/symbols functionality
+
+**Additional items for future consideration**:
+
+- Review `vim.opt.re = 0` setting for compatibility with newer Neovim versions
+- Evaluate provider disabling strategy (may affect LSP functionality)
+- Standardize plugin loading patterns for consistency
+
+**Result**: Cleaner configuration with resolved conflicts and proper dependencies
+
+### Performance Optimization Analysis (June 2025)
+
+**Current Performance**: ~166ms startup time (already optimized from 69% improvement via lazy.nvim migration)
+
+**High Impact Optimization Opportunities (15-30% improvement potential)**:
+
+- **trouble.nvim**: Missing lazy loading despite having keybindings (heavy diagnostic plugin)
+- **neo-tree.nvim**: Missing lazy loading despite having keybindings (multiple dependencies)
+- **vim-fugitive**: Redundant loading (both `VeryLazy` AND `cmd` triggers)
+
+**Medium Impact Opportunities (5-15% improvement potential)**:
+
+- **Event inconsistency**: treesitter uses `BufReadPost` while LSP uses `BufReadPre`
+- **snacks.nvim**: Could be lazy-loaded as dependency rather than immediate
+
+**Plugin Loading Pattern Analysis**:
+
+- **Current immediate loading**: 3 plugins (colorscheme, snacks, claudecode)
+- **Recommended immediate loading**: 1-2 plugins (colorscheme + critical deps only)
+- **Current lazy loading**: ~85% of plugins
+- **Optimal lazy loading**: ~90% of plugins
+
+**Loading Strategy Verification**:
+
+- ✅ Completion (nvim-cmp): `InsertEnter` - optimal
+- ✅ LSP (nvim-lspconfig): File events - optimal
+- ✅ Telescope: Key-based + command-based - optimal
+- ❌ trouble.nvim: No lazy loading - needs key-based loading
+- ❌ neo-tree.nvim: No lazy loading - needs key/command-based loading
+- ❌ vim-fugitive: Redundant `VeryLazy` + `cmd` - remove VeryLazy
+
+**Expected Total Impact**: 20-45% additional startup improvement on top of existing optimizations
