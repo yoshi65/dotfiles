@@ -1,30 +1,31 @@
 -- Claude Code integration plugins
 return {
-  -- Snacks.nvim (dependency for claudecode.nvim)
+  -- Snacks.nvim (dependency for claudecode.nvim) - minimal config
   {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    opts = {
-      -- Disable features we don't need to reduce warnings
-      bigfile = { enabled = false },
-      dashboard = { enabled = false },
-      explorer = { enabled = false },
-      image = { enabled = false },
-      input = { enabled = false },
-      notifier = { enabled = false },
-      picker = { enabled = false },
-      quickfile = { enabled = false },
-      scope = { enabled = false },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = false },
-      words = { enabled = false },
-      -- Keep only essential features
-      toggle = { enabled = true },
-      terminal = { enabled = true },
-      -- Disable luarocks integration
-      rocks = { enabled = false },
-    },
+    config = function()
+      -- Minimal setup - only enable what claudecode.nvim needs
+      require("snacks").setup({
+        -- Disable all features except what's absolutely necessary
+        bigfile = { enabled = false },
+        dashboard = { enabled = false },
+        explorer = { enabled = false },
+        image = { enabled = false },
+        input = { enabled = false },
+        lazygit = { enabled = false },
+        notifier = { enabled = false },
+        picker = { enabled = false },
+        quickfile = { enabled = false },
+        scope = { enabled = false },
+        scroll = { enabled = false },
+        statuscolumn = { enabled = false },
+        terminal = { enabled = false },
+        toggle = { enabled = false },
+        words = { enabled = false },
+      })
+    end,
   },
 
   -- Claude Code integration (Official Coder plugin)

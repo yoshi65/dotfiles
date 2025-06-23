@@ -24,6 +24,11 @@ require("lazy").setup({
   },
   install = { colorscheme = { "badwolf" } },
   checker = { enabled = true }, -- automatically check for plugin updates
+  -- Disable luarocks support completely
+  rocks = {
+    enabled = false,
+    hererocks = false,
+  },
   performance = {
     cache = {
       enabled = true,
