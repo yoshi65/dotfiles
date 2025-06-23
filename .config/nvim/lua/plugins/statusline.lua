@@ -7,6 +7,14 @@ return {
       "nvim-tree/nvim-web-devicons", -- optional, for file icons
     },
     config = function()
+      -- Define custom colors for better visual separation
+      local colors = {
+        filename_bg = '#585858',
+        filename_fg = '#e4e4e4',
+        branch_bg = '#8a8a8a',
+        branch_fg = '#000000',
+      }
+
       require('lualine').setup({
         options = {
           theme = 'wombat', -- Match original lightline colorscheme
@@ -23,23 +31,30 @@ return {
           -- Match original lightline layout: mode, paste in left section a
           lualine_a = { 'mode' },
           lualine_b = {
-            -- Match original: readonly, filename, modified, gitbranch
+            -- Filename with distinct styling
             {
               'filename',
               symbols = { modified = '[+]', readonly = '[RO]' },
+              color = { bg = colors.filename_bg, fg = colors.filename_fg }, -- Darker background for filename
             },
-            'branch',
           },
           lualine_c = {
-            -- Add modern features: diff and diagnostics
+            -- Branch with different color for better distinction
+            {
+              'branch',
+              color = { bg = colors.branch_bg, fg = colors.branch_fg, gui = 'bold' }, -- Lighter background for branch
+            },
+            -- Add modern features: diff and diagnostics with color coding
             {
               'diff',
               symbols = { added = '+', modified = '~', removed = '-' },
+              colored = true, -- Use diff colors
             },
             {
               'diagnostics',
               sources = { 'nvim_lsp' },
               symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
+              colored = true, -- Use diagnostic colors
             },
           },
           lualine_x = {
