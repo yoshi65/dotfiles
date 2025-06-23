@@ -8,12 +8,16 @@ return {
       -- Automatically install LSPs to stdpath for neovim
       { "williamboman/mason.nvim", config = true },
       "williamboman/mason-lspconfig.nvim",
+      "nvim-telescope/telescope.nvim", -- Required for LSP references and symbols
 
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       "folke/neodev.nvim",
+
+      -- JSON schemas for better JSON editing
+      "b0o/schemastore.nvim",
     },
     config = function()
       -- Setup neovim lua configuration
@@ -50,9 +54,18 @@ return {
         end, { desc = 'Format current buffer with LSP' })
       end
 
-      -- Setup mason-lspconfig
+      -- Setup mason-lspconfig with additional servers
       require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls' }, -- Add other servers as needed
+        ensure_installed = {
+          'lua_ls',
+          'yamlls',      -- YAML
+          'jsonls',      -- JSON
+          'dockerls',    -- Docker
+          'docker_compose_language_service', -- Docker Compose
+          'html',        -- HTML
+          'cssls',       -- CSS
+          'emmet_ls',    -- HTML/CSS emmet
+        },
       })
 
       -- Setup individual servers
@@ -85,7 +98,86 @@ return {
         },
       })
 
-      -- Add other servers as needed
+      -- High-priority servers (YAML, JSON, Docker, CSS, HTML)
+      -- YAML
+      lspconfig.yamlls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          yaml = {
+            keyOrdering = false,
+            format = {
+              enable = true,
+            },
+            validate = true,
+            schemaStore = {
+              enable = false,
+              url = "",
+            },
+            schemas = {
+              kubernetes = "*.yaml",
+              ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+              ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+              ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+              ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+              ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+              ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+              ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+              ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+              ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+              ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
+              ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
+              ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+            },
+          },
+        },
+      })
+
+      -- JSON
+      lspconfig.jsonls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      })
+
+      -- Docker
+      lspconfig.dockerls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- Docker Compose
+      lspconfig.docker_compose_language_service.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- HTML
+      lspconfig.html.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { "html", "templ" },
+      })
+
+      -- CSS
+      lspconfig.cssls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
+      -- Emmet for HTML/CSS
+      lspconfig.emmet_ls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      })
+
+      -- Other servers (existing ones)
       -- Python
       if vim.fn.executable('pyright') == 1 then
         lspconfig.pyright.setup({

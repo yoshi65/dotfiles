@@ -52,3 +52,6 @@ require("lazy").setup({
     },
   },
 })
+
+-- Load additional configuration
+require('config.autocmds')

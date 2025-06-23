@@ -38,6 +38,7 @@ return {
       require("claudecode").setup()
     end,
     keys = {
+      { "<leader>cc", ":ClaudeCodeOpen<CR>", desc = "Claude Code Open" },
       { "<leader>ac", ":ClaudeCode<CR>", desc = "Claude Code" },
       { "<leader>af", ":ClaudeCodeFocus<CR>", desc = "Claude Code Focus" },
       { "<leader>ar", ":ClaudeCode --resume<CR>", desc = "Claude Code Resume" },
