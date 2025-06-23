@@ -158,32 +158,6 @@ repo = 'nvim-lua/plenary.nvim'
 repo = 'nvim-lua/popup.nvim'
 
 [[plugins]]
-hook_source = '''
-lua << EOF
-require("snacks").setup({})
-EOF
-'''
-repo = 'folke/snacks.nvim'
-
-[[plugins]]
-depends = ['snacks.nvim']
-hook_add = '''
-  " Claude Code configuration
-  " Key bindings recommended in documentation
-  nnoremap <leader>ac :ClaudeCode<CR>
-  nnoremap <leader>af :ClaudeCodeFocus<CR>
-  nnoremap <leader>ar :ClaudeCode --resume<CR>
-  nnoremap <leader>aC :ClaudeCode --continue<CR>
-  nnoremap <leader>ab :ClaudeCodeAdd %<CR>
-  vnoremap <leader>as :ClaudeCodeSend<CR>
-
-  " Diff management
-  nnoremap <leader>aa :ClaudeCodeDiffAccept<CR>
-  nnoremap <leader>ad :ClaudeCodeDiffDeny<CR>
-'''
-repo = 'coder/claudecode.nvim'
-
-[[plugins]]
 depends = ['LuaSnip']
 hook_source = '''
 lua << EOF
