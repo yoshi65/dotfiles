@@ -1,0 +1,63 @@
+repos:
+  # 基本的な品質チェック
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-symlinks
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # セキュリティ: 機密情報検出
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+
+  # Markdown文書の品質チェック
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.45.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+
+  # シェルスクリプト検証
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        exclude: '^(\.|.*)\.(zsh|zshrc)$|\.tmux/battery\.sh$|\.vim/skel\.sh$'
+
+  # ファイルサイズ制限（大きなファイルのコミット防止）
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+
+  # TOML設定ファイルの詳細検証（dein.toml等）
+  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+    rev: v2.14.0
+    hooks:
+      - id: pretty-format-toml
+        args: [--autofix]
+
+  # dotfiles特化: Vim/Neovim設定の構文チェック
+  - repo: local
+    hooks:
+      - id: vim-syntax-check
+        name: Check Vim syntax
+        entry: bash -c 'for f in "$@"; do echo "Checking $f..."; vim -T dumb --noplugin -n -c "set nomore" -c "syntax on" -c "source $f" -c "qa!" </dev/null || { echo "Syntax error in $f"; exit 1; }; done' --
+        language: system
+        files: \.(vim|vimrc)$
+        pass_filenames: true
+
+ci:
+  autoupdate_commit_msg: "chore: update pre-commit hooks"
+  autoupdate_schedule: monthly

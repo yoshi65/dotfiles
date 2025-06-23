@@ -1,18 +1,22 @@
-.config/ParaView/
-.config/anyenv/
-.config/astropy
-.config/configstore/
-.config/htop/
-.config/iterm2/
-.config/karabiner/
-.config/k9s/
-.config/gh/
-.config/helm/
-.config/k3d/
-.config/neofetch/
-.config/.mono/
-.config/AWS VPN Client/
-.config/AWSVPNClient/
+# Only track specific .config directories
+# Everything else in .config is ignored by default
+.config/*
+!.config/dein/
+!.config/git/
+!.config/nvim/
+!.config/template/
+!.config/flake8
+!.config/pycodestyle
+
+# Claude Code runtime data (contains session IDs)
+.config/claude/
+
+# Runtime directories and caches
 .tmux/plugins/
 .tmux/resurrect/
-.config/gcloud/
+
+# Sensitive files patterns (extra safety)
+**/*credentials*
+**/*token*
+**/*.log
+**/*.db

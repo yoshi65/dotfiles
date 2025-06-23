@@ -53,7 +53,7 @@ precmd () {
 			git_prompt=" [${branch}%1(v|%F{yellow}%1v%f|)]"
 		else [[ -n `echo "$st" | grep "^# Untracked"` ]];
 			git_prompt=" [${branch}%1(v|%F{red}%1v%f|)]"
-		fi 
+		fi
 	else
 		git_prompt=""
 	fi
@@ -179,12 +179,12 @@ if type "fzf" > /dev/null 2>&1; then
   if [ -e ${fzf_shell_path}key-bindings.zsh ]; then
     source ${fzf_shell_path}key-bindings.zsh
   fi
-  
+
   # fzf の 補完設定
   if [ -e ${fzf_shell_path}completion.zsh ]; then
     source ${fzf_shell_path}completion.zsh
   fi
-  
+
   # fzf から the_silver_searcher (ag) を呼び出すことで高速化
   if _has fzf && _has ag; then
     export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
@@ -194,10 +194,10 @@ if type "fzf" > /dev/null 2>&1; then
     export FZF_DEFAULT_OPTS="$FZF_COMMON_MYOPTS --preview 'bat --color=always {} --style=plain'"
     export FZF_CTRL_T_OPTS="$FZF_COMMON_MYOPTS --bind 'ctrl-y:execute-silent(echo {} | pbcopy)+abort' --border --preview 'bat --color=always {}'"
   fi
-  
+
   alias f="fzf --preview 'bat --color=always {}'"
   alias F="fzf --height 100% --preview 'bat --color=always {}'"
-  
+
   # Key bindings for git with fzf
   # https://junegunn.kr/2016/07/fzf-git/
   # https://gist.github.com/junegunn/8b572b8d4b5eddd8b85e5f4d40f17236
@@ -207,7 +207,7 @@ if type "fzf" > /dev/null 2>&1; then
       echo -n "${(q)item} "
     done
   }
-  
+
   bind-git-helper() {
     local c
     for c in $@; do
@@ -216,22 +216,22 @@ if type "fzf" > /dev/null 2>&1; then
       eval "bindkey '^g^$c' fzf-g$c-widget"
     done
   }
-  
+
   bind-git-helper f b t r h
   unset -f bind-git-helper
-  
+
   # GIT heart FZF
   # https://gist.github.com/junegunn/8b572b8d4b5eddd8b85e5f4d40f17236
   # -------------
-  
+
   is_in_git_repo() {
       git rev-parse HEAD > /dev/null 2>&1
   }
-  
+
   fzf-down() {
     fzf --height 50% "$@" --border
   }
-  
+
   fzf-gf() {
   is_in_git_repo || return
   git -c color.status=always status --short |
@@ -239,7 +239,7 @@ if type "fzf" > /dev/null 2>&1; then
   --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
   cut -c4- | sed 's/.* -> //'
   }
-  
+
   fzf-gb() {
   is_in_git_repo || return
     LINES=200
@@ -249,7 +249,7 @@ if type "fzf" > /dev/null 2>&1; then
   sed 's/^..//' | cut -d' ' -f1 |
   sed 's#^remotes/##'
   }
-  
+
   fzf-gt() {
   is_in_git_repo || return
     LINES=200
@@ -257,7 +257,7 @@ if type "fzf" > /dev/null 2>&1; then
   fzf-down --multi --preview-window right:70% \
   --preview 'git show --color=always {} | head -'$LINES
   }
-  
+
   fzf-gh() {
   is_in_git_repo || return
     LINES=200
@@ -267,7 +267,7 @@ if type "fzf" > /dev/null 2>&1; then
   --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -'$LINES |
   command grep -o "[a-f0-9]\{7,\}"
   }
-  
+
   fzf-gr() {
   is_in_git_repo || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |

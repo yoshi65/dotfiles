@@ -3,7 +3,7 @@
 -*- mode:ruby; coding:utf-8 -*-
 FileName:     <+FILENAME+>
 CreateDate:   <+DATE+>
-LastModified: 
+LastModified:
 =end
 
 $KCODE='u'

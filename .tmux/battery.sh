@@ -12,7 +12,7 @@ if battery_info=$(/usr/bin/pmset -g ps | awk '{ if (NR == 2) print $3 " " $4 }' 
         charging=" "
     fi
     # check battery quantity
-    battery_quantity=$(echo $battery_info | awk '{print $1}') 
+    battery_quantity=$(echo $battery_info | awk '{print $1}')
     if (( $battery_quantity < 61 )); then
         battery="#[bg=yellow,fg=black] $charging$battery_quantity% #[default]"
     elif (( $battery_quantity < 21 )); then

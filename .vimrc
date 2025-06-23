@@ -7,7 +7,7 @@ set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp
 
 " No bells
 set visualbell t_vb=
-set noerrorbells 
+set noerrorbells
 
 " Others
 set nobackup

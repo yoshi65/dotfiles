@@ -1,0 +1,18 @@
+# Markdownlint configuration for dotfiles documentation
+default: true
+
+# Allow duplicate headers (common in documentation)
+MD024: false
+
+# Allow long lines (code blocks, URLs)
+MD013:
+  line_length: 120
+  tables: false
+  code_blocks: false
+
+# Allow inline HTML for better formatting
+MD033:
+  allowed_elements: ['br', 'kbd', 'details', 'summary']
+
+# Allow multiple trailing punctuation (for emphasis)
+MD026: false

@@ -1,16 +1,15 @@
 # coding
 
-[[plugins]] # markdown viewer
-repo = 'iamcco/markdown-preview.vim'
+[[plugins]]  # markdown viewer
 on_ft = ['markdown', 'mkd']
+repo = 'iamcco/markdown-preview.vim'
 
-[[plugins]] # 括弧
-repo  = 'cohama/lexima.vim'
+[[plugins]]  # 括弧
+repo = 'cohama/lexima.vim'
 
 [[plugins]]
 repo = 'mattn/vim-maketable'
 
-# fzf
 [[plugins]]
 repo = 'junegunn/fzf.vim'
 
@@ -20,58 +19,26 @@ repo = 'wsdjeg/dein-ui.vim'
 [[plugins]]
 repo = 'skanehira/k8s.vim'
 
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-on_event = 'InsertEnter'
-depends = ['denops.vim']
-hook_source = '''
-  call ddc#custom#patch_global('ui', 'pum')
-  call ddc#custom#patch_global('sources', [
-        \ 'vim-lsp',
-        \ 'around',
-        \ 'file'
-        \ ])
-  call ddc#custom#patch_global('completionMenu', 'pum.vim')
-  call ddc#custom#patch_global('sourceOptions', {
-        \ '_': {
-        \   'matchers': ['matcher_fuzzy'],
-        \   'sorters': ['sorter_fuzzy'],
-        \   'converters': ['converter_fuzzy']
-        \ },
-        \ 'around': {
-        \   'mark': 'around'
-        \ },
-        \ 'vim-lsp': {
-        \   'matchers': ['matcher_fuzzy'],
-        \   'mark': 'lsp', 
-        \ },
-        \ 'file': {
-        \   'mark': 'file',
-        \   'isVolatile': v:true, 
-        \   'forceCompletionPattern': '\S/\S*'
-        \ }})
-  call ddc#enable()
-'''
-
+# DDC-related plugins - DISABLED for nvim-cmp migration
 # [[plugins]]
 # repo = 'Shougo/ddc-nvim-lsp.vim'
-
-[[plugins]]
-repo = 'shougo/ddc-ui-pum'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'shougo/ddc-around'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'LumaKernel/ddc-file'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'shun/ddc-vim-lsp'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'tani/ddc-fuzzy'
-on_source = 'ddc.vim'
+#
+# [[plugins]]
+# repo = 'shougo/ddc-ui-pum'
+# on_source = 'ddc.vim'
+#
+# [[plugins]]
+# repo = 'shougo/ddc-around'
+# on_source = 'ddc.vim'
+#
+# [[plugins]]
+# repo = 'LumaKernel/ddc-file'
+# on_source = 'ddc.vim'
+#
+# [[plugins]]
+# repo = 'shun/ddc-vim-lsp'
+# on_source = 'ddc.vim'
+#
+# [[plugins]]
+# repo = 'tani/ddc-fuzzy'
+# on_source = 'ddc.vim'

@@ -133,10 +133,11 @@ set termguicolors
 " .vimrcと異なる部分"
   let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
   let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
-  " let g:python_host_prog = $ANYENV_ROOT . '/envs/pyenv/versions/neovim2/bin/python'
-  let g:python3_host_prog = $ANYENV_ROOT . '/envs/pyenv/versions/neovim3/bin/python'
-  let g:ruby_host_prog = $ANYENV_ROOT . '/envs/rbenv/versions/2.6.3/bin/neovim-ruby-host'
-  let g:node_host_prog = $ANYENV_ROOT . '/envs/nodenv/versions/13.1.0/bin/neovim-node-host'
+  " Disable optional providers to avoid warnings
+  let g:loaded_node_provider = 0
+  let g:loaded_perl_provider = 0
+  let g:loaded_ruby_provider = 0
+  " let g:python3_host_prog = '/opt/homebrew/bin/python3'
 
 	" macのclipboardとyankを統一
 	set clipboard=unnamed
@@ -185,3 +186,7 @@ set termguicolors
   " }}}
 
 filetype on
+
+" Load modern Lua configuration
+lua require('config.options')
+lua require('config.keymaps')

@@ -3,17 +3,16 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
-repo = 'osyo-manga/vim-precious'
+[[plugins]]  # カーソル位置のコンテキストに合わせてftを切り替える
 depends = ['context_filetype.vim']
+repo = 'osyo-manga/vim-precious'
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]] # status line
-repo = 'itchyny/lightline.vim'
+[[plugins]]  # status line
 hook_add = '''
-        let g:lightline = { 
+        let g:lightline = {
         \ 'active': {
         \  'left':  [ [ 'mode', 'paste'],
         \             [ 'readonly', 'filename', 'modified', 'gitbranch' ] ],
@@ -29,31 +28,27 @@ hook_add = '''
         \ 'subseparator': { 'left': "", 'right': "" }
         \}
 '''
+repo = 'itchyny/lightline.vim'
 
-# lang
-[[plugins]] # Terraform
-repo = 'hashivim/vim-terraform'
-on_ft = ['tf', 'terraform', 'hcl']
+[[plugins]]  # Terraform
 hook_add = '''
         let g:terraform_fmt_on_save = 1
 '''
+on_ft = ['tf', 'terraform', 'hcl']
+repo = 'hashivim/vim-terraform'
 
-# git
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
 hook_add = '''
 	let updatetime = 250
         nmap <C-g>g :GitGutterToggle<CR>
         nmap <C-g>h :GitGutterLineHighlightsToggle<CR>
 '''
+repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 
-
-# template
 [[plugins]]
-repo = 'thinca/vim-template'
 hook_add = '''
         let g:template_basedir = '~/.config'
         let g:template_free_pattern = 'template'
@@ -69,12 +64,9 @@ hook_add = '''
             \ |   silent! execute 'normal! "_da>'
             \ | endif
 '''
+repo = 'thinca/vim-template'
 
-# colorscheme
-
-[[plugins]] # badwolf
-repo = 'sjl/badwolf'
-
+[[plugins]]  # badwolf
 # colorscheme指定
 hook_add = '''
 	set background=dark
@@ -82,16 +74,15 @@ hook_add = '''
 	" 但し Colorscheme イベントの発生が抑制されないよう nested を付ける。
         au MyAutoCmd VimEnter * nested colorscheme badwolf
 '''
-
-# 補完
+repo = 'sjl/badwolf'
 
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
+
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 [[plugins]]
-repo = 'prabirshrestha/vim-lsp'
 hook_source = '''
         " debug
         let g:lsp_log_verbose = 1
@@ -99,26 +90,12 @@ hook_source = '''
 
         let g:lsp_signs_error = '⨉'
         let g:lsp_signs_warning = '⚠'
-        if executable('pyls')
-            au User lsp_setup call lsp#register_server({
-                \ 'name': 'pyls',
-                \ 'cmd': {server_info->['pyls']},
-                \ 'whitelist': ['python'],
-                \ })
-        endif
-
-        if executable('clangd')
-            au User lsp_setup call lsp#register_server({
-                \ 'name': 'clangd',
-                \ 'cmd': {server_info->['clangd', '-background-index']},
-                \ 'whitelist': ['c', 'cpp'],
-                \ })
-        endif
 
         function! s:configure_lsp() abort
           setlocal omnifunc=lsp#complete   " オムニ補完を有効化
         endfunction
 '''
+repo = 'prabirshrestha/vim-lsp'
 
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
@@ -127,29 +104,12 @@ repo = 'mattn/vim-lsp-settings'
 repo = 'vim-denops/denops.vim'
 
 [[plugins]]
-repo = 'Shougo/pum.vim'
-hook_add = '''
-inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
-inoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
-inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
-'''
-
-[[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
 hook_source = '''
   call popup_preview#enable()
 '''
+repo = 'matsui54/denops-popup-preview.vim'
 
-# [[plugins]]
-# repo = 'neovim/nvim-lspconfig'
-
-# nvim-treesitter
 [[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter'
-merged = 0
 hook_source = '''
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -167,35 +127,36 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 '''
+merged = 0
+repo = 'nvim-treesitter/nvim-treesitter'
 
 [[plugins]]
 repo = 'romgrk/nvim-treesitter-context'
 
 [[plugins]]
-repo = 'lambdalisue/fern.vim'
 hook_add = '''
   " Show hidden files
   let g:fern#default_hidden=1
 '''
+repo = 'lambdalisue/fern.vim'
 
 [[plugins]]
+depends = ['fern.vim']
 repo = 'lambdalisue/fern-git-status.vim'
-depends =  ['fern.vim']
 
 [[plugins]]
-repo = 'lambdalisue/nerdfont.vim'
-depends =  ['fern.vim']
+depends = ['fern.vim']
 hook_add = '''
   let g:fern#renderer = 'nerdfont'
 '''
+repo = 'lambdalisue/nerdfont.vim'
 
 [[plugins]]
+depends = ['fern.vim', 'nerdfont.vim']
 repo = 'lambdalisue/fern-renderer-nerdfont.vim'
-depends =  ['fern.vim', 'nerdfont.vim']
 
 [[plugins]]
-repo = 'lambdalisue/glyph-palette.vim'
-depends =  ['fern.vim', 'fern-renderer-nerdfont.vim']
+depends = ['fern.vim', 'fern-renderer-nerdfont.vim']
 hook_add = '''
   augroup my-glyph-palette
     autocmd! *
@@ -203,14 +164,93 @@ hook_add = '''
     autocmd FileType nerdtree,startify call glyph_palette#apply()
   augroup END
 '''
+repo = 'lambdalisue/glyph-palette.vim'
 
 [[plugins]]
-repo = 'nvim-lua/plenary.nvim'
 hook_source = '''
 lua <<EOF
     local async = require "plenary.async"
 EOF
 '''
+repo = 'nvim-lua/plenary.nvim'
 
 [[plugins]]
 repo = 'nvim-lua/popup.nvim'
+
+[[plugins]]
+hook_source = '''
+lua << EOF
+require("snacks").setup({})
+EOF
+'''
+repo = 'folke/snacks.nvim'
+
+[[plugins]]
+depends = ['snacks.nvim']
+hook_add = '''
+  " Claude Code configuration
+  " Key bindings recommended in documentation
+  nnoremap <leader>ac :ClaudeCode<CR>
+  nnoremap <leader>af :ClaudeCodeFocus<CR>
+  nnoremap <leader>ar :ClaudeCode --resume<CR>
+  nnoremap <leader>aC :ClaudeCode --continue<CR>
+  nnoremap <leader>ab :ClaudeCodeAdd %<CR>
+  vnoremap <leader>as :ClaudeCodeSend<CR>
+
+  " Diff management
+  nnoremap <leader>aa :ClaudeCodeDiffAccept<CR>
+  nnoremap <leader>ad :ClaudeCodeDiffDeny<CR>
+'''
+repo = 'coder/claudecode.nvim'
+
+[[plugins]]
+depends = ['LuaSnip']
+hook_source = '''
+lua << EOF
+  local cmp = require('cmp')
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body)
+      end,
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<Tab>'] = cmp.mapping.select_next_item(),
+      ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'buffer' },
+      { name = 'path' },
+    })
+  })
+EOF
+'''
+on_event = 'InsertEnter'
+repo = 'hrsh7th/nvim-cmp'
+
+[[plugins]]
+on_source = 'nvim-cmp'
+repo = 'hrsh7th/cmp-nvim-lsp'
+
+[[plugins]]
+on_source = 'nvim-cmp'
+repo = 'hrsh7th/cmp-buffer'
+
+[[plugins]]
+on_source = 'nvim-cmp'
+repo = 'hrsh7th/cmp-path'
+
+[[plugins]]
+build = 'make install_jsregexp'
+repo = 'L3MON4D3/LuaSnip'
+
+[[plugins]]
+on_source = 'nvim-cmp'
+repo = 'saadparwaiz1/cmp_luasnip'
