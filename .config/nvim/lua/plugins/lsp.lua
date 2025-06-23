@@ -64,8 +64,23 @@ return {
         on_attach = on_attach,
         settings = {
           Lua = {
-            workspace = { checkThirdParty = false },
+            runtime = {
+              version = 'LuaJIT',
+              path = vim.split(package.path, ';'),
+            },
+            diagnostics = {
+              globals = { 'vim' },
+              disable = { 'missing-fields' },
+            },
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME,
+                "${3rd}/luv/library",
+              },
+            },
             telemetry = { enable = false },
+            completion = { callSnippet = 'Replace' },
           },
         },
       })
