@@ -39,29 +39,10 @@ return {
             },
           },
           lualine_c = {
-            -- Branch with smart icons based on branch type
+            -- Branch with different color for better distinction
             {
               'branch',
-              color = { bg = colors.branch_bg, fg = colors.branch_fg, gui = 'bold' },
-              fmt = function(str)
-                -- Smart branch icons:
-                -- 👑 main/master (production)
-                -- ✨ feature/ (new features)
-                -- 🔧 fix/hotfix (bug fixes)
-                -- 🚧 dev/develop (development)
-                -- 🌿 other branches
-                if str == 'main' or str == 'master' then
-                  return '👑 ' .. str
-                elseif str:match('^feature/') then
-                  return '✨ ' .. str
-                elseif str:match('^fix/') or str:match('^hotfix/') then
-                  return '🔧 ' .. str
-                elseif str:match('^dev') or str:match('^develop') then
-                  return '🚧 ' .. str
-                else
-                  return '🌿 ' .. str
-                end
-              end,
+              color = { bg = colors.branch_bg, fg = colors.branch_fg, gui = 'bold' }, -- Lighter background for branch
             },
             -- Add modern features: diff and diagnostics with color coding
             {
