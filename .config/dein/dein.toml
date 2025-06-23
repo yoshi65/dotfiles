@@ -10,26 +10,6 @@ repo = 'osyo-manga/vim-precious'
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]]  # status line
-hook_add = '''
-        let g:lightline = {
-        \ 'active': {
-        \  'left':  [ [ 'mode', 'paste'],
-        \             [ 'readonly', 'filename', 'modified', 'gitbranch' ] ],
-        \  'right': [ [ 'percent' ],
-        \             [ 'lineinfo' ],
-        \             [ 'fileencoding', 'fileformat', 'filetype' ] ]
-        \ },
-        \ 'component_function': {
-        \   'gitbranch': 'FugitiveHead'
-        \ },
-        \ 'colorscheme': 'wombat',
-        \ 'separator': { 'left': "", 'right': "" },
-        \ 'subseparator': { 'left': "", 'right': "" }
-        \}
-'''
-repo = 'itchyny/lightline.vim'
-
 [[plugins]]  # Terraform
 hook_add = '''
         let g:terraform_fmt_on_save = 1

@@ -9,7 +9,7 @@ return {
     config = function()
       require('lualine').setup({
         options = {
-          theme = 'auto', -- Automatically adapt to colorscheme
+          theme = 'wombat', -- Match original lightline colorscheme
           component_separators = { left = '', right = '' },
           section_separators = { left = '', right = '' },
           globalstatus = true, -- Use global statusline
@@ -20,9 +20,18 @@ return {
           },
         },
         sections = {
+          -- Match original lightline layout: mode, paste in left section a
           lualine_a = { 'mode' },
           lualine_b = {
+            -- Match original: readonly, filename, modified, gitbranch
+            {
+              'filename',
+              symbols = { modified = '[+]', readonly = '[RO]' },
+            },
             'branch',
+          },
+          lualine_c = {
+            -- Add modern features: diff and diagnostics
             {
               'diff',
               symbols = { added = '+', modified = '~', removed = '-' },
@@ -33,27 +42,20 @@ return {
               symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
             },
           },
-          lualine_c = {
-            {
-              'filename',
-              path = 1, -- Show relative path
-              shorting_target = 40,
-            },
-          },
           lualine_x = {
+            -- Match original right side: fileencoding, fileformat, filetype
             'encoding',
-            {
-              'fileformat',
-              symbols = {
-                unix = 'LF',
-                dos = 'CRLF',
-                mac = 'CR',
-              },
-            },
+            'fileformat',
             'filetype',
           },
-          lualine_y = { 'progress' },
-          lualine_z = { 'location' },
+          lualine_y = {
+            -- Match original: lineinfo
+            'location',
+          },
+          lualine_z = {
+            -- Match original: percent
+            'progress',
+          },
         },
         inactive_sections = {
           lualine_a = {},
