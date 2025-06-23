@@ -84,12 +84,19 @@ return {
   -- Git fugitive for advanced git operations
   {
     "tpope/vim-fugitive",
+    event = "VeryLazy", -- Load eagerly to ensure keymaps are available
     cmd = { "Git", "Gwrite", "Gread", "Gdiff", "Gblame", "Glog", "Gclog" },
-    keys = {
-      { "gs", ":Git status<CR>", desc = "Git status" },
-      { "gc", ":Git commit -m", desc = "Git commit" },
-      { "gw", ":Gwrite<CR>", desc = "Git write" },
-      { "gp", ":Git push origin", desc = "Git push origin" },
-    },
+    config = function()
+      -- Set up keymaps immediately when plugin loads
+      vim.keymap.set('n', 'gs', ':Git status<CR>', { desc = 'Git status' })
+      vim.keymap.set('n', 'gc', ':Git commit -m ', { desc = 'Git commit' }) -- Note: space after -m for input
+      vim.keymap.set('n', 'gw', ':Gwrite<CR>', { desc = 'Git write' })
+      vim.keymap.set('n', 'gp', ':Git push origin ', { desc = 'Git push origin' }) -- Note: space for branch input
+
+      -- Additional command aliases for compatibility
+      vim.cmd("cnoreabbrev Gcb Git checkout -b")
+      vim.cmd("cnoreabbrev Gp Git push origin")
+      vim.cmd("cnoreabbrev Gc Git commit -m")
+    end,
   },
 }

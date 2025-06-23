@@ -93,14 +93,8 @@ tnoremap <silent> <ESC> <C-\><C-n>
 " Ctrl+nでファイルツリーを表示/非表示する
 nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 
-"" Command alias
-cnoreabbrev Gcb Git checkout -b
-cnoreabbrev Gp Git push origin
-cnoreabbrev Gc Git commit -m
-nnoremap gp :Git push origin
-nnoremap gc :Git commit -m
-nnoremap gw :Gwrite<CR>
-nnoremap gs :Git status<CR>
+"" Git command aliases and mappings - MOVED TO lazy.nvim
+" See .config/nvim/lua/plugins/git.lua for fugitive configuration
 
 "" Insert timestamp after 'LastModified: '
 function! LastModified()
