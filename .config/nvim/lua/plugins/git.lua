@@ -84,7 +84,6 @@ return {
   -- Git fugitive for advanced git operations
   {
     "tpope/vim-fugitive",
-    event = "VeryLazy", -- Load eagerly to ensure keymaps are available
     cmd = { "Git", "Gwrite", "Gread", "Gdiff", "Gblame", "Glog", "Gclog" },
     config = function()
       -- Set up keymaps immediately when plugin loads
