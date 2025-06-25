@@ -1,0 +1,68 @@
+# Starship configuration
+# https://starship.rs/config/
+
+# Disable the blank line at the start of the prompt
+add_newline = false
+# Custom format
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$ruby\
+$terraform\
+$line_break\
+$character"""
+
+[character]
+error_symbol = "[%](white bold)"
+success_symbol = "[%](white bold)"
+
+[directory]
+format = "[$path]($style) "
+style = "green bold"
+truncation_length = 3
+
+# Enable directory icons (works with eza)
+[directory.substitutions]
+
+[git_branch]
+format = "\\[[$symbol$branch]($style)\\]"
+style = "green bold"
+symbol = ""
+
+[git_status]
+ahead = "⇡"
+behind = "⇣"
+conflicted = "="
+deleted = "D"
+diverged = "⇕"
+format = '([\[$all_status$ahead_behind\]]($style))'
+modified = " "
+renamed = "R"
+staged = " "
+stashed = "$"
+style = "red bold"
+untracked = "?"
+up_to_date = ""
+
+[hostname]
+disabled = false
+format = "\\[[$hostname](bold magenta)\\] "
+ssh_only = false
+
+[ruby]
+format = "[$symbol($version)]($style) "
+style = "yellow bold"
+
+[terraform]
+format = "[$symbol$workspace]($style) "
+style = "magenta bold"
+
+[username]
+disabled = false
+format = "[$user]($style) "
+show_always = true
+style_root = "red bold"
+style_user = "cyan bold"

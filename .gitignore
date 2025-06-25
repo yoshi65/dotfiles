@@ -7,6 +7,7 @@
 !.config/template/
 !.config/flake8
 !.config/pycodestyle
+!.config/starship.toml
 
 # Neovim: Exclude lazy.nvim lock file (contains git hashes)
 .config/nvim/lazy-lock.json

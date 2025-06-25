@@ -3,81 +3,11 @@ _has() {
   return $( whence $1 &>/dev/null )
 }
 
-# setting prompt
-autoload -Uz vcs_info
-autoload -U colors
-colors
-setopt prompt_subst
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr ": "
-zstyle ':vcs_info:git:*' unstagedstr ": "
-zstyle ':vcs_info:git:*' formats "%b%c%u"
-zstyle ':vcs_info:git:*' actionformats '%b|%a'
+# Initialize starship
+eval "$(starship init zsh)"
 
-precmd () {
-        # dir path
-        path_prompt="%{${fg[green]}%}%~%{${fg[default]}%}"
-
-        # vcs_info
-	psvar=()
-	LANG=en_US.UTF-8 vcs_info
-	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-
-        # check if version control by git is done
-        current=$PWD
-        git_check=1
-        while [[ $PWD != '/' ]]
-        do
-            if [[ -n `ls -a | grep "^\.git$"` ]]; then
-                git_check=0
-                break
-            else
-                cd ../
-            fi
-        done
-        cd $current
-
-        # check if branch is master or not
-        if [[ `echo $vcs_info_msg_0_ | grep -c -e "master" -e "main"` > 0 ]]; then
-            branch=" "
-        else
-            branch=" "
-        fi
-
-        # make prompt each git status
-	if [[ git_check -eq 0 ]]; then
-		st=`git status 2> /dev/null`
-		if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
-			git_prompt=" [${branch}%1(v|%F{green}%1v%f|)]"
-		elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
-			git_prompt=" [${branch}%1(v|%F{yellow}%1v%f|)]"
-		else [[ -n `echo "$st" | grep "^# Untracked"` ]];
-			git_prompt=" [${branch}%1(v|%F{red}%1v%f|)]"
-		fi
-	else
-		git_prompt=""
-	fi
-
-        env_prompt="%{${fg[yellow]}%}%{${fg[magenta]}%}${RUBY_VERSION_STRING}%{${fg[default]}%}${TERRAFORM_VERSION_STRING}"
-
-        if [[ -n `jobs | grep "suspended"` ]]; then
-            name_color=${fg[blue]}
-        else
-            name_color=${fg[cyan]}
-        fi
-
-        if type "kube_ps1" > /dev/null 2>&1; then
-            kube=" $(kube_ps1)"
-        else
-            kube=""
-        fi
-
-        PS1="%D{%Y-%m-%d %H:%M:%S} %{${name_color}%}%n%{${fg[default]}%} [%m]${env_prompt}${git_prompt} ${path_prompt}${kube}
-%% "
-
-        # TERRAFORM_VERSION_STRING=""
-}
-
+# Initialize zoxide
+eval "$(zoxide init zsh)"
 # Expansion of completion
 if [[ -d $(brew --prefix)/share/zsh/site-functions ]] then
     fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
@@ -128,8 +58,10 @@ HISTSIZE=100000
 HISTFILE=~/.zhistory
 
 # aliasd
-alias l="/bin/ls -FG"
-alias ll="/bin/ls -FGl"
+alias l="eza --icons"
+alias ll="eza -l --icons --git"
+alias la="eza -la --icons --git"
+alias tree="eza --tree --icons"
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 if [[ `type nvim | grep -c "not found"` == 0 ]]; then
     alias emacs="nvim"
@@ -355,3 +287,7 @@ batdiff() {
 
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 [ -f $HOME/.zshrc_local ] && . $HOME/.zshrc_local
+
+
+
+alias claude="/Users/yoshitaka/.claude/local/claude"
