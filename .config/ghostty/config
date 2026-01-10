@@ -6,8 +6,11 @@ font-size = 14
 window-padding-x = 8
 window-padding-y = 8
 
+# Theme
+theme = iTerm2 Dark Background
+
 # macOS specific
 macos-option-as-alt = true
 
-# Theme (optional - comment out if you prefer default)
-# theme = dark:catppuccin-mocha,light:catppuccin-latte
+# Keybindings (for Claude Code compatibility)
+keybind = shift+enter=text:\n
