@@ -1,0 +1,13 @@
+# Font
+font-family = "Moralerspace Neon NF"
+font-size = 14
+
+# Window
+window-padding-x = 8
+window-padding-y = 8
+
+# macOS specific
+macos-option-as-alt = true
+
+# Theme (optional - comment out if you prefer default)
+# theme = dark:catppuccin-mocha,light:catppuccin-latte
