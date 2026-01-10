@@ -75,7 +75,7 @@ return {
       },
     },
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "f", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
       { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
@@ -91,6 +91,11 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
+    },
+    keys = {
+      { "<C-n>", "<cmd>Neotree left<cr>", desc = "Open file tree (split)" },
+      { "<leader>e", "<cmd>Neotree toggle float<cr>", desc = "File explorer (float)" },
+      { "<leader>g", "<cmd>Neotree git_status<cr>", desc = "Git status tree" },
     },
     config = function()
       require("neo-tree").setup({
@@ -225,10 +230,10 @@ return {
               ["<bs>"] = "navigate_up",
               ["."] = "set_root",
               ["H"] = "toggle_hidden",
-              ["/"] = "fuzzy_finder",
-              ["D"] = "fuzzy_finder_directory",
+              ["/"] = "filter_on_submit",
+              ["D"] = "filter_on_submit",
               ["#"] = "fuzzy_sorter",
-              ["f"] = "filter_on_submit",
+              ["f"] = "fuzzy_finder",
               ["<c-x>"] = "clear_filter",
               ["[g"] = "prev_git_modified",
               ["]g"] = "next_git_modified",
@@ -265,9 +270,6 @@ return {
           }
         }
       })
-      vim.keymap.set("n", "<C-n>", "<cmd>Neotree left<cr>", { desc = "Open file tree (split)" })
-      vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle float<cr>", { desc = "File explorer (float)" })
-      vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Git status tree" })
     end,
   },
 }

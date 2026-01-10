@@ -18,6 +18,8 @@
 # Runtime directories and caches
 .tmux/plugins/
 .tmux/resurrect/
+logs/
+iterm2/
 
 # Sensitive files patterns (extra safety)
 **/*credentials*

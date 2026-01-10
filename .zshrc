@@ -3,41 +3,58 @@ _has() {
   return $( whence $1 &>/dev/null )
 }
 
-# Initialize starship
-eval "$(starship init zsh)"
+# Initialize starship (cached if possible)
+if command -v starship > /dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
 
-# Initialize zoxide
-eval "$(zoxide init zsh)"
-# Expansion of completion
-if [[ -d $(brew --prefix)/share/zsh/site-functions ]] then
-    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+# Initialize zoxide (cached if possible)
+if command -v zoxide > /dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+# Expansion of completion - optimized with caching
+# Cache brew prefix for performance
+if [[ -z "$HOMEBREW_PREFIX" ]]; then
+    export HOMEBREW_PREFIX="${HOME}/homebrew"
+fi
+if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi
 fpath=($fpath ~/.zsh/completion)
+
+# Optimized compinit with caching and skip security checks
 autoload -U compinit
-compinit
+# Check if we need to regenerate the dump file
+if [[ -z "$ZSH_COMPDUMP" ]]; then
+    ZSH_COMPDUMP="$HOME/.zcompdump"
+fi
+
+# Only regenerate dump if it's older than 24 hours or doesn't exist
+if [[ $ZSH_COMPDUMP(#qNmh+24) ]]; then
+    compinit -u -d "$ZSH_COMPDUMP"
+else
+    compinit -u -C -d "$ZSH_COMPDUMP"
+fi
 
 # For aws
 autoload bashcompinit && bashcompinit
 # complete -C "$(which aws_completer)" aws
 
-# For k8s
-if type "kubectl" > /dev/null 2>&1; then
-  source <(kubectl completion zsh)
-
-  kube_ps1_path=$HOME/homebrew/opt/kube-ps1/share/kube-ps1.sh
-  if [ -e ${kube_ps1_path} ]; then
-    source ${kube_ps1_path}
-
-    function get_cluster_short() {
-      if echo "$1" | grep -q -P 'arn:aws:eks'; then
-        echo "$1" | cut -d / -f2
-      else
-        echo "$1"
-      fi
-    }
-    KUBE_PS1_CLUSTER_FUNCTION=get_cluster_short
+# For k8s - lazy load completion
+kubectl() {
+  if ! command -v kubectl > /dev/null 2>&1; then
+    echo "kubectl not found"
+    return 1
   fi
-fi
+
+  # Load completion on first use
+  if [[ -z "$_KUBECTL_COMPLETION_LOADED" ]]; then
+    source <(command kubectl completion zsh)
+    export _KUBECTL_COMPLETION_LOADED=1
+  fi
+
+  command kubectl "$@"
+}
 
 # Not case sensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -47,10 +64,21 @@ zstyle ':completion:*:*files' ignored-patterns '*?.o'
 # eval `dircolors`
 # zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
-# uv completion
-if command -v uv > /dev/null 2>&1; then
-  eval "$(uv generate-shell-completion zsh)"
-fi
+# uv completion - lazy load
+uv() {
+  if ! command -v uv > /dev/null 2>&1; then
+    echo "uv not found"
+    return 1
+  fi
+
+  # Load completion on first use
+  if [[ -z "$_UV_COMPLETION_LOADED" ]]; then
+    eval "$(command uv generate-shell-completion zsh)"
+    export _UV_COMPLETION_LOADED=1
+  fi
+
+  command uv "$@"
+}
 
 # history
 SAVEHIST=100000
@@ -63,13 +91,14 @@ alias ll="eza -l --icons --git"
 alias la="eza -la --icons --git"
 alias tree="eza --tree --icons"
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-if [[ `type nvim | grep -c "not found"` == 0 ]]; then
+if command -v nvim > /dev/null 2>&1; then
     alias emacs="nvim"
     alias vi="nvim"
     alias memo="nvim ~/Geektool/geektool_memo.md"
     alias lmemo="nvim ~/Geektool/geektool_lab_memo.md"
 fi
 alias grep="grep --color=auto"
+alias rg="rg --color=always --smart-case"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
@@ -105,9 +134,9 @@ setopt PUSHD_IGNORE_DUPS #同じディレクトリが重複してディレクト
 setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 setopt CLOBBER # リダイレクトによる上書きを可能にする
 
-if type "fzf" > /dev/null 2>&1; then
+if command -v fzf > /dev/null 2>&1; then
   # fzf の キーバインド
-  fzf_shell_path=$(brew --prefix fzf)"/shell/"
+  fzf_shell_path="$HOMEBREW_PREFIX/opt/fzf/shell/"
   if [ -e ${fzf_shell_path}key-bindings.zsh ]; then
     source ${fzf_shell_path}key-bindings.zsh
   fi
@@ -117,11 +146,11 @@ if type "fzf" > /dev/null 2>&1; then
     source ${fzf_shell_path}completion.zsh
   fi
 
-  # fzf から the_silver_searcher (ag) を呼び出すことで高速化
-  if _has fzf && _has ag; then
-    export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+  # fzf から ripgrep (rg) を呼び出すことで高速化
+  if _has fzf && _has rg; then
+    export FZF_DEFAULT_COMMAND='rg --files --color=never --glob "!.git/*"'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND="fd --type d --color=never --glob '!.git/*' 2>/dev/null || find . -type d -name '.git' -prune -o -type d -print 2>/dev/null"
     export FZF_COMMON_MYOPTS="--height 40% --layout=reverse --multi"
     export FZF_DEFAULT_OPTS="$FZF_COMMON_MYOPTS --preview 'bat --color=always {} --style=plain'"
     export FZF_CTRL_T_OPTS="$FZF_COMMON_MYOPTS --bind 'ctrl-y:execute-silent(echo {} | pbcopy)+abort' --border --preview 'bat --color=always {}'"
@@ -227,43 +256,6 @@ google(){
 	open http://www.google.co.jp/search\?q=$search_string\&hl=ja
 }
 
-ffmp4-speedup-filter () {
-	readonly local speed=$1
-	local v="[0:v]setpts=PTS/${speed}[v]"
-	if [ $speed -le 2 ]; then
-		local a="[0:a]atempo=${speed}[a]"
-	elif [ $speed -le 4 ]; then
-		local a="[0:a]atempo=2,atempo=$speed/2[a]"
-	elif [ $speed -le 8 ]; then
-		local a="[0:a]atempo=2,atempo=2,atempo=$speed/4[a]"
-	fi
-	noglob echo -filter_complex "$v;$a" -map [v] -map [a]
-}
-
-ffmp4-speedup () {
-	if [ $# -lt 2 ]; then
-		echo "Usage: $0 file speed"
-		echo "Convert movie(file) to nx playback mp4 file."
-		echo "(ex.) $0 input.mov 2"
-		echo "      will generate 2x playback mp4 file (input_x2.mp4)"
-		return
-	fi
-	red=`tput setaf 1; tput bold`
-	green=`tput setaf 2; tput bold`
-	reset=`tput sgr0`
-	readonly local src=$1
-	readonly local speed=$2
-	dst=${src:r}_x${speed}.mp4
-	readonly local config="-crf 23 -c:a aac -ar 44100 -b:a 64k -c:v libx264 -qcomp 0.9 -preset slow -tune film -threads auto -strict -2"
-	readonly local args="-v 0 -i $src $config $(ffmp4-speedup-filter $speed) $dst"
-	echo -n "Converting $src to ${speed}x playback as $dst ... "
-	ffmpeg `echo $args`
-	if [[ $? = 0 ]]; then
-		echo "${green}OK${reset}"
-	else
-		echo "${red}Failed${reset}"
-	fi
-}
 
 elatexmk() {
   if [ $# -lt 1 ]; then
@@ -273,21 +265,16 @@ elatexmk() {
     latexmk -pvc -pdf -pdflatex="pdflatex -interaction=nonstopmode" $1
   fi
 }
-if [ -d ${HOME}/node_modules/.bin ]; then
-      export PATH=${PATH}:${HOME}/node_modules/.bin
-fi
+# Add node_modules to PATH if exists
+[[ -d "${HOME}/node_modules/.bin" ]] && export PATH="${PATH}:${HOME}/node_modules/.bin"
 
-if (which zprof > /dev/null 2>&1) ;then
-    zprof | less
-fi
 
 batdiff() {
     git diff --name-only --diff-filter=d 2>/dev/null | xargs bat --diff
 }
 
+# Load additional configurations
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-[ -f $HOME/.zshrc_local ] && . $HOME/.zshrc_local
+[[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
-
-
-alias claude="/Users/yoshitaka/.claude/local/claude"
+eval "$(/Users/yoshitaka/.local/bin/mise activate zsh)"

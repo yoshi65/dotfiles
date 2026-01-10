@@ -84,7 +84,7 @@ return {
   -- Git fugitive for advanced git operations
   {
     "tpope/vim-fugitive",
-    lazy = false, -- Load immediately to ensure keymaps are available
+    cmd = { "Git", "Gwrite", "Gstatus", "Gdiff", "Gcommit", "Gblame", "Glog" },
     config = function()
       -- Set up keymaps immediately when plugin loads
       vim.keymap.set('n', 'gs', ':Git status<CR>', { desc = 'Git status' })
