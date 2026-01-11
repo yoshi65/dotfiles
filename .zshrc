@@ -281,4 +281,7 @@ batdiff() {
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 [[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
+# forgit - interactive git with fzf
+[[ -f "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh" ]] && source "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh"
+
 eval "$(/Users/yoshitaka/.local/bin/mise activate zsh)"
