@@ -1,0 +1,11 @@
+# Yazi keymap configuration
+
+[[manager.prepend_keymap]]
+desc = "Smart filter"
+on = "f"
+run = "plugin smart-filter"
+
+[[manager.prepend_keymap]]
+desc = "Fuzzy find and grep"
+on = "F"
+run = "plugin yafg"

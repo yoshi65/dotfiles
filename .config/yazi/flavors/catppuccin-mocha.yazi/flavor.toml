@@ -1,0 +1,115 @@
+# vim:fileencoding=utf-8:foldmethod=marker
+
+[cmp]
+border = {fg = "#89b4fa"}
+
+[filetype]
+rules = [
+  # Image
+  {mime = "image/*", fg = "#94e2d5"},
+  # Media
+  {mime = "{audio,video}/*", fg = "#f9e2af"},
+  # Archive
+  {mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#f5c2e7"},
+  # Document
+  {mime = "application/{pdf,doc,rtf}", fg = "#a6e3a1"},
+  # Virtual file system
+  {mime = "vfs/{absent,stale}", fg = "#9399b2"},
+  # Fallback
+  {url = "*", fg = "#cdd6f4"},
+  {url = "*/", fg = "#89b4fa"},
+  # TODO: remove
+  {name = "*", fg = "#cdd6f4"},
+  {name = "*/", fg = "#89b4fa"}
+]
+
+[help]
+footer = {fg = "#313244", bg = "#cdd6f4"}
+hovered = {reversed = true, bold = true}
+on = {fg = "#94e2d5"}
+run = {fg = "#f5c2e7"}
+
+[input]
+border = {fg = "#89b4fa"}
+selected = {reversed = true}
+title = {}
+value = {}
+
+[mgr]
+border_style = {fg = "#7f849c"}
+# Border
+border_symbol = "│"
+# Count
+count_copied = {fg = "#1e1e2e", bg = "#a6e3a1"}
+count_cut = {fg = "#1e1e2e", bg = "#f38ba8"}
+count_selected = {fg = "#1e1e2e", bg = "#f9e2af"}
+cwd = {fg = "#94e2d5"}
+# Find
+find_keyword = {fg = "#f9e2af", bold = true, italic = true, underline = true}
+find_position = {fg = "#f5c2e7", bg = "reset", bold = true, italic = true}
+# TODO: remove
+# Hovered
+hovered = {reversed = true}
+# Marker
+marker_copied = {fg = "#a6e3a1", bg = "#a6e3a1"}
+marker_cut = {fg = "#f38ba8", bg = "#f38ba8"}
+marker_marked = {fg = "#94e2d5", bg = "#94e2d5"}
+marker_selected = {fg = "#f9e2af", bg = "#f9e2af"}
+preview_hovered = {underline = true}
+
+[mode]
+normal_alt = {fg = "#89b4fa", bg = "#313244"}
+normal_main = {fg = "#1e1e2e", bg = "#89b4fa", bold = true}
+select_alt = {fg = "#94e2d5", bg = "#313244"}
+# Select mode
+select_main = {fg = "#1e1e2e", bg = "#94e2d5", bold = true}
+unset_alt = {fg = "#f2cdcd", bg = "#313244"}
+# Unset mode
+unset_main = {fg = "#1e1e2e", bg = "#f2cdcd", bold = true}
+
+[notify]
+title_error = {fg = "#f38ba8"}
+title_info = {fg = "#a6e3a1"}
+title_warn = {fg = "#f9e2af"}
+
+[pick]
+active = {fg = "#f5c2e7", bold = true}
+border = {fg = "#89b4fa"}
+inactive = {}
+
+[spot]
+border = {fg = "#89b4fa"}
+tbl_cell = {fg = "#f5c2e7", bg = "#45475a"}
+tbl_col = {fg = "#94e2d5"}
+title = {fg = "#89b4fa"}
+
+[status]
+perm_exec = {fg = "#a6e3a1"}
+perm_read = {fg = "#f9e2af"}
+# Permissions
+perm_sep = {fg = "#7f849c"}
+perm_type = {fg = "#89b4fa"}
+perm_write = {fg = "#f38ba8"}
+progress_error = {fg = "#f9e2af", bg = "#f38ba8"}
+# Progress
+progress_label = {fg = "#ffffff", bold = true}
+progress_normal = {fg = "#a6e3a1", bg = "#45475a"}
+
+[tabs]
+active = {fg = "#1e1e2e", bg = "#89b4fa", bold = true}
+inactive = {fg = "#89b4fa", bg = "#313244"}
+
+[tasks]
+border = {fg = "#89b4fa"}
+hovered = {fg = "#f5c2e7", bold = true}
+title = {}
+
+[which]
+cand = {fg = "#94e2d5"}
+desc = {fg = "#f5c2e7"}
+mask = {bg = "#313244"}
+rest = {fg = "#9399b2"}
+separator = "  "
+separator_style = {fg = "#585b70"}
+
+# : }}}

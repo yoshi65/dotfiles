@@ -9,6 +9,7 @@
 !.config/pycodestyle
 !.config/starship.toml
 !.config/ghostty/
+!.config/yazi/
 
 # Neovim: Exclude lazy.nvim lock file (contains git hashes)
 .config/nvim/lazy-lock.json
