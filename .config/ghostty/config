@@ -9,8 +9,14 @@ window-padding-y = 8
 # Theme
 theme = iTerm2 Dark Background
 
+# Override palette to match iTerm2 exactly
+palette = 1=#b43c2a
+palette = 2=#00c200
+palette = 4=#2743c7
+palette = 6=#00c5c7
+
 # macOS specific
 macos-option-as-alt = true
 
-# Keybindings (for Claude Code compatibility)
+# Keybindings
 keybind = shift+enter=text:\n
