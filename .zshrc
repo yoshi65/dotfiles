@@ -108,7 +108,7 @@ gbd() {
   git branch --merged | grep -v -e '^*' -e 'main' -e 'master' | xargs -r git branch -d
 }
 alias grd="cd $(git rev-parse --show-cdup)"
-alias gcb="git checkout -b"
+alias gnb="git checkout -b"
 alias gc="git commit -m"
 alias gp="git push origin"
 alias gpf="git push --force-with-lease --force-if-includes origin"
