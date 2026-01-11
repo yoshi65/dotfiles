@@ -102,7 +102,11 @@ alias rg="rg --color=always --smart-case"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-alias gbd="git branch | grep -v -e '^master$' -e '^main$' -e '*' | xargs git branch -D"
+# マージ済みブランチを削除（main/master以外）
+gbd() {
+  git fetch --prune
+  git branch --merged | grep -v -e '^*' -e 'main' -e 'master' | xargs -r git branch -d
+}
 alias grd="cd $(git rev-parse --show-cdup)"
 alias gcb="git checkout -b"
 alias gc="git commit -m"
