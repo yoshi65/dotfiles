@@ -13,16 +13,10 @@ return {
       -- Useful status updates for LSP
       { "j-hui/fidget.nvim", opts = {} },
 
-      -- Additional lua configuration, makes nvim stuff amazing!
-      "folke/neodev.nvim",
-
       -- JSON schemas for better JSON editing
       "b0o/schemastore.nvim",
     },
     config = function()
-      -- Setup neovim lua configuration
-      require('neodev').setup()
-
       -- nvim-cmp supports additional completion capabilities, broadcast to all servers
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       vim.lsp.config('*', { capabilities = capabilities })
@@ -71,12 +65,10 @@ return {
               globals = { 'vim' },
               disable = { 'missing-fields' },
             },
+            -- No workspace.library here: lazydev.nvim adds the runtime and any
+            -- plugin sources on demand, based on what the buffer actually requires.
             workspace = {
               checkThirdParty = false,
-              library = {
-                vim.env.VIMRUNTIME,
-                "${3rd}/luv/library",
-              },
             },
             telemetry = { enable = false },
             completion = { callSnippet = 'Replace' },
@@ -167,6 +159,17 @@ return {
     end,
   },
 
+  -- Lua development for the Neovim config itself (replaces the archived neodev.nvim)
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+
   -- Autocompletion
   {
     "hrsh7th/nvim-cmp",
@@ -228,6 +231,9 @@ return {
           end, { 'i', 's' }),
         },
         sources = {
+          -- group_index 0 puts lazydev ahead of nvim_lsp so that, in lua files, it
+          -- can drop lua_ls's duplicate `require` suggestions.
+          { name = 'lazydev', group_index = 0 },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'buffer' },
