@@ -38,6 +38,11 @@ cd dotfiles
 brew bundle  # Install packages from Brewfile
 ```
 
+### Portability
+
+The configs are guarded (`command -v`, `$OSTYPE`, tmux `if-shell`) so the same files
+work on Linux without the mac-only tools.
+
 ## 📁 Repository Structure
 
 ```bash

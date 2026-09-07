@@ -23,58 +23,44 @@ return {
       -- Setup neovim lua configuration
       require('neodev').setup()
 
-      -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+      -- nvim-cmp supports additional completion capabilities, broadcast to all servers
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      vim.lsp.config('*', { capabilities = capabilities })
 
-      -- LSP keybindings function
-      local on_attach = function(client, bufnr)
-        local nmap = function(keys, func, desc)
-          if desc then
-            desc = 'LSP: ' .. desc
+      -- LSP keybindings, applied when any server attaches (replaces on_attach)
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
+        callback = function(event)
+          local bufnr = event.buf
+          local nmap = function(keys, func, desc)
+            if desc then
+              desc = 'LSP: ' .. desc
+            end
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
           end
-          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-        end
 
-        nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-        nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-        nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-        nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-        nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-        nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-        nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-        nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-        nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-        nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-        nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+          nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+          nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+          nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+          nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-        -- Create a command `:Format` local to the LSP buffer
-        vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-          vim.lsp.buf.format()
-        end, { desc = 'Format current buffer with LSP' })
-      end
-
-      -- Setup mason-lspconfig with additional servers
-      require('mason-lspconfig').setup({
-        ensure_installed = {
-          'lua_ls',
-          'yamlls',      -- YAML
-          'jsonls',      -- JSON
-          'dockerls',    -- Docker
-          'docker_compose_language_service', -- Docker Compose
-          'html',        -- HTML
-          'cssls',       -- CSS
-          'emmet_ls',    -- HTML/CSS emmet
-        },
+          -- Create a command `:Format` local to the LSP buffer
+          vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+            vim.lsp.buf.format()
+          end, { desc = 'Format current buffer with LSP' })
+        end,
       })
 
-      -- Setup individual servers
-      local lspconfig = require('lspconfig')
-
+      -- Per-server settings (merged on top of nvim-lspconfig defaults)
       -- Lua
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             runtime = {
@@ -98,11 +84,8 @@ return {
         },
       })
 
-      -- High-priority servers (YAML, JSON, Docker, CSS, HTML)
       -- YAML
-      lspconfig.yamlls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      vim.lsp.config('yamlls', {
         settings = {
           yaml = {
             keyOrdering = false,
@@ -134,9 +117,7 @@ return {
       })
 
       -- JSON
-      lspconfig.jsonls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      vim.lsp.config('jsonls', {
         settings = {
           json = {
             schemas = require('schemastore').json.schemas(),
@@ -145,77 +126,43 @@ return {
         },
       })
 
-      -- Docker
-      lspconfig.dockerls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      -- Docker Compose
-      lspconfig.docker_compose_language_service.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      -- HTML
-      lspconfig.html.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      -- HTML (add templ)
+      vim.lsp.config('html', {
         filetypes = { "html", "templ" },
       })
 
-      -- CSS
-      lspconfig.cssls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-
-      -- Emmet for HTML/CSS
-      lspconfig.emmet_ls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      -- Emmet for HTML/CSS/JS
+      vim.lsp.config('emmet_ls', {
         filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
       })
 
-      -- Other servers (existing ones)
-      -- Python
-      if vim.fn.executable('pyright') == 1 then
-        lspconfig.pyright.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
-      end
+      -- Setup mason-lspconfig; v2 auto-enables installed servers via vim.lsp.enable,
+      -- picking up the vim.lsp.config() settings defined above.
+      require('mason-lspconfig').setup({
+        ensure_installed = {
+          'lua_ls',
+          'yamlls',      -- YAML
+          'jsonls',      -- JSON
+          'dockerls',    -- Docker
+          'docker_compose_language_service', -- Docker Compose
+          'html',        -- HTML
+          'cssls',       -- CSS
+          'emmet_ls',    -- HTML/CSS emmet
+        },
+      })
 
-      -- TypeScript
-      if vim.fn.executable('typescript-language-server') == 1 then
-        lspconfig.tsserver.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
-      end
-
-      -- Go
-      if vim.fn.executable('gopls') == 1 then
-        lspconfig.gopls.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
-      end
-
-      -- Rust
-      if vim.fn.executable('rust-analyzer') == 1 then
-        lspconfig.rust_analyzer.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
-      end
-
-      -- C/C++
-      if vim.fn.executable('clangd') == 1 then
-        lspconfig.clangd.setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
+      -- Non-mason servers expected on the system PATH; enable when the binary exists.
+      local system_servers = {
+        pyright = 'pyright',                              -- Python
+        ts_ls = 'typescript-language-server',             -- TypeScript
+        gopls = 'gopls',                                  -- Go
+        rust_analyzer = 'rust-analyzer',                  -- Rust
+        clangd = 'clangd',                                -- C/C++
+      }
+      for server, bin in pairs(system_servers) do
+        if vim.fn.executable(bin) == 1 then
+          vim.lsp.enable(server)
+        end
       end
     end,
   },
