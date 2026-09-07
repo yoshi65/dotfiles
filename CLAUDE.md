@@ -23,6 +23,10 @@ terminal multiplexer (tmux). It uses symbolic links to deploy configurations to 
 ./install.sh    # Create symbolic links for all dotfiles
 ```
 
+Configs are portable by design: guard tool-dependent lines with `command -v`, mac-only
+lines with `[[ "$OSTYPE" == darwin* ]]`, and tmux differences with `if-shell`, rather
+than keeping per-environment copies.
+
 ### Key Bindings
 
 - **Tmux prefix**: `C-q` (not default C-b)

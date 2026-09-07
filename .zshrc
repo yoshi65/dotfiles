@@ -3,8 +3,9 @@ _has() {
   return $( whence $1 &>/dev/null )
 }
 
-# Initialize starship (cached if possible)
-if command -v starship > /dev/null 2>&1; then
+# Initialize starship (skip when a host rc already did in this shell; the function
+# is not inherited by child shells, unlike the exported STARSHIP_SHELL)
+if command -v starship > /dev/null 2>&1 && ! (( $+functions[prompt_starship_precmd] )); then
   eval "$(starship init zsh)"
 fi
 
@@ -14,26 +15,29 @@ if command -v zoxide > /dev/null 2>&1; then
 fi
 # Expansion of completion - optimized with caching
 # Cache brew prefix for performance
-if [[ -z "$HOMEBREW_PREFIX" ]]; then
+if [[ -z "$HOMEBREW_PREFIX" && -d "${HOME}/homebrew" ]]; then
     export HOMEBREW_PREFIX="${HOME}/homebrew"
 fi
-if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
     fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 fi
 fpath=($fpath ~/.zsh/completion)
 
 # Optimized compinit with caching and skip security checks
-autoload -U compinit
-# Check if we need to regenerate the dump file
-if [[ -z "$ZSH_COMPDUMP" ]]; then
-    ZSH_COMPDUMP="$HOME/.zcompdump"
-fi
+# (skipped when a host rc already ran compinit)
+if ! (( $+functions[compdef] )); then
+    autoload -U compinit
+    # Check if we need to regenerate the dump file
+    if [[ -z "$ZSH_COMPDUMP" ]]; then
+        ZSH_COMPDUMP="$HOME/.zcompdump"
+    fi
 
-# Only regenerate dump if it's older than 24 hours or doesn't exist
-if [[ $ZSH_COMPDUMP(#qNmh+24) ]]; then
-    compinit -u -d "$ZSH_COMPDUMP"
-else
-    compinit -u -C -d "$ZSH_COMPDUMP"
+    # Only regenerate dump if it's older than 24 hours or doesn't exist
+    if [[ $ZSH_COMPDUMP(#qNmh+24) ]]; then
+        compinit -u -d "$ZSH_COMPDUMP"
+    else
+        compinit -u -C -d "$ZSH_COMPDUMP"
+    fi
 fi
 
 # For aws
@@ -86,10 +90,16 @@ HISTSIZE=100000
 HISTFILE=~/.zhistory
 
 # aliasd
-alias l="eza --icons"
-alias ll="eza -l --icons --git"
-alias la="eza -la --icons --git"
-alias tree="eza --tree --icons"
+if command -v eza > /dev/null 2>&1; then
+    alias l="eza --icons"
+    alias ll="eza -l --icons --git"
+    alias la="eza -la --icons --git"
+    alias tree="eza --tree --icons"
+else
+    alias l="ls --color=auto"
+    alias ll="ls -l --color=auto"
+    alias la="ls -la --color=auto"
+fi
 # alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 if command -v nvim > /dev/null 2>&1; then
     alias emacs="nvim"
@@ -102,12 +112,12 @@ alias rg="rg --color=always --smart-case"
 alias -g G="|grep"
 alias -g L="|less"
 alias -g H="|head"
-# マージ済みブランチを削除（main/master以外）
+# remoteで削除済みのローカルブランチを削除（main/master以外）
 gbd() {
   git fetch --prune
-  git branch --merged | grep -v -e '^*' -e 'main' -e 'master' | xargs -r git branch -d
+  git branch -vv | grep ': gone]' | grep -v '^\*' | awk '{print $1}' | xargs -r git branch -d
 }
-alias grd="cd $(git rev-parse --show-cdup)"
+alias grd='cd "$(git rev-parse --show-toplevel)"'
 alias gnb="git checkout -b"
 alias gc="git commit -m"
 alias gp="git push origin"
@@ -118,7 +128,7 @@ alias gr="git reset --hard"
 
 function gcm() {
   DEFAULT_BRANCH='master'
-  if git branch | ggrep -qP '^[ *]*main$'; then
+  if git show-ref --verify --quiet refs/heads/main; then
     DEFAULT_BRANCH='main'
   fi
   git checkout $DEFAULT_BRANCH
@@ -139,15 +149,24 @@ setopt NUMERIC_GLOB_SORT #文字ではなく、数値としてsortする
 setopt CLOBBER # リダイレクトによる上書きを可能にする
 
 if command -v fzf > /dev/null 2>&1; then
-  # fzf の キーバインド
-  fzf_shell_path="$HOMEBREW_PREFIX/opt/fzf/shell/"
-  if [ -e ${fzf_shell_path}key-bindings.zsh ]; then
-    source ${fzf_shell_path}key-bindings.zsh
+  # fzf の キーバインド・補完
+  # 0.48+ は fzf --zsh で出せる。古い版は brew / distro が置くスクリプトを探す
+  if fzf --zsh > /dev/null 2>&1; then
+    source <(fzf --zsh)
+  else
+    for fzf_shell_path in "$HOMEBREW_PREFIX/opt/fzf/shell/" /usr/share/doc/fzf/examples/; do
+      [ -e "${fzf_shell_path}key-bindings.zsh" ] && source "${fzf_shell_path}key-bindings.zsh"
+      [ -e "${fzf_shell_path}completion.zsh" ] && source "${fzf_shell_path}completion.zsh"
+    done
+    unset fzf_shell_path
   fi
 
-  # fzf の 補完設定
-  if [ -e ${fzf_shell_path}completion.zsh ]; then
-    source ${fzf_shell_path}completion.zsh
+  if _has bat; then
+    fzf_preview='bat --color=always {}'
+    fzf_preview_plain='bat --color=always --style=plain {}'
+  else
+    fzf_preview='cat {}'
+    fzf_preview_plain='cat {}'
   fi
 
   # fzf から ripgrep (rg) を呼び出すことで高速化
@@ -156,12 +175,14 @@ if command -v fzf > /dev/null 2>&1; then
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_ALT_C_COMMAND="fd --type d --color=never --glob '!.git/*' 2>/dev/null || find . -type d -name '.git' -prune -o -type d -print 2>/dev/null"
     export FZF_COMMON_MYOPTS="--height 40% --layout=reverse --multi"
-    export FZF_DEFAULT_OPTS="$FZF_COMMON_MYOPTS --preview 'bat --color=always {} --style=plain'"
-    export FZF_CTRL_T_OPTS="$FZF_COMMON_MYOPTS --bind 'ctrl-y:execute-silent(echo {} | pbcopy)+abort' --border --preview 'bat --color=always {}'"
+    export FZF_DEFAULT_OPTS="$FZF_COMMON_MYOPTS --preview '$fzf_preview_plain'"
+    export FZF_CTRL_T_OPTS="$FZF_COMMON_MYOPTS --border --preview '$fzf_preview'"
+    _has pbcopy && export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --bind 'ctrl-y:execute-silent(echo {} | pbcopy)+abort'"
   fi
 
-  alias f="fzf --preview 'bat --color=always {}'"
-  alias F="fzf --height 100% --preview 'bat --color=always {}'"
+  alias f="fzf --preview '$fzf_preview'"
+  alias F="fzf --height 100% --preview '$fzf_preview'"
+  unset fzf_preview fzf_preview_plain
 
   # Key bindings for git with fzf
   # https://junegunn.kr/2016/07/fzf-git/
@@ -282,6 +303,8 @@ batdiff() {
 [[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
 # forgit - interactive git with fzf
-[[ -f "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh" ]] && source "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh"
+export forgit_branch_delete="gfbd"  # avoid conflict with custom gbd function
+[[ -n "$HOMEBREW_PREFIX" && -f "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh" ]] && source "$HOMEBREW_PREFIX/share/forgit/forgit.plugin.zsh"
 
-eval "$(/Users/yoshitaka/.local/bin/mise activate zsh)"
+command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"
+command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
