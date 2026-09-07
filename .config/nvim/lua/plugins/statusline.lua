@@ -80,7 +80,7 @@ return {
           lualine_y = {},
           lualine_z = {},
         },
-        extensions = { 'fugitive', 'fzf' },
+        extensions = { 'fugitive' },
       })
     end,
   },
