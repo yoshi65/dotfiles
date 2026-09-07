@@ -67,57 +67,60 @@ fi
 
 echo "🚀 Installing dotfiles from $DOTFILES_DIR"
 
-# Process root-level dotfiles (excluding .config)
-for f in .??*; do
-    [[ "$f" == ".git" ]] && continue
-    [[ "$f" == ".DS_Store" ]] && continue
-    [[ "$f" == ".gitignore" ]] && continue
-    [[ "$f" == ".github" ]] && continue
-    [[ "$f" == ".config" ]] && continue  # Handle .config separately
+# Root-level entries to link. Listed explicitly rather than globbed: the repository
+# root also holds files that must never reach $HOME (.mcp.json, .pre-commit-config.yaml,
+# .claude/, .omc/ ...), and a glob with an exclusion list quietly links each new one.
+HOME_ENTRIES=(
+    ".tigrc"
+    ".tmux"
+    ".tmux.conf"
+    ".vim"
+    ".vimrc"
+    ".zshenv"
+    ".zshrc"
+)
 
-    source="$DOTFILES_DIR/$f"
-    target="$HOME/$f"
+# Entries under .config, linked one by one so the rest of ~/.config stays untouched.
+CONFIG_ENTRIES=(
+    "flake8"
+    "ghostty"
+    "git"
+    "nvim"
+    "pycodestyle"
+    "starship.toml"
+    "template"
+    "yazi"
+)
 
-    create_symlink "$source" "$target"
+echo "🏠 Installing root-level dotfiles..."
+for entry in "${HOME_ENTRIES[@]}"; do
+    if [[ -e "$DOTFILES_DIR/$entry" ]]; then
+        create_symlink "$DOTFILES_DIR/$entry" "$HOME/$entry"
+    fi
 done
 
-# Handle .config directory contents individually
 echo "📁 Installing .config applications..."
 if [[ -d "$DOTFILES_DIR/.config" ]]; then
-    # List of .config subdirectories to manage
-    CONFIG_APPS=(
-        "dein"
-        "git"
-        "nvim"
-        "template"
-    )
-
-    # List of .config files to manage
-    CONFIG_FILES=(
-        "flake8"
-        "pycodestyle"
-    )
-
-    # Create .config directory if it doesn't exist
     mkdir -p "$HOME/.config"
 
-    # Link config directories
-    for app in "${CONFIG_APPS[@]}"; do
-        if [[ -d "$DOTFILES_DIR/.config/$app" ]]; then
-            source="$DOTFILES_DIR/.config/$app"
-            target="$HOME/.config/$app"
-            create_symlink "$source" "$target"
+    for entry in "${CONFIG_ENTRIES[@]}"; do
+        if [[ -e "$DOTFILES_DIR/.config/$entry" ]]; then
+            create_symlink "$DOTFILES_DIR/.config/$entry" "$HOME/.config/$entry"
         fi
     done
 
-    # Link config files
-    for file in "${CONFIG_FILES[@]}"; do
-        if [[ -f "$DOTFILES_DIR/.config/$file" ]]; then
-            source="$DOTFILES_DIR/.config/$file"
-            target="$HOME/.config/$file"
-            create_symlink "$source" "$target"
-        fi
-    done
+    # Everything tracked under .config is meant for ~/.config, so anything git knows
+    # about but the list above misses is drift, not intent. starship.toml, ghostty/
+    # and yazi/ sat tracked-but-unlinked this way until it was noticed by hand.
+    if command -v git > /dev/null 2>&1 &&
+        git -C "$DOTFILES_DIR" rev-parse --git-dir > /dev/null 2>&1; then
+        listed=" ${CONFIG_ENTRIES[*]} "
+        while read -r entry; do
+            if [[ -n "$entry" ]] && [[ "$listed" != *" $entry "* ]]; then
+                echo "⚠️  Tracked but not linked: .config/$entry (add it to CONFIG_ENTRIES)"
+            fi
+        done < <(git -C "$DOTFILES_DIR" ls-files -- .config | cut -d/ -f2 | sort -u)
+    fi
 fi
 
 echo "✨ Dotfiles installation complete!"

@@ -7,7 +7,7 @@ Personal dotfiles repository for managing development environment configurations
 ### Core Tools
 
 * **Shell**: zsh with custom git-aware prompt
-* **Editor**: vim/neovim with lazy.nvim plugin manager (69% performance improvement)
+* **Editor**: vim/neovim with lazy.nvim plugin manager
 * **Terminal**: tmux with vim-like keybindings
 * **Git**: tig for TUI, enhanced gitignore patterns
 
@@ -47,17 +47,22 @@ work on Linux without the mac-only tools.
 
 ```bash
 ├── install.sh              # Safe installation with backup
+├── platform/macos.sh      # macOS system defaults
 ├── Brewfile               # Package dependencies
 ├── CLAUDE.md              # AI assistant context
 ├── .zshrc/.zshenv         # Shell configuration
-├── .vimrc                 # Vim configuration
-├── .tmux.conf             # Terminal multiplexer
+├── .vimrc / .vim/         # Vim configuration and file templates
+├── .tmux.conf / .tmux/    # Terminal multiplexer
 ├── .tigrc                 # Git TUI configuration
 └── .config/
     ├── nvim/              # Neovim with lazy.nvim configuration
     │   └── lua/           # Modern Lua-based plugin configuration
+    ├── ghostty/           # Terminal emulator
     ├── git/               # Git settings
-    └── template/          # Code templates
+    ├── yazi/              # File manager
+    ├── template/          # Code templates
+    ├── starship.toml      # Prompt
+    └── flake8, pycodestyle # Python linter settings
 ```
 
 ## 🔧 Key Features
@@ -153,7 +158,6 @@ cp -r ~/.config ~/.config.backup
 ### Common Error Patterns
 
 * **Plugin commands not available**: Some plugins need `lazy = false` for immediate command registration
-* **E897 errors**: Check lambda function syntax (`{var -> expr}` not `{var->expr}`)
 * **Git index lock**: Automatic resolution implemented in git workflow
 * **Provider warnings**: Disable unused providers to reduce noise
 * **Startup performance**: Use lazy loading strategically, but not for critical plugins
@@ -182,21 +186,6 @@ let g:loaded_ruby_provider = 0
 " Check plugin status
 :Lazy
 ```
-
----
-
-## 📚 Migration History
-
-### lazy.nvim Migration (December 2024)
-
-Successfully migrated from dein.vim to lazy.nvim with significant improvements:
-
-* **Performance**: 69% startup time reduction (146ms → 45ms)
-* **Modern ecosystem**: Pure Lua-based configuration
-* **Enhanced features**: Better dependency management and lazy loading
-* **Critical lesson**: Some plugins require `lazy = false` for immediate command availability
-
-For detailed migration history, troubleshooting guides, and configuration examples, see [CLAUDE.md](./CLAUDE.md).
 
 ---
 

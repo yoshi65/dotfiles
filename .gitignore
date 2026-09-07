@@ -1,7 +1,6 @@
 # Only track specific .config directories
 # Everything else in .config is ignored by default
 .config/*
-!.config/dein/
 !.config/git/
 !.config/nvim/
 !.config/template/
