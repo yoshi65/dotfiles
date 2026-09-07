@@ -32,7 +32,7 @@ repos:
     rev: v0.10.0.1
     hooks:
       - id: shellcheck
-        exclude: '^(\.|.*)\.(zsh|zshrc)$|\.tmux/battery\.sh$|\.vim/skel\.sh$'
+        exclude: '^(\.|.*)\.(zsh|zshrc|zshenv)$|\.tmux/battery\.sh$|\.vim/skel\.sh$'
 
   # ファイルサイズ制限（大きなファイルのコミット防止）
   - repo: https://github.com/pre-commit/pre-commit-hooks
