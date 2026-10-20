@@ -28,7 +28,7 @@ return {
     end,
   },
 
-  -- Claude Code integration (Official Coder plugin)
+  -- Claude Code integration
   {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
