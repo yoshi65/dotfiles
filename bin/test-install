@@ -75,7 +75,18 @@ class InstallTests(unittest.TestCase):
     def test_home_config_linked_into_repo_stays_intact(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo, home = Path(tmp) / "repo", Path(tmp) / "home"
-            shutil.copytree(ROOT, repo, symlinks=True, ignore=shutil.ignore_patterns(".git"))
+            # Tracked and new files only: the working tree's ignored .config holds sockets and runtime state.
+            listing = subprocess.run(
+                ["git", "-C", str(ROOT), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+                capture_output=True, check=True,
+            ).stdout.decode().split("\0")
+            for name in filter(None, listing):
+                source = ROOT / name
+                if source.is_dir() and not source.is_symlink():  # a gitlink such as a yazi plugin
+                    (repo / name).mkdir(parents=True, exist_ok=True)
+                elif source.exists() or source.is_symlink():
+                    (repo / name).parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(source, repo / name, follow_symlinks=False)
             home.mkdir()
             (home / ".config").symlink_to(repo / ".config")
             result = subprocess.run(
