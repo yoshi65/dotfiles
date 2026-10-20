@@ -168,9 +168,9 @@ setup_linux() {
   fi
 
   if [[ -n "$brew" ]]; then
-    echo "📦 brew bundle (Brewfile.core)"
+    echo "📦 brew bundle (Brewfile)"
     eval "$("$brew" shellenv)"
-    HOMEBREW_NO_AUTO_UPDATE=1 timeout 1200 brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile.core" ||
+    HOMEBREW_NO_AUTO_UPDATE=1 timeout 1200 brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile" ||
       echo "⚠️  brew bundle failed"
   fi
 
