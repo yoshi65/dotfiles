@@ -3,6 +3,7 @@
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -70,6 +71,22 @@ class InstallTests(unittest.TestCase):
             self.assertTrue((Path(home) / ".zshenv").is_symlink())
             self.assertTrue((Path(home) / ".claude/statusline.py").is_symlink())
             self.assertFalse(list(Path(home).glob(".dotfiles_backup_*")))
+
+    def test_home_config_linked_into_repo_stays_intact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, home = Path(tmp) / "repo", Path(tmp) / "home"
+            shutil.copytree(ROOT, repo, symlinks=True, ignore=shutil.ignore_patterns(".git"))
+            home.mkdir()
+            (home / ".config").symlink_to(repo / ".config")
+            result = subprocess.run(
+                ["bash", str(repo / "install.sh")], stdin=subprocess.DEVNULL, text=True,
+                capture_output=True, timeout=60,
+                env={**os.environ, "HOME": str(home), "DOTFILES_SKIP_SETUP": "1"},
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertFalse((repo / ".config/nvim").is_symlink())
+            self.assertTrue((repo / ".config/nvim/init.vim").is_file())
+            self.assertFalse(list(home.glob(".dotfiles_backup_*")))
 
     def test_linux_hooks_host_zshrc_once(self):
         for initial in ("# host\n", None):

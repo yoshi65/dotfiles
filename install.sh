@@ -34,8 +34,9 @@ create_symlink() {
   local source="$1"
   local target="$2"
 
-  # Skip if already correctly linked
-  if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+  # Skip if already correctly linked. -ef also catches a parent such as ~/.config that
+  # links into the repository, where backing "target" up would move the source itself.
+  if [[ "$source" -ef "$target" ]]; then
     echo "✓ Already linked: $target"
     return 0
   fi
