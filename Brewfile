@@ -1,4 +1,4 @@
-# Minimum set the dotfiles themselves depend on; install.sh applies this on Linux.
+# What the dotfiles use, plus gh for GitHub work; install.sh applies this on Linux.
 brew "bat"
 brew "eza"
 brew "fd"

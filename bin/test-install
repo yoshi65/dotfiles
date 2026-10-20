@@ -3,7 +3,6 @@
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 import unittest
@@ -52,13 +51,13 @@ class StatuslineTests(unittest.TestCase):
 
 
 class InstallTests(unittest.TestCase):
-    def install(self, home, ostype=None):
+    def install(self, home, ostype=None, script=ROOT / "install.sh"):
         # DOTFILES_SKIP_SETUP keeps a Linux run from installing packages or syncing plugins.
         env = {**os.environ, "HOME": home, "DOTFILES_SKIP_SETUP": "1"}
         if ostype:
             env["OSTYPE"] = ostype
         result = subprocess.run(
-            ["bash", str(ROOT / "install.sh")], stdin=subprocess.DEVNULL,
+            ["bash", str(script)], stdin=subprocess.DEVNULL,
             text=True, capture_output=True, env=env, timeout=60,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -75,26 +74,12 @@ class InstallTests(unittest.TestCase):
     def test_home_config_linked_into_repo_stays_intact(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo, home = Path(tmp) / "repo", Path(tmp) / "home"
-            # Tracked and new files only: the working tree's ignored .config holds sockets and runtime state.
-            listing = subprocess.run(
-                ["git", "-C", str(ROOT), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
-                capture_output=True, check=True,
-            ).stdout.decode().split("\0")
-            for name in filter(None, listing):
-                source = ROOT / name
-                if source.is_dir() and not source.is_symlink():  # a gitlink such as a yazi plugin
-                    (repo / name).mkdir(parents=True, exist_ok=True)
-                elif source.exists() or source.is_symlink():
-                    (repo / name).parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(source, repo / name, follow_symlinks=False)
+            (repo / ".config/nvim").mkdir(parents=True)
+            (repo / ".config/nvim/init.vim").touch()
+            (repo / "install.sh").symlink_to(ROOT / "install.sh")
             home.mkdir()
             (home / ".config").symlink_to(repo / ".config")
-            result = subprocess.run(
-                ["bash", str(repo / "install.sh")], stdin=subprocess.DEVNULL, text=True,
-                capture_output=True, timeout=60,
-                env={**os.environ, "HOME": str(home), "DOTFILES_SKIP_SETUP": "1"},
-            )
-            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.install(str(home), script=repo / "install.sh")
             self.assertFalse((repo / ".config/nvim").is_symlink())
             self.assertTrue((repo / ".config/nvim/init.vim").is_file())
             self.assertFalse(list(home.glob(".dotfiles_backup_*")))
