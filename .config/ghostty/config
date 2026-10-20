@@ -18,5 +18,8 @@ palette = 6=#00c5c7
 # macOS specific
 macos-option-as-alt = true
 
+# Install xterm-ghostty terminfo on ssh targets that lack it
+shell-integration-features = ssh-terminfo
+
 # Keybindings
 keybind = shift+enter=text:\n
