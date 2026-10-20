@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Run with python3 bin/test-install; touches only temporary HOME directories."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class StatuslineTests(unittest.TestCase):
+    def run_setup(self, home):
+        return subprocess.run(
+            ["python3", "-I", str(ROOT / "claude/set-statusline.py")],
+            text=True, capture_output=True, env={**os.environ, "HOME": home},
+        )
+
+    def test_preserves_settings_and_is_idempotent(self):
+        for original in (None, {"permissions": {"allow": ["Read"]}, "statusLine": {"type": "command", "command": "old"}}):
+            with self.subTest(original=original), tempfile.TemporaryDirectory() as home:
+                root = Path(home) / ".claude"
+                root.mkdir()
+                settings = root / "settings.json"
+                if original is not None:
+                    settings.write_text(json.dumps(original))
+                first = self.run_setup(home)
+                self.assertEqual(first.returncode, 0, first.stderr)
+                configured = json.loads(settings.read_text())
+                self.assertEqual(configured["statusLine"]["command"], "bash $HOME/.claude/statusline-simple.sh")
+                self.assertEqual({k: v for k, v in configured.items() if k != "statusLine"},
+                                 {k: v for k, v in (original or {}).items() if k != "statusLine"})
+                backups = list(root.glob("settings.json.backup-statusline-*"))
+                self.assertEqual(len(backups), int(original is not None))
+                before = settings.read_bytes()
+                self.assertEqual(self.run_setup(home).returncode, 0)
+                self.assertEqual(settings.read_bytes(), before)
+                self.assertEqual(list(root.glob("settings.json.backup-statusline-*")), backups)
+
+    def test_rejects_invalid_settings_without_overwriting(self):
+        with tempfile.TemporaryDirectory() as home:
+            root = Path(home) / ".claude"
+            root.mkdir()
+            settings = root / "settings.json"
+            settings.write_text("{invalid")
+            self.assertNotEqual(self.run_setup(home).returncode, 0)
+            self.assertEqual(settings.read_text(), "{invalid")
+            self.assertFalse(list(root.glob("settings.json.backup-statusline-*")))
+
+
+class InstallTests(unittest.TestCase):
+    def install(self, home, ostype=None):
+        # DOTFILES_SKIP_SETUP keeps a Linux run from installing packages or syncing plugins.
+        env = {**os.environ, "HOME": home, "DOTFILES_SKIP_SETUP": "1"}
+        if ostype:
+            env["OSTYPE"] = ostype
+        result = subprocess.run(
+            ["bash", str(ROOT / "install.sh")], stdin=subprocess.DEVNULL,
+            text=True, capture_output=True, env=env, timeout=60,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn("Continue?", result.stdout)
+
+    def test_non_interactive_run_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as home:
+            for _ in range(2):
+                self.install(home)
+            self.assertTrue((Path(home) / ".zshenv").is_symlink())
+            self.assertTrue((Path(home) / ".claude/statusline.py").is_symlink())
+            self.assertFalse(list(Path(home).glob(".dotfiles_backup_*")))
+
+    def test_linux_hooks_host_zshrc_once(self):
+        for initial in ("# host\n", None):
+            with self.subTest(initial=initial), tempfile.TemporaryDirectory() as home:
+                zshrc = Path(home) / ".zshrc"
+                if initial is not None:
+                    zshrc.write_text(initial)
+                for _ in range(2):
+                    self.install(home, "linux-gnu")
+                self.assertFalse(zshrc.is_symlink())
+                self.assertEqual(zshrc.read_text().count("source ~/.zshrc.personal"), 1)
+                self.assertTrue((Path(home) / ".zshrc.personal").is_symlink())
+                self.assertFalse(list(Path(home).glob(".dotfiles_backup_*")))
+
+    def test_linux_replaces_link_into_repo_with_hooked_file(self):
+        with tempfile.TemporaryDirectory() as home:
+            zshrc = Path(home) / ".zshrc"
+            zshrc.symlink_to(ROOT / ".zshrc")
+            self.install(home, "linux-gnu")
+            self.assertFalse(zshrc.is_symlink())
+            self.assertIn("source ~/.zshrc.personal", zshrc.read_text())
+
+
+if __name__ == "__main__":
+    unittest.main()
