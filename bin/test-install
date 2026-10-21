@@ -51,13 +51,13 @@ class StatuslineTests(unittest.TestCase):
 
 
 class InstallTests(unittest.TestCase):
-    def install(self, home, ostype=None):
+    def install(self, home, ostype=None, script=ROOT / "install.sh"):
         # DOTFILES_SKIP_SETUP keeps a Linux run from installing packages or syncing plugins.
         env = {**os.environ, "HOME": home, "DOTFILES_SKIP_SETUP": "1"}
         if ostype:
             env["OSTYPE"] = ostype
         result = subprocess.run(
-            ["bash", str(ROOT / "install.sh")], stdin=subprocess.DEVNULL,
+            ["bash", str(script)], stdin=subprocess.DEVNULL,
             text=True, capture_output=True, env=env, timeout=60,
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -70,6 +70,19 @@ class InstallTests(unittest.TestCase):
             self.assertTrue((Path(home) / ".zshenv").is_symlink())
             self.assertTrue((Path(home) / ".claude/statusline.py").is_symlink())
             self.assertFalse(list(Path(home).glob(".dotfiles_backup_*")))
+
+    def test_home_config_linked_into_repo_stays_intact(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo, home = Path(tmp) / "repo", Path(tmp) / "home"
+            (repo / ".config/nvim").mkdir(parents=True)
+            (repo / ".config/nvim/init.vim").touch()
+            (repo / "install.sh").symlink_to(ROOT / "install.sh")
+            home.mkdir()
+            (home / ".config").symlink_to(repo / ".config")
+            self.install(str(home), script=repo / "install.sh")
+            self.assertFalse((repo / ".config/nvim").is_symlink())
+            self.assertTrue((repo / ".config/nvim/init.vim").is_file())
+            self.assertFalse(list(home.glob(".dotfiles_backup_*")))
 
     def test_linux_hooks_host_zshrc_once(self):
         for initial in ("# host\n", None):

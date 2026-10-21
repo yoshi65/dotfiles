@@ -34,8 +34,9 @@ create_symlink() {
   local source="$1"
   local target="$2"
 
-  # Skip if already correctly linked
-  if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+  # Skip if already correctly linked. -ef also catches a parent such as ~/.config that
+  # links into the repository, where backing "target" up would move the source itself.
+  if [[ "$source" -ef "$target" ]]; then
     echo "✓ Already linked: $target"
     return 0
   fi
@@ -167,9 +168,9 @@ setup_linux() {
   fi
 
   if [[ -n "$brew" ]]; then
-    echo "📦 brew bundle (Brewfile.core)"
+    echo "📦 brew bundle (Brewfile)"
     eval "$("$brew" shellenv)"
-    HOMEBREW_NO_AUTO_UPDATE=1 timeout 1200 brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile.core" ||
+    HOMEBREW_NO_AUTO_UPDATE=1 timeout 1200 brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile" ||
       echo "⚠️  brew bundle failed"
   fi
 

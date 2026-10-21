@@ -1,25 +1,13 @@
-# Brewfile for dotfiles dependencies
-
-# Taps
-tap "homebrew/bundle"
-
-# CLI Tools
-brew "git"
-brew "vim"
-brew "neovim"
-brew "tmux"
-brew "tig"
+# What the dotfiles use, plus gh for GitHub work; install.sh applies this on Linux.
 brew "bat"
-brew "ripgrep"
+brew "eza"
+brew "fd"
+brew "fzf"
 brew "gh"
-
-# Development
-brew "volta"  # Node.js version manager
-brew "uv"     # Python package manager
-
-# Languages
-brew "openjdk"
-
-# Optional GUI apps (uncomment as needed)
-# cask "iterm2"
-# cask "visual-studio-code"
+brew "neovim"
+brew "ripgrep"
+brew "tig"
+brew "tmux"
+brew "uv"
+brew "zoxide"
+cask "claude-code@latest"
